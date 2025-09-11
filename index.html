@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="es" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Executive JobBoard | Vacantes Disponibles</title>
+  <meta name="description" content="Executive JobBoard | Vacantes Disponibles. Filtra, busca y aplica a vacantes.">
+  <link rel="icon" href="https://talento3.com/wp-content/uploads/2025/09/Logo-Talento-3.0-FAVICON.001.png" />
+  <meta property="og:title" content="Executive JobBoard | Vacantes Disponibles">
+  <meta property="og:description" content="Vacantes abiertas. Filtra por ciudad y palabras clave.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://talento3.com/wp-content/uploads/2024/04/LogoT3.png">
+  <style>
+    :root{
+      --t3-primary:#0b3c5d; --t3-primary-600:#0e4a77;
+      --t3-accent:#f39c12; --t3-bg:#f6f8fb; --t3-card:#ffffff;
+      --t3-text:#1b1f23; --t3-muted:#6b7280; --radius:18px;
+      --shadow:0 8px 24px rgba(0,0,0,.08);
+      --st-new:#16a34a; --st-int:#f59e0b; --st-fin:#7c3aed;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--t3-text);background:var(--t3-bg);line-height:1.5}
+    a{color:var(--t3-primary-600);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+    header{background:linear-gradient(135deg, var(--t3-primary) 0%, #102a43 100%);color:#fff;position:sticky;top:0;z-index:60;box-shadow:0 4px 18px rgba(0,0,0,.15)}
+    .wrap{max-width:1200px;margin:0 auto;padding:16px}
+    .nav{display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{height:44px;width:auto;border-radius:8px;background:#fff;padding:6px}
+    .headtext{display:flex;flex-direction:column;gap:2px}
+    .headtext h1{margin:0;font-size:18px;letter-spacing:.2px}
+    .headtext .month{font-size:13px;opacity:.9}
+
+    /* Toolbar: input + botón alineados como combo */
+    .toolbar{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
+    @media(min-width:800px){.toolbar{grid-template-columns:2.4fr 1.2fr auto auto}}
+    .searchWrap{display:grid;grid-template-columns:1fr 44px;align-items:stretch}
+    .searchWrap .input{border-radius:12px 0 0 12px;border-right:0}
+    .searchWrap .btn.tiny{border-radius:0 12px 12px 0;height:100%;padding:0;display:grid;place-items:center;min-width:44px}
+    .btn.tiny{box-shadow:none}
+
+    /* Banner publicitario dentro de cabecera (sin controles) */
+    .promo{background:linear-gradient(90deg,#fff 0%, #fff7ec 35%, #ffe4b8 100%); border-top:1px solid #f4cf94; border-bottom:1px solid #f4cf94}
+    .promo .box{max-width:1200px;margin:0 auto;padding:8px 16px;display:flex;gap:12px;align-items:center}
+    .ticker{overflow:hidden; white-space:nowrap; flex:1; mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent);}
+    .track{display:inline-block; padding-left:100%; will-change:transform; animation:ticker 24s linear infinite;}
+    @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+    .promo .msg{display:inline-block; margin-right:28px; color:#5b3b00; font-weight:600}
+    .promo .msg a{color:#7a4b00}
+
+    .legend{display:flex;gap:10px;align-items:center;margin-top:10px;font-size:12px;opacity:.95}
+    .dot{display:inline-flex;align-items:center;gap:6px}
+    .dot i{display:inline-block;width:10px;height:10px;border-radius:999px;background:#fff;opacity:.95}
+    .dot.new i{background:var(--st-new)} .dot.int i{background:var(--st-int)} .dot.fin i{background:var(--st-fin)}
+
+    .input, select{border:1px solid #e5e7eb;background:#fff;border-radius:12px;padding:12px 14px;outline:none;box-shadow:inset 0 1px 0 rgba(0,0,0,.02);font-size:14px}
+    .btn{appearance:none;border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;transition:.15s transform ease,.15s box-shadow ease;box-shadow:var(--shadow);background:var(--t3-accent);color:#1b1f23}
+    .btn.secondary{background:#fff;color:var(--t3-primary);border:1px solid #e5e7eb}
+    .btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35);box-shadow:none}
+    .btn:hover{transform:translateY(-1px)}
+    .stats{display:flex;align-items:center;gap:8px;color:#fff;font-size:14px;opacity:.95}
+
+    main{padding:24px 0}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
+
+    .card{background:var(--t3-card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px}
+    .badge{display:inline-block;background:#eef2ff;color:#3730a3;padding:6px 10px;border-radius:999px;font-size:12px}
+    .title{font-size:18px;font-weight:800;margin:0}
+    .title a{color:inherit;text-decoration:none}
+    .title a:hover{text-decoration:underline}
+    .muted{color:var(--t3-muted);font-size:13px}
+    .salary{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--t3-primary)}
+    .coin{width:18px;height:18px;display:inline-block}
+    .desc{font-size:14px}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+    .empty{text-align:center;background:#fff;border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)}
+    footer{padding:24px 0;color:var(--t3-muted);font-size:13px}
+
+    .detail{display:none} /* ya no usamos la vista de detalle embebida */
+
+    .schema-dump{display:none}
+    .list-head{display:flex;align-items:center;justify-content:space-between;margin:10px 0 16px 0;gap:8px;flex-wrap:wrap}
+    .count{font-weight:700;color:var(--t3-primary-600)}
+    .hint{font-size:12px;color:var(--t3-muted)}
+    .toast{position:fixed;right:16px;bottom:16px;background:#111827;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);transform:translateY(16px);opacity:0;pointer-events:none;transition:.25s ease}
+    .toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
+    .topbtn{position:fixed;right:16px;bottom:16px;background:var(--t3-primary);color:#fff;border:0;border-radius:999px;width:46px;height:46px;display:grid;place-items:center;box-shadow:var(--shadow);cursor:pointer;display:none}
+
+    .status-row{display:flex;align-items:center;gap:10px}
+    .status-pill{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid #e5e7eb;background:#fff}
+    .progress{position:relative;width:100%;height:8px;border-radius:999px;background:#eef2f7;overflow:hidden}
+    .progress .fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:999px;background:linear-gradient(90deg,var(--st-new),var(--st-int),var(--st-fin))}
+    .owner{display:flex;align-items:center;gap:8px}
+    .avatar{width:30px;height:30px;border-radius:999px;display:grid;place-items:center;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+    .avatar svg{width:18px;height:18px;display:block}
+
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(17,24,39,.6);display:none;z-index:100}
+    .modal-backdrop.show{display:grid;place-items:center;animation:fadeIn .18s ease}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .modal{background:#fff;max-width:760px;width:92vw;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden}
+    .modal header{background:linear-gradient(135deg, var(--t3-primary) 0%, #102a43 100%);color:#fff;position:relative}
+    .modal header .wrap{padding:14px 18px}
+    .modal .close{position:absolute;top:10px;right:12px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:10px;padding:6px 10px;cursor:pointer}
+    .modal .body{padding:16px 18px;max-height:70vh;overflow:auto}
+    .modal .meta{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
+    .modal .badge{background:#eef2ff;color:#3730a3}
+    .modal .actions{margin-top:12px}
+  </style>
+</head>
+<body>
+  <a class="sr-only" href="#contenido">Saltar al contenido</a>
+  <header>
+    <div class="wrap">
+      <div class="nav">
+        <div class="brand">
+          <img src="https://talento3.com/wp-content/uploads/2024/04/LogoT3.png" alt="Logo Talento 3.0" />
+          <div class="headtext">
+            <h1>Executive JobBoard | Vacantes Disponibles</h1>
+            <div class="month" id="dateNow">Fecha: —</div>
+          </div>
+        </div>
+        <div class="stats" id="stats"><span>Vacantes:</span><strong>0</strong></div>
+      </div>
+
+      <div class="toolbar" aria-label="Filtros de búsqueda">
+        <div class="searchWrap">
+          <input id="q" class="input" type="search" placeholder="Buscar por palabras: puesto, descripción, lugar…" aria-label="Buscar palabras clave">
+          <button id="doSearch" class="btn secondary tiny" title="Ejecutar búsqueda" aria-label="Ejecutar búsqueda">🔎</button>
+        </div>
+        <select id="city" aria-label="Filtrar por ciudad">
+          <option value="">Todas las ciudades</option>
+        </select>
+        <button id="refresh" class="btn" title="Recargar datos">Actualizar</button>
+        <button id="toList" class="btn ghost" title="Ir a listado">Listado</button>
+      </div>
+
+      <div class="legend">
+        <span class="dot new"><i></i> Nuevas</span>
+        <span class="dot int"><i></i> Entrevistas</span>
+        <span class="dot fin"><i></i> Finalistas</span>
+      </div>
+    </div>
+
+    <!-- Banner sin controles -->
+    <div class="promo" aria-label="Información comercial Talento 3.0">
+      <div class="box">
+        <div class="ticker"><div id="promoTrack" class="track"></div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" id="contenido">
+    <div class="list-head">
+      <div class="count" id="countLabel">Mostrando 0 de 0 vacantes</div>
+      <div class="hint">Consejo: filtra por ciudad y usa “Más info” para ver la descripción completa.</div>
+    </div>
+
+    <section id="cards" class="grid" aria-live="polite"></section>
+
+    <div id="empty" class="empty" style="display:none">
+      <h3>No pude encontrar <code>positions.csv</code></h3>
+      <p>Coloca el archivo <strong>positions.csv</strong> en la misma carpeta que este sitio y vuelve a intentar con el botón <em>Actualizar</em>. Si sigues viendo este mensaje, abre el portal desde un servidor local (por ejemplo, “Live Server” de VS Code).</p>
+      <button id="retry" class="btn">Reintentar</button>
+    </div>
+
+    <div class="schema-dump" id="schemaDump"></div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © <span id="year"></span> Talento 3.0. Portal administrado por <strong>administrador</strong>. · Optimizado para SEO y Google Jobs.
+    </div>
+  </footer>
+
+  <button id="topBtn" class="topbtn" aria-label="Volver arriba" title="Volver arriba">↑</button>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header>
+        <div class="wrap">
+          <button class="close" id="modalClose" aria-label="Cerrar">✕</button>
+          <h2 id="modalTitle" style="margin:0;font-size:18px">Vacante</h2>
+        </div>
+      </header>
+      <div class="body">
+        <div class="meta" id="modalMeta"></div>
+        <div class="status-row" style="margin-bottom:8px">
+          <span class="status-pill" id="modalStatus"></span>
+          <div class="progress" aria-hidden="true" style="flex:1;max-width:360px"><div class="fill" id="modalProg"></div></div>
+        </div>
+        <div class="desc" id="modalShort"></div>
+        <div id="modalFull" style="white-space:pre-wrap; margin-top:8px; display:none" class="desc"></div>
+        <button class="btn secondary" id="modalToggle" style="margin-top:8px">Ver más</button>
+        <div class="actions">
+          <a id="modalApply" class="btn" href="#" target="_blank" rel="noopener">Aplicar</a>
+          <a id="modalShareWA" class="btn secondary" href="#" target="_blank" rel="noopener" title="WhatsApp (compartir con un amigo o conocido)">WhatsApp (compartir con un amigo)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agente IA (Jotform) -->
+  <script src='https://cdn.jotfor.ms/agent/embedjs/0199263e5f5a7199a83430be0e855bd38fa8/embed.js'></script>
+
+  <script>
+  // ===== Mensajes del banner (edítalos) =====
+  const PROMO_MESSAGES = [
+    "Información y Ventas (800) 00 106 89",
+    "Escríbenos: info@talento3.com",
+    "Visita: www.talento3.com"
+  ];
+  // ==========================================
+
+  const $ = sel => document.querySelector(sel);
+  const $$ = sel => Array.from(document.querySelectorAll(sel));
+  const state = { jobs: [], filtered: [], current:null };
+
+  function showToast(msg, ok=false){ const t=$('#toast'); t.textContent=msg; t.style.background=ok?'linear-gradient(135deg,#15803d,#16a34a)':'#111827'; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2400); }
+  const sanitize = (s='')=>String(s??'').trim();
+  const escapeHtml = (s='')=>s.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const slugify = s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+  const debounce = (fn,ms=250)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}};
+
+  /* ====== SUELDO (FIX) ====== */
+  function formatWithCommas(numStr){ return String(numStr||'').replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  function parseWholeAmount(raw){
+    if(raw == null) return null;
+    const s = String(raw).replace(/\s+/g,'');
+    const m = s.match(/(\d{1,3}(?:[.,]\d{3})+|\d+)(?:[.,](\d{1,2}))?/);
+    if(!m) return null;
+    const whole = m[1].replace(/[^\d]/g,'');
+    return whole && /^\d+$/.test(whole) ? whole : null;
+  }
+  function salaryPrettyFromCSV(raw){ const whole=parseWholeAmount(raw); return whole ? ('$'+formatWithCommas(whole)+' MXN') : 'No especificado'; }
+  function extractNumber(raw){ const whole=parseWholeAmount(raw); return whole ? parseInt(whole,10) : undefined; }
+  function coinSVG(){ return `<svg class="coin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#ffd166"/><circle cx="12" cy="12" r="8" fill="#fbbf24"/><path d="M9 9.5h5.5M9 14.5h5.5M12 7v10" stroke="#8a5a00" stroke-width="1.5" stroke-linecap="round"/></svg>`; }
+
+  // Descripción corta = 25% (máx 1000)
+  function shortByPercent(s, pct=0.25, max=1000){ if(!s) return ''; const len=s.length; let n=Math.max(1,Math.floor(len*pct)); n=Math.min(n,max); return n>=len?s:s.slice(0,n)+'…'; }
+
+  // Avatar (carita)
+  const PALETTE=['#0ea5e9','#f97316','#22c55e','#a855f7','#ef4444','#10b981','#8b5cf6','#f59e0b','#14b8a6','#e11d48'];
+  function ownerColor(seed=''){ const str=seed||'owner'; const hash=[...str].reduce((a,c)=>((a<<5)-a)+c.charCodeAt(0),0); return PALETTE[Math.abs(hash)%PALETTE.length]; }
+
+  // Estado (aleatorio por ID)
+  function statusFromId(id){ const hash=[...id].reduce((a,c)=>((a<<5)-a)+c.charCodeAt(0),0); const idx=Math.abs(hash)%3; const labels=['Nueva','Entrevistas','Finalistas']; return { idx, label:labels[idx], progress:Math.round(((idx+1)/3)*100) }; }
+
+  // CSV parser (soporta comillas)
+  function parseCSV(text){
+    const rows=[]; let i=0, field='', row=[], inQ=false;
+    const pushF=()=>{row.push(field); field=''}; const pushR=()=>{rows.push(row); row=[]};
+    while(i<text.length){
+      const c=text[i];
+      if(inQ){ if(c==='\"'){ if(text[i+1]==='\"'){field+='\"'; i+=2; continue;} inQ=false; i++; continue; } field+=c; i++; continue; }
+      if(c==='\"'){ inQ=true; i++; continue; }
+      if(c===','){ pushF(); i++; continue; }
+      if(c==='\r'){ i++; continue; }
+      if(c==='\n'){ pushF(); pushR(); i++; continue; }
+      field+=c; i++;
+    }
+    if(field!==''||row.length){ pushF(); pushR(); }
+    if(!rows.length) return [];
+    const headers = rows[0].map(h=>sanitize(h));
+    return rows.slice(1).filter(r=>r.some(x=>sanitize(x)!=='')).map(r=>{ const o={}; headers.forEach((h,idx)=>o[h]= r[idx]!==undefined? r[idx]:'' ); return o; });
+  }
+
+  async function loadCSV(){
+    try{
+      const res = await fetch('positions.csv?t='+Date.now(), {cache:'no-store'});
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const text = await res.text();
+      const rows = parseCSV(text);
+      if(!rows.length) throw new Error('CSV vacío');
+      state.jobs = normalizeRows(rows);
+      renderEverything();
+      $('#empty').style.display='none';
+      showToast('Vacantes cargadas', true);
+    }catch(e){
+      console.warn('Error CSV:', e);
+      $('#cards').innerHTML=''; $('#empty').style.display='block'; updateStats(0,0); injectSchemas([]);
+    }
+  }
+
+  function normalizeRows(rows){
+    const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[:]/g,'').replace(/\s+/g,' ').trim();
+    const idx={}; Object.keys(rows[0]).forEach(h=>{ idx[norm(h)]=h; });
+    const H=raw=>idx[norm(raw)] ?? raw;
+
+    return rows.map((r,i)=>{
+      const puesto=sanitize(r[H('Puesto')]);
+      const ciudad=sanitize(r[H('Ciudad')]);
+      const lugar=sanitize(r[H('Lugar centro de trabajo')]);
+      const sueldo=sanitize(r[H('Sueldo Mensual')]);
+      const creacion=sanitize(r[H('Creacion')]);
+      const infoFull=sanitize(r[H('Información de la Vacante:')] || r[H('Información de la Vacante')]);
+      const link=sanitize(r[H('Link para aplicar a vacante')]);
+      const titular=sanitize(r[H('Titular')]);
+      const id=`${slugify(puesto||'vacante')}-${i+1}`;
+      const status=statusFromId(id);
+      const infoShort=shortByPercent(infoFull,0.25,1000);
+      const color=ownerColor(titular);
+      return { id, puesto, ciudad, lugar, sueldo, creacion, infoFull, infoShort, link, titular, status, color };
+    });
+  }
+
+  function renderEverything(){ setHeaderDate(); buildPromo(); populateCities(); applyFilters(); injectSchemas(state.filtered); }
+
+  function setHeaderDate(){
+    const now=new Date();
+    const long=now.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
+    $('#dateNow').textContent='Fecha: '+long.charAt(0).toUpperCase()+long.slice(1);
+    $('#year').textContent=now.getFullYear();
+  }
+
+  // Banner
+  function buildPromo(){
+    const track=$('#promoTrack'); track.innerHTML='';
+    const span=document.createElement('span'); span.className='msg'; span.textContent = PROMO_MESSAGES.join('   •   ');
+    track.appendChild(span);
+  }
+
+  function populateCities(){
+    const cities=[...new Set(state.jobs.map(j=>j.ciudad).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+    $('#city').innerHTML = `<option value="">Todas las ciudades</option>` + cities.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+  }
+
+  function applyFilters(){
+    const q=$('#q').value.trim().toLowerCase(), city=$('#city').value.trim().toLowerCase();
+    state.filtered = state.jobs.filter(j=>{
+      const okCity=!city || (j.ciudad||'').toLowerCase()===city;
+      const txt=[j.puesto,j.infoFull,j.lugar,j.ciudad,j.sueldo,j.titular].join(' ').toLowerCase();
+      const okQ=!q || txt.includes(q);
+      return okCity && okQ;
+    });
+    renderList(state.filtered);
+    updateStats(state.filtered.length, state.jobs.length);
+    injectSchemas(state.filtered);
+  }
+  function updateStats(show,total){ $('#stats strong').textContent=total; $('#countLabel').textContent=`Mostrando ${show} de ${total} vacantes`; }
+
+  // WhatsApp share
+  function waMessage(j){ return `Creo que este empleo te puede interesar: ${j.puesto} 💼\nAplica aquí: ${j.link} ✨📲`; }
+  function waHref(j){ return j?.link ? `https://api.whatsapp.com/send?text=${encodeURIComponent(waMessage(j))}` : null; }
+
+  function renderList(items){
+    const wrap=$('#cards'); wrap.innerHTML='';
+    if(!items.length){ $('#empty').style.display = state.jobs.length ? 'none':'block'; return; } else { $('#empty').style.display='none'; }
+    const frag=document.createDocumentFragment();
+
+    items.forEach(j=>{
+      const statusPct=j.status.progress, statusLbl=j.status.label;
+      const shareWA = waHref(j);
+      const shareBtn = shareWA
+        ? `<a class="btn secondary" href="${shareWA}" target="_blank" rel="noopener" title="WhatsApp (compartir con un amigo o conocido)">WhatsApp (compartir con un amigo)</a>`
+        : `<button class="btn secondary" disabled title="No hay enlace para aplicar">WhatsApp (compartir)</button>`;
+
+      const applyBtn = j.link
+        ? `<button class="btn" data-open-apply="${j.id}">Aplicar</button>`
+        : `<button class="btn" disabled>Aplicar</button>`;
+
+      const card=document.createElement('article'); card.className='card';
+      card.innerHTML = `
+        <div class="badge">${escapeHtml(j.ciudad || 'Ubicación no especificada')}</div>
+        <h3 class="title"><a href="#" data-open-info="${j.id}">${escapeHtml(j.puesto || 'Puesto no especificado')}</a></h3>
+        <div class="muted">${escapeHtml(j.lugar || 'Centro de trabajo no especificado')}</div>
+
+        <div class="owner" title="Ejecutivo/a asignado">
+          <div class="avatar" style="background:${j.color}">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" fill="rgba(255,255,255,.2)"/>
+              <circle cx="9" cy="10" r="1.2" fill="#fff"/><circle cx="15" cy="10" r="1.2" fill="#fff"/>
+              <path d="M7.5 14a4.5 4.5 0 0 0 9 0" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="status-row">
+          <span class="status-pill">Estado: ${escapeHtml(statusLbl)}</span>
+          <div class="progress" aria-hidden="true"><div class="fill" style="width:${statusPct}%"></div></div>
+        </div>
+
+        <div class="salary">${coinSVG()} <span>Sueldo mensual: ${salaryPrettyFromCSV(j.sueldo)}</span></div>
+
+        <p class="desc">${escapeHtml(j.infoShort || '')}</p>
+
+        <div class="actions">
+          ${applyBtn}
+          <button class="btn secondary" data-open-info="${j.id}">Más info</button>
+          ${shareBtn}
+        </div>
+      `;
+      frag.appendChild(card);
+    });
+    wrap.appendChild(frag);
+
+    wrap.querySelectorAll('[data-open-info]').forEach(el=>el.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const id=e.currentTarget.getAttribute('data-open-info');
+      const job=state.jobs.find(x=>x.id===id); if(job) openModal(job, 'info');
+    }));
+    wrap.querySelectorAll('[data-open-apply]').forEach(el=>el.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const id=e.currentTarget.getAttribute('data-open-apply');
+      const job=state.jobs.find(x=>x.id===id); if(job) openModal(job, 'apply');
+    }));
+  }
+
+  // ===== Modal =====
+  function openModal(job, mode='info'){
+    state.current = job;
+    $('#modalTitle').textContent = job.puesto || 'Vacante';
+    $('#modalMeta').innerHTML = `
+      <span class="badge">${escapeHtml(job.ciudad || 'Ubicación')}</span>
+      <span class="badge">${coinSVG()} <span>${salaryPrettyFromCSV(job.sueldo)}</span></span>
+      ${job.creacion?`<span class="badge">Publicado: ${escapeHtml(job.creacion)}</span>`:''}
+    `;
+    $('#modalStatus').textContent = 'Estado: ' + job.status.label;
+    $('#modalProg').style.width = job.status.progress + '%';
+
+    $('#modalShort').textContent = job.infoShort || '';
+    $('#modalFull').textContent = job.infoFull || '';
+    $('#modalFull').style.display = 'none';
+    $('#modalToggle').textContent = 'Ver más';
+
+    // Botones
+    const applyLink = job.link || '#';
+    const applyBtn = $('#modalApply');
+    if(job.link){ applyBtn.href = applyLink; applyBtn.removeAttribute('aria-disabled'); applyBtn.classList.remove('secondary'); }
+    else{ applyBtn.href = '#'; applyBtn.setAttribute('aria-disabled','true'); }
+    const wa = waHref(job);
+    const waBtn = $('#modalShareWA');
+    if(wa){ waBtn.href = wa; waBtn.removeAttribute('aria-disabled'); }
+    else{ waBtn.href = '#'; waBtn.setAttribute('aria-disabled','true'); }
+
+    // Si el modo es "apply", desplazamos foco al botón aplicar
+    showModal();
+    if(mode==='apply'){ setTimeout(()=>applyBtn.focus(), 60); }
+  }
+
+  function showModal(){
+    const m=$('#modal'); m.classList.add('show'); m.removeAttribute('aria-hidden');
+    document.body.style.overflow='hidden';
+  }
+  function closeModal(){
+    const m=$('#modal'); m.classList.remove('show'); m.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+
+  $('#modalToggle').addEventListener('click', ()=>{
+    const full=$('#modalFull');
+    const isOpen = full.style.display!=='none';
+    if(isOpen){ full.style.display='none'; $('#modalToggle').textContent='Ver más'; }
+    else { full.style.display='block'; $('#modalToggle').textContent='Ver menos'; }
+  });
+  $('#modalClose').addEventListener('click', closeModal);
+  $('#modal').addEventListener('click', (e)=>{ if(e.target.id==='modal') closeModal(); });
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+
+  // JSON-LD
+  function injectSchemas(items){
+    const dump=$('#schemaDump'); if(!dump) return; dump.innerHTML='';
+    items.forEach(j=>{
+      const payload={
+        "@context":"https://schema.org/","@type":"JobPosting","title": j.puesto || "Vacante",
+        "description": (j.infoFull||'').replace(/\n/g,'<br>'),"datePosted": isoDate(j.creacion),"employmentType": "FULL_TIME",
+        "hiringOrganization": {"@type":"Organization","name":"Talento 3.0","sameAs":"https://talento3.com","logo":"https://talento3.com/wp-content/uploads/2024/04/LogoT3.png"},
+        "jobLocation": {"@type":"Place","address":{"@type":"PostalAddress","addressLocality": j.ciudad || "México","streetAddress": j.lugar || ""}},
+        "directApply": true,"validThrough": validThrough(j.creacion),
+        "baseSalary": j.sueldo ? {"@type":"MonetaryAmount","currency":"MXN","value":{"@type":"QuantitativeValue","value": extractNumber(j.sueldo),"unitText":"MONTH"}} : undefined,
+        "applicantLocationRequirements":{"@type":"Country","name":"MX"}
+      };
+      const s=document.createElement('script'); s.type='application/ld+json'; s.textContent=JSON.stringify(payload); dump.appendChild(s);
+    });
+  }
+  const isoDate=s=>{ const d=new Date(s||Date.now()); return isNaN(d.getTime())?new Date().toISOString():d.toISOString(); };
+  function validThrough(creacion){ const d=new Date(creacion||Date.now()); return new Date((isNaN(d)?Date.now():d.getTime()) + 60*24*3600*1000).toISOString(); }
+
+  // Eventos UI
+  $('#q').addEventListener('keydown', (e)=>{ if(e.key==='Enter') applyFilters(); });
+  $('#doSearch').addEventListener('click', applyFilters);
+  $('#city').addEventListener('change', applyFilters);
+  $('#refresh').addEventListener('click', loadCSV);
+  $('#retry').addEventListener('click', loadCSV);
+  $('#toList').addEventListener('click', (e)=>{ e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); });
+
+  const topBtn=$('#topBtn');
+  window.addEventListener('scroll', ()=>{ topBtn.style.display = window.scrollY>500 ? 'grid':'none'; });
+  topBtn.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+  // Inicio
+  (function init(){
+    // Fecha
+    const now=new Date();
+    const long=now.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
+    $('#dateNow').textContent='Fecha: '+long.charAt(0).toUpperCase()+long.slice(1);
+    $('#year').textContent=now.getFullYear();
+
+    // Banner
+    const track=$('#promoTrack'); const span=document.createElement('span'); span.className='msg'; span.textContent = PROMO_MESSAGES.join('   •   '); track.appendChild(span);
+
+    loadCSV();
+  })();
+  </script>
+</body>
+</html>
