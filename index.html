@@ -45,14 +45,24 @@
     /* Layout principal con sidebar */
     #t3jb main{padding:24px 0}
     #t3jb .layout{display:grid;grid-template-columns:1fr;gap:20px}
-    @media(min-width:1100px){#t3jb .layout{grid-template-columns:280px 1fr}}
+    @media(min-width:1100px){#t3jb .layout{grid-template-columns:300px 1fr}}
     #t3jb aside{background:#fff;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.08);padding:14px;position:relative}
     #t3jb .aside-title{font-weight:800;margin:0 0 8px 0}
-    #t3jb .aside-section{margin-bottom:14px}
+    #t3jb .aside-section{margin-bottom:18px}
     #t3jb .aside-list{list-style:none;margin:0;padding:0;max-height:320px;overflow:auto}
     #t3jb .aside-list li{margin:0;padding:4px 0}
     #t3jb .aside-list a{display:block;padding:6px 8px;border-radius:8px}
     #t3jb .aside-list a:hover{background:#f3f4f6;text-decoration:none}
+
+    /* Gráficos */
+    #t3jb .chart{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:10px}
+    #t3jb .chart h5{margin:0 0 8px 0;font-size:13px;color:#374151}
+    #t3jb canvas{width:100%;height:160px;display:block}
+
+    /* Testimonios */
+    #t3jb .quotes{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px}
+    #t3jb .quote{font-size:13px;color:#374151;margin:0 0 10px 0}
+    #t3jb .quote small{display:block;color:#6b7280;margin-top:4px}
 
     /* Toggle de sidebar en móvil */
     #t3jb .aside-toggle{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
@@ -106,7 +116,10 @@
 
     /* Form embebido */
     #t3jb .formWrap{display:none;margin-top:12px}
-    #t3jb .formWrap iframe{width:100%;height:680px;border:0;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+    #t3jb .formWrap iframe{width:100%;height:760px;border:0;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+    @media(max-width:600px){
+      #t3jb .formWrap iframe{height:520px}
+    }
     #t3jb .formFallback{margin-top:8px;font-size:13px;color:#6b7280}
 
     /* Paginación */
@@ -201,6 +214,27 @@
           <div class="aside-section">
             <h4 class="aside-title">Regiones</h4>
             <ul id="t3jb-regions" class="aside-list"></ul>
+          </div>
+
+          <!-- Gráficos -->
+          <div class="aside-section chart">
+            <h5>Especialidades más buscadas</h5>
+            <canvas id="t3jb-chart-cats"></canvas>
+          </div>
+          <div class="aside-section chart">
+            <h5>Vacantes por región (Top 8)</h5>
+            <canvas id="t3jb-chart-cities"></canvas>
+          </div>
+          <div class="aside-section chart">
+            <h5>Distribución de sueldos</h5>
+            <canvas id="t3jb-chart-salary"></canvas>
+          </div>
+
+          <!-- Testimonios -->
+          <div class="aside-section quotes">
+            <p class="quote">“Proceso claro y rápido; encontré candidatos calificados en menos de una semana.”<small>Gerente de Operaciones</small></p>
+            <p class="quote">“Las vacantes se posicionan muy bien y recibimos postulaciones relevantes.”<small>Directora de RH</small></p>
+            <p class="quote">“El seguimiento con IA mejoró la tasa de respuesta de los candidatos.”<small>Líder de Selección</small></p>
           </div>
         </div>
       </aside>
@@ -347,11 +381,13 @@
     return dataRows.map(r=>{ const o={}; headers.forEach((h,i)=>o[h]= r[i]!==undefined? r[i]:'' ); return o; });
   }
 
-  // URLs a probar
+  // URLs a probar (más robusto)
   function csvUrls(){
     const fromAttr = root.dataset.csv && String(root.dataset.csv).trim();
     const absolute = (() => { if(!fromAttr) return null; try { return new URL(fromAttr, location.origin).toString(); } catch { return fromAttr; }})();
-    return [ absolute, 'positions.csv' ].filter(Boolean);
+    const alt1 = location.origin + '/wp-content/uploads/empleos/positions.csv';
+    const alt2 = location.origin + '/empleos/positions.csv';
+    return [ absolute, alt1, alt2, 'positions.csv' ].filter(Boolean);
   }
   async function tryFetch(url){
     const useCacheBust = (root.dataset.cache ?? 'true') !== 'false';
@@ -450,6 +486,7 @@
         state.page = 1;
         state.filtered = state.jobs.filter(j=>inferCategory(j.puesto)===cat);
         renderList(state.filtered);
+        updateCharts(state.filtered);
         closeAsideMobile();
       });
     });
@@ -459,7 +496,7 @@
         const region = e.currentTarget.getAttribute('data-filter-region');
         $('#t3jb-q').value = '';
         $('#t3jb-city').value = region;
-        applyFilters();
+        applyFilters(); // actualizará lista y charts
         closeAsideMobile();
       });
     });
@@ -607,13 +644,10 @@
       wrap.style.display = 'block';
       fallback.style.display = 'none';
 
-      // Si el proveedor bloquea el embed, mostramos fallback tras 2.5s si el frame no se carga
       let loaded = false;
       const onLoad = ()=>{ loaded = true; fallback.style.display = 'none'; };
       frame.addEventListener('load', onLoad, { once:true });
       setTimeout(()=>{ if(!loaded){ fallback.style.display = 'block'; } }, 2500);
-      
-      // Scroll dentro del modal hacia el formulario
       setTimeout(()=>{ frame.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
     } else {
       wrap.style.display = 'none';
@@ -712,23 +746,106 @@
       return okCity && okQ;
     });
     renderList(state.filtered);
+    updateCharts(state.filtered);
+  }
+
+  // --------- GRÁFICOS (Canvas sin librerías) ----------
+  function drawBarChart(canvas, labels, values, {maxBars=8, padding=12}={}){
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.clientWidth, H = canvas.clientHeight;
+    canvas.width = W; canvas.height = H;
+    ctx.clearRect(0,0,W,H);
+    if(!values.length) return;
+
+    const n = Math.min(values.length, maxBars);
+    const data = values.slice(0,n);
+    const labs = labels.slice(0,n);
+    const maxV = Math.max(...data) || 1;
+    const barW = (W - padding*2) / n * 0.7;
+    const step = (W - padding*2) / n;
+
+    ctx.font = '12px system-ui, -apple-system, Segoe UI, Roboto, Arial';
+    ctx.fillStyle = '#374151';
+
+    data.forEach((v,i)=>{
+      const x = padding + i*step + (step - barW)/2;
+      const h = (H - 40) * (v/maxV);
+      const y = H - 24 - h;
+
+      // barra
+      ctx.fillStyle = '#0b3c5d';
+      ctx.fillRect(x, y, barW, h);
+
+      // valor
+      ctx.fillStyle = '#111827';
+      ctx.fillText(String(v), x, y-4);
+
+      // etiqueta (truncada)
+      ctx.fillStyle = '#6b7280';
+      const lab = labs[i].length>10 ? labs[i].slice(0,10)+'…' : labs[i];
+      ctx.fillText(lab, x, H-8);
+    });
+  }
+
+  function histogram(vals, bins=6){
+    if(!vals.length) return {edges:[], counts:[]};
+    const min = Math.min(...vals), max = Math.max(...vals);
+    const span = Math.max(1, max - min);
+    const step = Math.ceil(span / bins);
+    const edges = Array.from({length: bins}, (_,i)=> min + i*step);
+    const counts = new Array(bins).fill(0);
+    vals.forEach(v=>{
+      const idx = Math.min(bins-1, Math.floor((v - min)/step));
+      counts[idx]++;
+    });
+    return {edges, counts};
+  }
+
+  function updateCharts(items){
+    // 1) Categorías
+    const byCat = {};
+    items.forEach(j=>{
+      const cat = inferCategory(j.puesto);
+      byCat[cat] = (byCat[cat] || 0) + 1;
+    });
+    const cats = Object.entries(byCat).sort((a,b)=>b[1]-a[1]);
+    drawBarChart($('#t3jb-chart-cats'), cats.map(x=>x[0]), cats.map(x=>x[1]), {maxBars:8});
+
+    // 2) Ciudades (top 8)
+    const byCity = {};
+    items.forEach(j=>{
+      const c = j.ciudad || '—';
+      byCity[c] = (byCity[c] || 0) + 1;
+    });
+    const cities = Object.entries(byCity).sort((a,b)=>b[1]-a[1]);
+    drawBarChart($('#t3jb-chart-cities'), cities.map(x=>x[0]), cities.map(x=>x[1]), {maxBars:8});
+
+    // 3) Histograma de sueldos
+    const sueldos = items.map(j=> j.salaryNum ).filter(Boolean);
+    const {edges, counts} = histogram(sueldos, 6);
+    const labels = edges.map((e,i)=> {
+      const next = edges[i+1] || Math.max(...sueldos);
+      return `$${(e||0).toLocaleString('es-MX')}–$${(next||0).toLocaleString('es-MX')}`;
+    });
+    drawBarChart($('#t3jb-chart-salary'), labels, counts, {maxBars:6});
   }
 
   // Carga CSV
   async function loadCSV(){
     const candidates = csvUrls();
-    let text = null;
+    let text = null, lastError = null;
     for(const u of candidates){
       try{ text = await tryFetch(u); break; }
-      catch(e){ console.warn('CSV fail', u, e); }
+      catch(e){ console.warn('CSV fail', u, e); lastError = e; }
     }
     if(!text){
       $('#t3jb-empty').style.display='block';
       $('#t3jb-cards').innerHTML='';
       updateStats(0,0); injectSchemas([]);
       const tried = candidates.map(u=>`<li><code>${u}</code></li>`).join('');
-      $('#t3jb-emptyMsg').innerHTML = `No se pudo cargar el CSV. Probé estas rutas:<ul>${tried}</ul>
-      <p>Abre una de ellas en incógnito. Si alguna carga, usa esa misma en <code>data-csv</code> (mismo host que esta página: <code>${location.origin}</code>).</p>`;
+      $('#t3jb-emptyMsg').innerHTML = `No se pudo cargar el CSV (posible CORS o ruta). Probé:<ul>${tried}</ul>
+      <p><strong>Sugerencia:</strong> sube <code>positions.csv</code> a <code>/wp-content/uploads/empleos/</code> y usa esta URL exacta en <code>data-csv</code>:<br><code>${location.origin}/wp-content/uploads/empleos/positions.csv</code></p>`;
       return;
     }
     const rows = parseCSV(text);
@@ -740,6 +857,7 @@
     populateCities();
     state.filtered = [...state.jobs];         // ⟵ muestra todas al cargar
     renderList(state.filtered);               // ⟵ render inmediato
+    updateCharts(state.filtered);             // ⟵ charts al cargar
     $('#t3jb-empty').style.display='none';
     showToast('Vacantes cargadas', true);
     handleHashRoute();
@@ -784,5 +902,8 @@
 
   // Init
   setHeaderDate(); buildPromo(); loadCSV();
+
+  // Redibuja charts al redimensionar
+  window.addEventListener('resize', ()=> updateCharts(state.filtered || []) );
 })();
 </script>
