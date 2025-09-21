@@ -9,18 +9,17 @@
     #t3jb .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
     #t3jb .t3-header{background:linear-gradient(135deg,#0b3c5d 0%, #102a43 100%);color:#fff;position:sticky;top:0;z-index:60;box-shadow:0 4px 18px rgba(0,0,0,.15)}
-    #t3jb .wrap{max-width:1280px;margin:0 auto;padding:16px}
+    #t3jb .wrap{max-width:1200px;margin:0 auto;padding:16px}
     #t3jb .nav{display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
     #t3jb .brand{display:flex;align-items:center;gap:12px}
     #t3jb .brand a.logo{display:inline-flex;align-items:center}
-    #t3jb .brand img{height:48px;width:auto;border-radius:8px;background:#fff;padding:6px}
+    #t3jb .brand img{height:44px;width:auto;border-radius:8px;background:#fff;padding:6px}
     #t3jb .headtext{display:flex;flex-direction:column;gap:2px}
     #t3jb .headtext h1{margin:0;font-size:18px;letter-spacing:.2px}
     #t3jb .headtext .date{font-size:13px;opacity:.9}
     #t3jb .stats{display:flex;align-items:center;gap:8px;color:#fff;font-size:14px;opacity:.95}
     #t3jb .head-actions{display:flex;align-items:center;gap:12px}
 
-    /* Toolbar */
     #t3jb .toolbar{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
     @media(min-width:900px){#t3jb .toolbar{grid-template-columns:2.2fr 1.1fr 1.1fr auto auto}}
     #t3jb .input, #t3jb select{border:1px solid #e5e7eb;background:#fff;border-radius:12px;padding:12px 14px;outline:none;box-shadow:inset 0 1px 0 rgba(0,0,0,.02);font-size:14px}
@@ -33,51 +32,27 @@
     #t3jb .searchWrap .input{border-radius:12px 0 0 12px;border-right:0}
     #t3jb .searchWrap .btn.tiny{border-radius:0 12px 12px 0;height:100%;padding:0;display:grid;place-items:center;min-width:44px}
 
-    /* Legend */
     #t3jb .legend{display:flex;gap:10px;align-items:center;margin-top:10px;font-size:12px;opacity:.95}
     #t3jb .dot{display:inline-flex;align-items:center;gap:6px}
     #t3jb .dot i{display:inline-block;width:10px;height:10px;border-radius:999px;background:#fff;opacity:.95}
     #t3jb .dot.new i{background:#16a34a} #t3jb .dot.int i{background:#f59e0b} #t3jb .dot.fin i{background:#7c3aed}
 
-    /* Promo ticker */
     #t3jb .promo{background:linear-gradient(90deg,#fff 0%, #fff7ec 35%, #ffe4b8 100%); border-top:1px solid #f4cf94; border-bottom:1px solid #f4cf94}
-    #t3jb .promo .box{max-width:1280px;margin:0 auto;padding:8px 16px;display:flex;gap:12px;align-items:center}
+    #t3jb .promo .box{max-width:1200px;margin:0 auto;padding:8px 16px;display:flex;gap:12px;align-items:center}
     #t3jb .ticker{overflow:hidden; white-space:nowrap; flex:1; mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent);}
     #t3jb .track{display:inline-block; padding-left:100%; will-change:transform; animation:ticker 24s linear infinite;}
     @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
     #t3jb .promo .msg{display:inline-block; margin-right:28px; color:#5b3b00; font-weight:600}
     #t3jb .promo .msg a{color:#7a4b00}
 
-    /* Layout responsive con sidebar */
     #t3jb main{padding:24px 0}
-    #t3jb .layout{display:grid;grid-template-columns:1fr;gap:20px}
-    @media(min-width:1100px){#t3jb .layout{grid-template-columns:300px 1fr}}
-    #t3jb aside{background:#fff;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.08);padding:14px}
-    #t3jb .aside-title{font-weight:800;margin:0 0 8px 0}
-    #t3jb .aside-section{margin-bottom:18px}
-    #t3jb .aside-list{list-style:none;margin:0;padding:0;max-height:320px;overflow:auto}
-    #t3jb .aside-list li{margin:0;padding:4px 0}
-    #t3jb .aside-list a{display:block;padding:6px 8px;border-radius:8px}
-    #t3jb .aside-list a:hover{background:#f3f4f6;text-decoration:none}
-    #t3jb .aside-toggle{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-    #t3jb .btn-filter{display:inline-flex;align-items:center;gap:6px}
-    @media(min-width:1100px){#t3jb .btn-filter{display:none}}
-
-    #t3jb .chart{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:10px}
-    #t3jb .chart h5{margin:0 0 8px 0;font-size:13px;color:#374151}
-    #t3jb canvas{width:100%;height:160px;display:block}
-
-    #t3jb .quotes{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px}
-    #t3jb .quote{font-size:13px;color:#374151;margin:0 0 10px 0}
-    #t3jb .quote small{display:block;color:#6b7280;margin-top:4px}
-
     #t3jb .list-head{display:flex;align-items:center;justify-content:space-between;margin:10px 0 16px 0;gap:8px;flex-wrap:wrap}
     #t3jb .count{font-weight:700;color:#0e4a77}
     #t3jb .hint{font-size:12px;color:#6b7280}
 
     #t3jb .grid{display:grid;grid-template-columns:1fr;gap:16px}
     @media(min-width:700px){#t3jb .grid{grid-template-columns:repeat(2,1fr)}}
-    @media(min-width:1200px){#t3jb .grid{grid-template-columns:repeat(3,1fr)}}
+    @media(min-width:1024px){#t3jb .grid{grid-template-columns:repeat(3,1fr)}}
 
     #t3jb .card{background:#fff;border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(0,0,0,.08);display:flex;flex-direction:column;gap:12px}
     #t3jb .badge{display:inline-block;background:#eef2ff;color:#3730a3;padding:6px 10px;border-radius:999px;font-size:12px}
@@ -115,9 +90,6 @@
     #t3jb .modal .meta{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
     #t3jb .modal .badge{background:#eef2ff;color:#3730a3}
     #t3jb .modal .actions{margin-top:12px}
-    #t3jb .formWrap{display:none;margin-top:12px}
-    #t3jb .formWrap iframe{width:100%;height:720px;border:0;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
-    @media(max-width:600px){#t3jb .formWrap iframe{height:520px}}
 
     /* Paginación */
     #t3jb .pager{display:flex;justify-content:center;margin:18px 0}
@@ -180,61 +152,26 @@
   </div>
 
   <main class="wrap" id="t3jb-contenido">
-    <div class="layout">
-      <aside id="t3jb-aside">
-        <div class="aside-toggle">
-          <h3 class="aside-title" style="margin:0">Explora rápido</h3>
-          <button id="t3jb-asideToggle" class="btn secondary btn-filter" aria-expanded="false">☰ Filtros rápidos</button>
-        </div>
-        <div class="aside-inner">
-          <div class="aside-section">
-            <h4 class="aside-title">Categorías</h4>
-            <ul id="t3jb-cats" class="aside-list"></ul>
-          </div>
-          <div class="aside-section">
-            <h4 class="aside-title">Regiones</h4>
-            <ul id="t3jb-regions" class="aside-list"></ul>
-          </div>
-          <div class="aside-section chart">
-            <h5>Especialidades más buscadas</h5>
-            <canvas id="t3jb-chartCats"></canvas>
-          </div>
-          <div class="aside-section chart">
-            <h5>Vacantes por región (Top 8)</h5>
-            <canvas id="t3jb-chartCities"></canvas>
-          </div>
-          <div class="aside-section chart">
-            <h5>Distribución de sueldos</h5>
-            <canvas id="t3jb-chartSalary"></canvas>
-          </div>
-          <div class="aside-section quotes">
-            <p class="quote">“Proceso claro y rápido; encontré candidatos calificados en menos de una semana.”<small>Gerente de Operaciones</small></p>
-            <p class="quote">“Las vacantes se posicionan muy bien y recibimos postulaciones relevantes.”<small>Directora de RH</small></p>
-            <p class="quote">“El seguimiento con IA mejoró la tasa de respuesta de los candidatos.”<small>Líder de Selección</small></p>
-          </div>
-        </div>
-      </aside>
-
-      <section style="min-width:0">
-        <div class="list-head">
-          <div class="count" id="t3jb-count">Mostrando 0 de 0 vacantes</div>
-          <div class="hint">Consejo: filtra por ciudad y usa “Más info” para ver la descripción completa.</div>
-        </div>
-
-        <section id="t3jb-cards" class="grid" aria-live="polite"></section>
-        <div id="t3jb-pager" class="pager" style="display:none">
-          <button class="btn secondary" id="t3jb-loadMore">Cargar más</button>
-        </div>
-
-        <div id="t3jb-empty" class="empty" style="display:none">
-          <h3>No pude encontrar <code>positions.csv</code></h3>
-          <p id="t3jb-emptyMsg">Verifica que el CSV sea accesible. Si usas el puente, abre: <code>https://talento3.com/?t3_csv=empleos</code> (ajusta el host para que coincida con esta página).</p>
-          <button class="btn" id="t3jb-retry">Reintentar</button>
-        </div>
-
-        <div id="t3jb-schemaDump" style="display:none"></div>
-      </section>
+    <div class="list-head">
+      <div class="count" id="t3jb-count">Mostrando 0 de 0 vacantes</div>
+      <div class="hint">
+        Consejo: filtra por ciudad y usa “Más info” para ver la descripción completa.
+        · <button class="btn secondary small" id="t3jb-sitemapBtn" title="Descargar sitemap de vacantes (XML)">Descargar sitemap jobs</button>
+      </div>
     </div>
+
+    <section id="t3jb-cards" class="grid" aria-live="polite"></section>
+    <div id="t3jb-pager" class="pager" style="display:none">
+      <button class="btn secondary" id="t3jb-loadMore">Cargar más</button>
+    </div>
+
+    <div id="t3jb-empty" class="empty" style="display:none">
+      <h3>No pude encontrar <code>positions.csv</code></h3>
+      <p id="t3jb-emptyMsg">Verifica que el CSV sea accesible. Si usas el puente, abre: <code>https://talento3.com/?t3_csv=empleos</code> (ajusta el host para que coincida con esta página).</p>
+      <button class="btn" id="t3jb-retry">Reintentar</button>
+    </div>
+
+    <div id="t3jb-schemaDump" style="display:none"></div>
   </main>
 
   <footer class="wrap" style="padding:24px 0;color:#6b7280;font-size:13px">
@@ -262,18 +199,8 @@
         <div class="desc" id="t3jb-modalShort"></div>
         <div id="t3jb-modalFull" style="white-space:pre-wrap; margin-top:8px; display:none" class="desc"></div>
         <button class="btn secondary" id="t3jb-modalToggle" style="margin-top:8px">Ver más</button>
-
-        <!-- Formulario embebido (se muestra al pulsar Aplicar) -->
-        <div class="formWrap" id="t3jb-formWrap">
-          <iframe id="t3jb-formFrame" src="" title="Formulario de aplicación"></iframe>
-          <div class="formFallback" id="t3jb-formFallback" style="display:none">
-            Si el formulario no se visualiza, puedes abrirlo aquí:
-            <a id="t3jb-formLink" href="#" target="_blank" rel="noopener">Abrir formulario</a>
-          </div>
-        </div>
-
         <div class="actions">
-          <button id="t3jb-modalApply" class="btn">Aplicar</button>
+          <a id="t3jb-modalApply" class="btn" href="#" target="_blank" rel="noopener">Aplicar</a>
           <a id="t3jb-modalShareWA" class="btn secondary" href="#" target="_blank" rel="noopener" title="WhatsApp (compartir con un amigo o conocido)">WhatsApp (compartir con un amigo)</a>
         </div>
       </div>
@@ -290,19 +217,16 @@
   const $ = sel => root.querySelector(sel);
   const $$ = sel => Array.from(root.querySelectorAll(sel));
 
-  // Ruta CSV desde atributo (puente o archivo estático)
+  // Bloquea rutas file://
   const srcCsv = root.dataset.csv || '';
-  if (!srcCsv) {
-    console.warn('Falta data-csv con la URL del CSV');
-  }
   if (/^file:/i.test(srcCsv)) {
     const box = $('#t3jb-empty');
     const msg = $('#t3jb-emptyMsg');
     if (box && msg) {
       box.style.display = 'block';
-      msg.innerHTML = 'No se puede cargar CSV desde <code>file://</code>. Usa una URL <code>https://</code> del mismo dominio.';
+      msg.innerHTML = 'No se puede cargar CSV desde <code>file://</code>. Usa una URL <code>https://</code> del mismo dominio (ej. <code>https://' + location.host + '/?t3_csv=empleos</code>).';
     }
-    return;
+    throw new Error('CSV file:// not allowed');
   }
 
   const showToast = (msg, ok=false) => { const t = $('#t3jb-toast'); t.textContent = msg; t.style.background = ok ? 'linear-gradient(135deg,#15803d,#16a34a)' : '#111827'; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2400); };
@@ -363,7 +287,7 @@
   function csvUrls(){
     const fromAttr = root.dataset.csv && String(root.dataset.csv).trim();
     const absolute = (() => { if(!fromAttr) return null; try { return new URL(fromAttr, location.origin).toString(); } catch { return fromAttr; }})();
-    return [ absolute ].filter(Boolean);
+    return [ absolute, 'positions.csv' ].filter(Boolean);
   }
   async function tryFetch(url){
     const useCacheBust = (root.dataset.cache ?? 'true') !== 'false';
@@ -419,82 +343,19 @@
     track.appendChild(span);
   }
 
-  // Sidebar categorías/ciudades y gráficos
-  const CAT_RULES = [
-    {key:'Ventas', rx:/\b(ventas?|comercial|account|ejecutiv[oa]|kpi|crm)\b/i},
-    {key:'Finanzas', rx:/\b(finanzas?|contab|tesorer|cobranz|fiscal|auditor)\b/i},
-    {key:'RH', rx:/\b(recursos humanos|rh|talento|recluta|nomina|capacita)\b/i},
-    {key:'Tecnología', rx:/\b(software|desarroll|tech|ti|it|sistemas|data|devops|soporte)\b/i},
-    {key:'Operaciones', rx:/\b(operacion|produccion|planta|mantenimiento|calidad|lean)\b/i},
-    {key:'Logística', rx:/\b(logistic|almacen|suministro|cadena|transporte|rutas)\b/i},
-    {key:'Marketing', rx:/\b(marketing|mercadotecnia|brand|contenido|seo|social|growth)\b/i},
-    {key:'Legal', rx:/\b(legal|juridic|compliance|contratos?)\b/i},
-  ];
-  const inferCategory = title => { for(const r of CAT_RULES){ if(r.rx.test(title||'')) return r.key; } return 'Otros'; };
-
-  function buildSidebar(data){
-    // Categorías
-    const byCat = {};
-    data.forEach(j=>{ const c=inferCategory(j.puesto); byCat[c]=(byCat[c]||0)+1; });
-    const catItems = Object.entries(byCat).sort((a,b)=>b[1]-a[1]);
-    $('#t3jb-cats').innerHTML = catItems.map(([k,n])=>`<li><a href="#" data-filter-cat="${escapeHtml(k)}">${escapeHtml(k)} (${n})</a></li>`).join('');
-
-    // Regiones
-    const regions = [...new Set(data.map(j=>j.ciudad).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
-    $('#t3jb-regions').innerHTML = regions.map(c=>`<li><a href="#" data-filter-region="${escapeHtml(c)}">${escapeHtml(c)}</a></li>`).join('');
-
-    // Listeners
-    $('#t3jb-cats').querySelectorAll('[data-filter-cat]').forEach(a=>a.addEventListener('click',(e)=>{
-      e.preventDefault(); const cat=e.currentTarget.getAttribute('data-filter-cat');
-      $('#t3jb-q').value=''; $('#t3jb-city').value='';
-      state.page=1;
-      state.filtered = state.jobs.filter(j=>inferCategory(j.puesto)===cat);
-      renderList(state.filtered);
-      updateCharts(state.filtered);
-    }));
-    $('#t3jb-regions').querySelectorAll('[data-filter-region]').forEach(a=>a.addEventListener('click',(e)=>{
-      e.preventDefault(); const region=e.currentTarget.getAttribute('data-filter-region');
-      $('#t3jb-q').value=''; $('#t3jb-city').value=region; applyFilters();
-    }));
+  function populateCities(){
+    const cities=[...new Set(state.jobs.map(j=>j.ciudad).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+    $('#t3jb-city').innerHTML = `<option value="">Todas las ciudades</option>` + cities.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+  }
+  function updateStats(show,total){
+    $('#t3jb-total').textContent = total;
+    $('#t3jb-count').textContent = `Mostrando ${show} de ${total} vacantes`;
   }
 
-  // Gráficas simples (canvas)
-  function drawBarChart(canvas, labels, values, {maxBars=8, padding=12}={}){
-    if(!canvas) return; const ctx=canvas.getContext('2d');
-    const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
-    ctx.clearRect(0,0,W,H); if(!values.length) return;
-    const n=Math.min(values.length,maxBars), data=values.slice(0,n), labs=labels.slice(0,n);
-    const maxV=Math.max(...data)||1; const barW=(W-padding*2)/n*0.7; const step=(W-padding*2)/n;
-    ctx.font='12px system-ui, -apple-system, Segoe UI, Roboto, Arial';
-    data.forEach((v,i)=>{ const x=padding+i*step+(step-barW)/2; const h=(H-40)*(v/maxV); const y=H-24-h;
-      ctx.fillStyle='#0b3c5d'; ctx.fillRect(x,y,barW,h);
-      ctx.fillStyle='#111827'; ctx.fillText(String(v),x,y-4);
-      ctx.fillStyle='#6b7280'; const lab=labs[i].length>10?labs[i].slice(0,10)+'…':labs[i]; ctx.fillText(lab,x,H-8);
-    });
-  }
-  function histogram(vals,bins=6){
-    if(!vals.length) return {edges:[],counts:[]};
-    const min=Math.min(...vals), max=Math.max(...vals), span=Math.max(1,max-min), step=Math.ceil(span/bins);
-    const edges=Array.from({length:bins},(_,i)=>min+i*step); const counts=new Array(bins).fill(0);
-    vals.forEach(v=>{ const idx=Math.min(bins-1,Math.floor((v-min)/step)); counts[idx]++; });
-    return {edges,counts};
-  }
-  function updateCharts(items){
-    const byCat={}; items.forEach(j=>{ const c=inferCategory(j.puesto); byCat[c]=(byCat[c]||0)+1; });
-    const cats=Object.entries(byCat).sort((a,b)=>b[1]-a[1]);
-    drawBarChart($('#t3jb-chartCats'), cats.map(x=>x[0]), cats.map(x=>x[1]), {maxBars:8});
+  function waMessage(j){ return `Creo que este empleo te puede interesar: ${j.puesto} 💼\nAplica aquí: ${j.link} ✨📲`; }
+  function waHref(j){ return j?.link ? `https://api.whatsapp.com/send?text=${encodeURIComponent(waMessage(j))}` : null; }
 
-    const byCity={}; items.forEach(j=>{ const c=j.ciudad||'—'; byCity[c]=(byCity[c]||0)+1; });
-    const cities=Object.entries(byCity).sort((a,b)=>b[1]-a[1]);
-    drawBarChart($('#t3jb-chartCities'), cities.map(x=>x[0]), cities.map(x=>x[1]), {maxBars:8});
-
-    const sueldos=items.map(j=>j.salaryNum).filter(Boolean);
-    const {edges,counts}=histogram(sueldos,6);
-    const labels=edges.map((e,i)=>{ const next=edges[i+1]||Math.max(...sueldos, e); return `$${(e||0).toLocaleString('es-MX')}–$${(next||0).toLocaleString('es-MX')}`; });
-    drawBarChart($('#t3jb-chartSalary'), labels, counts, {maxBars:6});
-  }
-
-  // Ordenamiento
+  // -------- Ordenamiento --------
   function sortItems(arr){
     const mode = $('#t3jb-sort').value || 'dateDesc';
     const byTitle = (a,b)=> (a.puesto||'').localeCompare(b.puesto||'', 'es');
@@ -509,12 +370,12 @@
       case 'salaryAsc': copy.sort(bySalAsc); break;
       case 'az': copy.sort(byTitle); break;
       case 'za': copy.sort((a,b)=>byTitle(b,a)); break;
-      default: copy.sort(byDate);
+      default: copy.sort(byDate); // dateDesc
     }
     return copy;
   }
 
-  // Paginación
+  // -------- Paginación --------
   function getPaged(items){
     const end = state.page * state.pageSize;
     const slice = items.slice(0, end);
@@ -523,20 +384,12 @@
     return slice;
   }
 
-  function updateStats(show,total){
-    $('#t3jb-total').textContent = total;
-    $('#t3jb-count').textContent = `Mostrando ${show} de ${total} vacantes`;
-  }
-
-  function waMessage(j){ return `Creo que este empleo te puede interesar: ${j.puesto} 💼\nAplica aquí: ${j.link} ✨📲`; }
-  function waHref(j){ return j?.link ? `https://api.whatsapp.com/send?text=${encodeURIComponent(waMessage(j))}` : null; }
-
-  // Render listado
   function renderList(items){
     const wrap=$('#t3jb-cards'); wrap.innerHTML='';
     if(!items.length){ $('#t3jb-empty').style.display = state.jobs.length ? 'none':'block'; updateStats(0,state.jobs.length); return; }
     $('#t3jb-empty').style.display='none';
 
+    // ordena + pagina
     const sorted = sortItems(items);
     const paged = getPaged(sorted);
 
@@ -605,24 +458,11 @@
     injectSchemas(paged);
   }
 
-  // Modal + formulario embebido
-  function showModal(){ const m=$('#t3jb-modal'); m.classList.add('show'); m.removeAttribute('aria-hidden'); document.body.style.overflow='hidden'; }
-  function closeModal(){ const m=$('#t3jb-modal'); m.classList.remove('show'); m.setAttribute('aria-hidden','true'); document.body.style.overflow=''; hideForm(); if(state.lastFocus){ state.lastFocus.focus(); } }
-
-  function showForm(job){
-    const wrap=$('#t3jb-formWrap'), frame=$('#t3jb-formFrame'), fb=$('#t3jb-formFallback'), link=$('#t3jb-formLink');
-    if(job.link){ frame.src=job.link; link.href=job.link; wrap.style.display='block'; fb.style.display='none';
-      let loaded=false; const onLoad=()=>{loaded=true; fb.style.display='none';}; frame.addEventListener('load',onLoad,{once:true});
-      setTimeout(()=>{ if(!loaded) fb.style.display='block'; },2500);
-      setTimeout(()=>{ frame.scrollIntoView({behavior:'smooth',block:'start'}); },100);
-    } else { wrap.style.display='none'; fb.style.display='none'; showToast('No hay enlace para aplicar.'); }
-  }
-  function hideForm(){ const wrap=$('#t3jb-formWrap'), frame=$('#t3jb-formFrame'); wrap.style.display='none'; frame.src=''; }
-
+  // Modal
   function openModal(job, mode='info'){
     state.current = job;
     $('#t3jb-modalTitle').textContent = job.puesto || 'Vacante';
-    // Nota: no mostramos fecha de publicación
+    // No mostramos fecha de publicación en la ficha
     $('#t3jb-modalMeta').innerHTML = `
       <span class="badge">${escapeHtml(job.ciudad || 'Ubicación')}</span>
       <span class="badge">${coinSVG()} <span>${salaryPrettyFromCSV(job.sueldo)}</span></span>
@@ -634,17 +474,20 @@
     $('#t3jb-modalFull').style.display = 'none';
     $('#t3jb-modalToggle').textContent = 'Ver más';
 
-    // Compartir
-    const wa = job.link ? `https://api.whatsapp.com/send?text=${encodeURIComponent('Creo que este empleo te puede interesar: '+job.puesto+' 💼\nAplica aquí: '+job.link+' ✨📲')}` : null;
-    const waBtn = $('#t3jb-modalShareWA');
-    if(wa){ waBtn.href = wa; waBtn.removeAttribute('aria-disabled'); } else { waBtn.href = '#'; waBtn.setAttribute('aria-disabled','true'); }
+    const applyBtn = $('#t3jb-modalApply');
+    if(job.link){ applyBtn.href = job.link; applyBtn.removeAttribute('aria-disabled'); }
+    else{ applyBtn.href = '#'; applyBtn.setAttribute('aria-disabled','true'); }
 
-    // Botón aplicar embebe el formulario
-    $('#t3jb-modalApply').onclick = () => showForm(job);
+    const wa = waHref(job);
+    const waBtn = $('#t3jb-modalShareWA');
+    if(wa){ waBtn.href = wa; waBtn.removeAttribute('aria-disabled'); }
+    else{ waBtn.href = '#'; waBtn.setAttribute('aria-disabled','true'); }
 
     showModal();
-    if(mode==='apply'){ setTimeout(()=>$('#t3jb-modalApply').focus(), 60); showForm(job); }
+    if(mode==='apply'){ setTimeout(()=>applyBtn.focus(), 60); }
   }
+  function showModal(){ const m=$('#t3jb-modal'); m.classList.add('show'); m.removeAttribute('aria-hidden'); document.body.style.overflow='hidden'; }
+  function closeModal(){ const m=$('#t3jb-modal'); m.classList.remove('show'); m.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if(state.lastFocus){ state.lastFocus.focus(); } }
 
   $('#t3jb-modalToggle').addEventListener('click', ()=>{
     const full=$('#t3jb-modalFull');
@@ -690,14 +533,10 @@
   }
 
   // Filtros + Orden + Paginación
-  function populateCities(){
-    const cities=[...new Set(state.jobs.map(j=>j.ciudad).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
-    $('#t3jb-city').innerHTML = `<option value="">Todas las ciudades</option>` + cities.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
-  }
   function applyFilters(){
     const q=$('#t3jb-q').value.trim().toLowerCase();
     const city=$('#t3jb-city').value.trim().toLowerCase();
-    state.page = 1;
+    state.page = 1; // reset paginación al filtrar/ordenar
     state.filtered = state.jobs.filter(j=>{
       const okCity=!city || (j.ciudad||'').toLowerCase()===city;
       const txt=[j.puesto,j.infoFull,j.lugar,j.ciudad,j.sueldo,j.titular].join(' ').toLowerCase();
@@ -705,10 +544,28 @@
       return okCity && okQ;
     });
     renderList(state.filtered);
-    updateCharts(state.filtered);
   }
 
-  // Sitemap (opcional) — eliminado del UI por tu solicitud
+  // Sitemap (XML) — genera enlaces con hash #/job/{id}
+  function generateSitemap(){
+    const base = location.origin + location.pathname.replace(/index\.html?$/,'');
+    const urls = state.jobs.map(j => `${base}#/job/${encodeURIComponent(j.id)}`);
+    const lastmod = new Date().toISOString().slice(0,10);
+    const xmlHeader = `<?xml version="1.0" encoding="UTF-8"?>`;
+    const urlsetOpen = `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
+    const urlsetClose = `</urlset>`;
+    const body = urls.map(u => `<url><loc>${u}</loc><lastmod>${lastmod}</lastmod><changefreq>daily</changefreq><priority>0.6</priority></url>`).join('');
+    const xml = [xmlHeader, urlsetOpen, body, urlsetClose].join('\n');
+    const blob = new Blob([xml], {type:'application/xml'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'sitemap-jobs.xml';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+    showToast('Sitemap generado (XML descargado)', true);
+  }
 
   // Carga CSV
   async function loadCSV(){
@@ -723,22 +580,17 @@
       $('#t3jb-cards').innerHTML='';
       updateStats(0,0); injectSchemas([]);
       const tried = candidates.map(u=>`<li><code>${u}</code></li>`).join('');
-      $('#t3jb-emptyMsg').innerHTML = `No se pudo cargar el CSV. Probé: <ul>${tried}</ul>
+      $('#t3jb-emptyMsg').innerHTML = `No se pudo cargar el CSV. Probé estas rutas:<ul>${tried}</ul>
       <p>Abre una de ellas en incógnito. Si alguna carga, usa esa misma en <code>data-csv</code> (mismo host que esta página: <code>${location.origin}</code>).</p>`;
       return;
     }
     const rows = parseCSV(text);
     state.jobs = normalizeRows(rows);
-
     setHeaderDate(); buildPromo(); populateCities();
-    // CARGA INICIAL: TODAS LAS VACANTES
-    state.filtered = [...state.jobs];
-    state.page = 1;
-    renderList(state.filtered);
-    updateCharts(state.filtered);
-
+    applyFilters(); // esto llama renderList
     $('#t3jb-empty').style.display='none';
     showToast('Vacantes cargadas', true);
+    // si hay hash con job, abrir
     handleHashRoute();
   }
 
@@ -750,31 +602,19 @@
   $('#t3jb-refresh').addEventListener('click', loadCSV);
   $('#t3jb-retry').addEventListener('click', loadCSV);
   $('#t3jb-toList').addEventListener('click', (e)=>{ e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); });
+  $('#t3jb-sitemapBtn').addEventListener('click', generateSitemap);
 
-  // Paginación
+  // Paginación: Cargar más
   $('#t3jb-loadMore').addEventListener('click', ()=>{
     state.page++;
     renderList(state.filtered);
   });
 
-  // Sidebar móvil
-  function closeAsideMobile(){
-    const btn=$('#t3jb-asideToggle'); const inner=$('#t3jb-aside .aside-inner');
-    if (window.matchMedia('(max-width: 1099px)').matches){ inner.style.display='none'; btn.setAttribute('aria-expanded','false'); }
-    else { inner.style.display='block'; btn.setAttribute('aria-expanded','true'); }
-  }
-  $('#t3jb-asideToggle').addEventListener('click', ()=>{
-    const btn=$('#t3jb-asideToggle'); const inner=$('#t3jb-aside .aside-inner'); const open=btn.getAttribute('aria-expanded')==='true';
-    if(open){ inner.style.display='none'; btn.setAttribute('aria-expanded','false'); } else { inner.style.display='block'; btn.setAttribute('aria-expanded','true'); }
-  });
-  window.addEventListener('resize', ()=>{ closeAsideMobile(); updateCharts(state.filtered||[]); });
-
-  // Top button
   const topBtn=$('#t3jb-topBtn');
   window.addEventListener('scroll', ()=>{ topBtn.style.display = window.scrollY>500 ? 'grid':'none'; });
   topBtn.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
 
   // Init
-  setHeaderDate(); buildPromo(); closeAsideMobile(); loadCSV();
+  setHeaderDate(); buildPromo(); loadCSV();
 })();
 </script>
