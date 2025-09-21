@@ -1,5 +1,4 @@
 <!-- Talento 3.0 JobBoard — HTML listo para pegar en una página de WordPress (bloque HTML) -->
-<!-- Ajusta data-csv al host EXACTO. Si usas el bridge, deja: https://talento3.com/?t3_csv=empleos -->
 <div id="t3jb" data-csv="https://talento3.com/?t3_csv=empleos" data-cache="false">
   <style>
     /* ======= Estilos encapsulados ======= */
@@ -8,18 +7,20 @@
     #t3jb a:hover { text-decoration:underline }
     #t3jb .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
+    /* Header */
     #t3jb .t3-header{background:linear-gradient(135deg,#0b3c5d 0%, #102a43 100%);color:#fff;position:sticky;top:0;z-index:60;box-shadow:0 4px 18px rgba(0,0,0,.15)}
-    #t3jb .wrap{max-width:1200px;margin:0 auto;padding:16px}
+    #t3jb .wrap{max-width:1280px;margin:0 auto;padding:16px}
     #t3jb .nav{display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
     #t3jb .brand{display:flex;align-items:center;gap:12px}
     #t3jb .brand a.logo{display:inline-flex;align-items:center}
-    #t3jb .brand img{height:44px;width:auto;border-radius:8px;background:#fff;padding:6px}
+    #t3jb .brand img{height:48px;width:auto;border-radius:8px;background:#fff;padding:6px}
     #t3jb .headtext{display:flex;flex-direction:column;gap:2px}
     #t3jb .headtext h1{margin:0;font-size:18px;letter-spacing:.2px}
     #t3jb .headtext .date{font-size:13px;opacity:.9}
     #t3jb .stats{display:flex;align-items:center;gap:8px;color:#fff;font-size:14px;opacity:.95}
     #t3jb .head-actions{display:flex;align-items:center;gap:12px}
 
+    /* Toolbar */
     #t3jb .toolbar{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
     @media(min-width:900px){#t3jb .toolbar{grid-template-columns:2.2fr 1.1fr 1.1fr auto auto}}
     #t3jb .input, #t3jb select{border:1px solid #e5e7eb;background:#fff;border-radius:12px;padding:12px 14px;outline:none;box-shadow:inset 0 1px 0 rgba(0,0,0,.02);font-size:14px}
@@ -32,28 +33,43 @@
     #t3jb .searchWrap .input{border-radius:12px 0 0 12px;border-right:0}
     #t3jb .searchWrap .btn.tiny{border-radius:0 12px 12px 0;height:100%;padding:0;display:grid;place-items:center;min-width:44px}
 
-    #t3jb .legend{display:flex;gap:10px;align-items:center;margin-top:10px;font-size:12px;opacity:.95}
-    #t3jb .dot{display:inline-flex;align-items:center;gap:6px}
-    #t3jb .dot i{display:inline-block;width:10px;height:10px;border-radius:999px;background:#fff;opacity:.95}
-    #t3jb .dot.new i{background:#16a34a} #t3jb .dot.int i{background:#f59e0b} #t3jb .dot.fin i{background:#7c3aed}
-
+    /* Banner */
     #t3jb .promo{background:linear-gradient(90deg,#fff 0%, #fff7ec 35%, #ffe4b8 100%); border-top:1px solid #f4cf94; border-bottom:1px solid #f4cf94}
-    #t3jb .promo .box{max-width:1200px;margin:0 auto;padding:8px 16px;display:flex;gap:12px;align-items:center}
+    #t3jb .promo .box{max-width:1280px;margin:0 auto;padding:8px 16px;display:flex;gap:12px;align-items:center}
     #t3jb .ticker{overflow:hidden; white-space:nowrap; flex:1; mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent);}
     #t3jb .track{display:inline-block; padding-left:100%; will-change:transform; animation:ticker 24s linear infinite;}
     @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
     #t3jb .promo .msg{display:inline-block; margin-right:28px; color:#5b3b00; font-weight:600}
     #t3jb .promo .msg a{color:#7a4b00}
 
+    /* Layout principal con sidebar */
     #t3jb main{padding:24px 0}
+    #t3jb .layout{display:grid;grid-template-columns:1fr;gap:20px}
+    @media(min-width:1100px){#t3jb .layout{grid-template-columns:280px 1fr}}
+    #t3jb aside{background:#fff;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.08);padding:14px;position:relative}
+    #t3jb .aside-title{font-weight:800;margin:0 0 8px 0}
+    #t3jb .aside-section{margin-bottom:14px}
+    #t3jb .aside-list{list-style:none;margin:0;padding:0;max-height:320px;overflow:auto}
+    #t3jb .aside-list li{margin:0;padding:4px 0}
+    #t3jb .aside-list a{display:block;padding:6px 8px;border-radius:8px}
+    #t3jb .aside-list a:hover{background:#f3f4f6;text-decoration:none}
+
+    /* Toggle de sidebar en móvil */
+    #t3jb .aside-toggle{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    #t3jb .btn-filter{display:inline-flex;align-items:center;gap:6px}
+    @media(min-width:1100px){#t3jb .btn-filter{display:none}}
+
+    /* Encabezado de lista */
     #t3jb .list-head{display:flex;align-items:center;justify-content:space-between;margin:10px 0 16px 0;gap:8px;flex-wrap:wrap}
     #t3jb .count{font-weight:700;color:#0e4a77}
     #t3jb .hint{font-size:12px;color:#6b7280}
 
+    /* Grilla de tarjetas */
     #t3jb .grid{display:grid;grid-template-columns:1fr;gap:16px}
     @media(min-width:700px){#t3jb .grid{grid-template-columns:repeat(2,1fr)}}
-    @media(min-width:1024px){#t3jb .grid{grid-template-columns:repeat(3,1fr)}}
+    @media(min-width:1200px){#t3jb .grid{grid-template-columns:repeat(3,1fr)}}
 
+    /* Tarjetas */
     #t3jb .card{background:#fff;border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(0,0,0,.08);display:flex;flex-direction:column;gap:12px}
     #t3jb .badge{display:inline-block;background:#eef2ff;color:#3730a3;padding:6px 10px;border-radius:999px;font-size:12px}
     #t3jb .title{font-size:18px;font-weight:800;margin:0}
@@ -66,10 +82,7 @@
     #t3jb .empty{text-align:center;background:#fff;border-radius:18px;padding:28px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
     #t3jb footer{padding:24px 0;color:#6b7280;font-size:13px}
 
-    #t3jb .toast{position:fixed;right:16px;bottom:16px;background:#111827;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08);transform:translateY(16px);opacity:0;pointer-events:none;transition:.25s ease;z-index:200}
-    #t3jb .toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
-    #t3jb .topbtn{position:fixed;right:16px;bottom:16px;background:#0b3c5d;color:#fff;border:0;border-radius:999px;width:46px;height:46px;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.08);cursor:pointer;display:none;z-index:200}
-
+    /* Indicadores */
     #t3jb .status-row{display:flex;align-items:center;gap:10px}
     #t3jb .status-pill{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid #e5e7eb;background:#fff}
     #t3jb .progress{position:relative;width:100%;height:8px;border-radius:999px;background:#eef2f7;overflow:hidden}
@@ -93,6 +106,21 @@
 
     /* Paginación */
     #t3jb .pager{display:flex;justify-content:center;margin:18px 0}
+
+    /* Mejoras móviles (tarjetas más cómodas) */
+    @media(max-width:600px){
+      #t3jb .wrap{padding:12px}
+      #t3jb .card{padding:16px}
+      #t3jb .title{font-size:17px}
+      #t3jb .desc{font-size:15px}
+      #t3jb .salary{font-size:15px}
+      #t3jb .brand img{height:44px}
+    }
+
+    /* Otros utilitarios */
+    #t3jb .toast{position:fixed;right:16px;bottom:16px;background:#111827;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08);transform:translateY(16px);opacity:0;pointer-events:none;transition:.25s ease;z-index:400}
+    #t3jb .toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
+    #t3jb .topbtn{position:fixed;right:16px;bottom:16px;background:#0b3c5d;color:#fff;border:0;border-radius:999px;width:46px;height:46px;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.08);cursor:pointer;display:none;z-index:350}
   </style>
 
   <a class="sr-only" href="#t3jb-contenido">Saltar al contenido</a>
@@ -152,26 +180,51 @@
   </div>
 
   <main class="wrap" id="t3jb-contenido">
-    <div class="list-head">
-      <div class="count" id="t3jb-count">Mostrando 0 de 0 vacantes</div>
-      <div class="hint">
-        Consejo: filtra por ciudad y usa “Más info” para ver la descripción completa.
-        · <button class="btn secondary small" id="t3jb-sitemapBtn" title="Descargar sitemap de vacantes (XML)">Descargar sitemap jobs</button>
-      </div>
-    </div>
+    <div class="layout">
+      <!-- Sidebar (izquierda en desktop, arriba en móvil) -->
+      <aside id="t3jb-aside">
+        <div class="aside-toggle">
+          <h3 class="aside-title" style="margin:0">Explora rápido</h3>
+          <button id="t3jb-asideToggle" class="btn secondary btn-filter" aria-expanded="false">☰ Filtros rápidos</button>
+        </div>
 
-    <section id="t3jb-cards" class="grid" aria-live="polite"></section>
-    <div id="t3jb-pager" class="pager" style="display:none">
-      <button class="btn secondary" id="t3jb-loadMore">Cargar más</button>
-    </div>
+        <div class="aside-inner">
+          <div class="aside-section">
+            <h4 class="aside-title">Categorías</h4>
+            <ul id="t3jb-cats" class="aside-list"></ul>
+          </div>
+          <div class="aside-section">
+            <h4 class="aside-title">Regiones</h4>
+            <ul id="t3jb-regions" class="aside-list"></ul>
+          </div>
+          <div class="aside-section">
+            <h4 class="aside-title">Puestos (títulos)</h4>
+            <ul id="t3jb-titles" class="aside-list"></ul>
+          </div>
+        </div>
+      </aside>
 
-    <div id="t3jb-empty" class="empty" style="display:none">
-      <h3>No pude encontrar <code>positions.csv</code></h3>
-      <p id="t3jb-emptyMsg">Verifica que el CSV sea accesible. Si usas el puente, abre: <code>https://talento3.com/?t3_csv=empleos</code> (ajusta el host para que coincida con esta página).</p>
-      <button class="btn" id="t3jb-retry">Reintentar</button>
-    </div>
+      <!-- Listado -->
+      <section style="min-width:0">
+        <div class="list-head">
+          <div class="count" id="t3jb-count">Mostrando 0 de 0 vacantes</div>
+          <div class="hint">Consejo: filtra por ciudad y usa “Más info” para ver la descripción completa.</div>
+        </div>
 
-    <div id="t3jb-schemaDump" style="display:none"></div>
+        <section id="t3jb-cards" class="grid" aria-live="polite"></section>
+        <div id="t3jb-pager" class="pager" style="display:none">
+          <button class="btn secondary" id="t3jb-loadMore">Cargar más</button>
+        </div>
+
+        <div id="t3jb-empty" class="empty" style="display:none">
+          <h3>No pude encontrar <code>positions.csv</code></h3>
+          <p id="t3jb-emptyMsg">Verifica que el CSV sea accesible. Si usas el puente, abre: <code>https://talento3.com/?t3_csv=empleos</code> (ajusta el host para que coincida con esta página).</p>
+          <button class="btn" id="t3jb-retry">Reintentar</button>
+        </div>
+
+        <div id="t3jb-schemaDump" style="display:none"></div>
+      </section>
+    </div>
   </main>
 
   <footer class="wrap" style="padding:24px 0;color:#6b7280;font-size:13px">
@@ -312,10 +365,10 @@
       const ciudad=sanitize(r[H('Ciudad')]);
       const lugar=sanitize(r[H('Lugar centro de trabajo')]);
       const sueldo=sanitize(r[H('Sueldo Mensual')]);
-      const creacion=sanitize(r[H('Creacion')]); // se usa para ordenar, no se muestra
+      const creacion=sanitize(r[H('Creacion')]); // ordenar sólo
       const infoFull=sanitize(r[H('Información de la Vacante:')] || r[H('Información de la Vacante')]);
       const link=sanitize(r[H('Link para aplicar a vacante')]);
-      const titular=sanitize(r[H('Titular')]); // avatar anónimo por color
+      const titular=sanitize(r[H('Titular')]); // avatar por color
       const id=`${slugify(puesto||'vacante')}-${i+1}`;
       const status=statusFromId(id);
       const infoShort=shortByPercent(infoFull,0.25,1000);
@@ -343,17 +396,94 @@
     track.appendChild(span);
   }
 
-  function populateCities(){
-    const cities=[...new Set(state.jobs.map(j=>j.ciudad).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
-    $('#t3jb-city').innerHTML = `<option value="">Todas las ciudades</option>` + cities.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
-  }
-  function updateStats(show,total){
-    $('#t3jb-total').textContent = total;
-    $('#t3jb-count').textContent = `Mostrando ${show} de ${total} vacantes`;
+  // -------- Sidebar: categorías, regiones y títulos --------
+  const CAT_RULES = [
+    {key:'Ventas', rx:/\b(ventas?|comercial|account|ejecutiv[oa]|kpi|crm)\b/i},
+    {key:'Finanzas', rx:/\b(finanzas?|contab|tesorer|cobranz|fiscal|auditor)\b/i},
+    {key:'RH', rx:/\b(recursos humanos|rh|talento|recluta|nomina|capacita)\b/i},
+    {key:'Tecnología', rx:/\b(software|desarroll|tech|ti|it|sistemas|data|devops|soporte)\b/i},
+    {key:'Operaciones', rx:/\b(operacion|produccion|plant[a|e]|mantenimiento|calidad|lean)\b/i},
+    {key:'Logística', rx:/\b(logistic|almacen|suministro|cadena|transporte|rutas)\b/i},
+    {key:'Marketing', rx:/\b(marketing|mercadotecnia|brand|contenido|seo|social|growth)\b/i},
+    {key:'Legal', rx:/\b(legal|juridic|compliance|contratos?)\b/i},
+  ];
+  function inferCategory(title){
+    for(const r of CAT_RULES){ if(r.rx.test(title||'')) return r.key; }
+    return 'Otros';
   }
 
-  function waMessage(j){ return `Creo que este empleo te puede interesar: ${j.puesto} 💼\nAplica aquí: ${j.link} ✨📲`; }
-  function waHref(j){ return j?.link ? `https://api.whatsapp.com/send?text=${encodeURIComponent(waMessage(j))}` : null; }
+  function buildSidebar(data){
+    // Categorías
+    const byCat = {};
+    data.forEach(j=>{
+      const cat = inferCategory(j.puesto);
+      (byCat[cat] = byCat[cat] || []).push(j);
+    });
+    const catKeys = Object.keys(byCat).sort((a,b)=>a.localeCompare(b,'es'));
+    $('#t3jb-cats').innerHTML = catKeys.map(k=>{
+      const n=byCat[k].length;
+      return `<li><a href="#" data-filter-cat="${escapeHtml(k)}">${escapeHtml(k)} (${n})</a></li>`;
+    }).join('');
+
+    // Regiones (ciudades)
+    const regions = [...new Set(data.map(j=>j.ciudad).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+    $('#t3jb-regions').innerHTML = regions.map(c=>`<li><a href="#" data-filter-region="${escapeHtml(c)}">${escapeHtml(c)}</a></li>`).join('');
+
+    // Títulos
+    const maxTitles = 40;
+    const items = data.slice(0, maxTitles);
+    $('#t3jb-titles').innerHTML = items.map(j=>`<li><a href="#/job/${encodeURIComponent(j.id)}" data-open-info="${j.id}">${escapeHtml(j.puesto || 'Vacante')}</a></li>`).join('');
+
+    // Eventos
+    $('#t3jb-cats').querySelectorAll('[data-filter-cat]').forEach(a=>{
+      a.addEventListener('click',(e)=>{
+        e.preventDefault();
+        const cat = e.currentTarget.getAttribute('data-filter-cat');
+        // Filtro por categoría: aplicamos sobre el puesto
+        $('#t3jb-q').value = '';
+        $('#t3jb-city').value = '';
+        state.page = 1;
+        state.filtered = state.jobs.filter(j=>inferCategory(j.puesto)===cat);
+        renderList(state.filtered);
+        // En móvil, ocultamos sidebar
+        closeAsideMobile();
+      });
+    });
+    $('#t3jb-regions').querySelectorAll('[data-filter-region]').forEach(a=>{
+      a.addEventListener('click',(e)=>{
+        e.preventDefault();
+        const region = e.currentTarget.getAttribute('data-filter-region');
+        $('#t3jb-q').value = '';
+        $('#t3jb-city').value = region;
+        applyFilters();
+        closeAsideMobile();
+      });
+    });
+    // Abrir títulos desde el sidebar
+    $('#t3jb-titles').querySelectorAll('[data-open-info]').forEach(a=>{
+      a.addEventListener('click',(e)=>{
+        e.preventDefault();
+        const id=e.currentTarget.getAttribute('data-open-info');
+        const job=state.jobs.find(x=>x.id===id); if(job){ openModal(job,'info'); location.hash = '#/job/'+encodeURIComponent(id); }
+        closeAsideMobile();
+      });
+    });
+  }
+
+  function openAsideMobile(){
+    const btn = $('#t3jb-asideToggle');
+    const inner = $('#t3jb-aside .aside-inner');
+    inner.style.display='block';
+    btn.setAttribute('aria-expanded','true');
+  }
+  function closeAsideMobile(){
+    const btn = $('#t3jb-asideToggle');
+    const inner = $('#t3jb-aside .aside-inner');
+    if (window.matchMedia('(max-width: 1099px)').matches){
+      inner.style.display='none';
+      btn.setAttribute('aria-expanded','false');
+    }
+  }
 
   // -------- Ordenamiento --------
   function sortItems(arr){
@@ -376,20 +506,28 @@
   }
 
   // -------- Paginación --------
+  const stateUI = { page:1, pageSize:12 };
   function getPaged(items){
-    const end = state.page * state.pageSize;
+    const end = stateUI.page * stateUI.pageSize;
     const slice = items.slice(0, end);
     const hasMore = end < items.length;
     $('#t3jb-pager').style.display = hasMore ? 'flex' : 'none';
     return slice;
   }
 
+  // Render de tarjetas
+  function updateStats(show,total){
+    $('#t3jb-total').textContent = total;
+    $('#t3jb-count').textContent = `Mostrando ${show} de ${total} vacantes`;
+  }
+  function waMessage(j){ return `Creo que este empleo te puede interesar: ${j.puesto} 💼\nAplica aquí: ${j.link} ✨📲`; }
+  function waHref(j){ return j?.link ? `https://api.whatsapp.com/send?text=${encodeURIComponent(waMessage(j))}` : null; }
+
   function renderList(items){
     const wrap=$('#t3jb-cards'); wrap.innerHTML='';
     if(!items.length){ $('#t3jb-empty').style.display = state.jobs.length ? 'none':'block'; updateStats(0,state.jobs.length); return; }
     $('#t3jb-empty').style.display='none';
 
-    // ordena + pagina
     const sorted = sortItems(items);
     const paged = getPaged(sorted);
 
@@ -462,7 +600,6 @@
   function openModal(job, mode='info'){
     state.current = job;
     $('#t3jb-modalTitle').textContent = job.puesto || 'Vacante';
-    // No mostramos fecha de publicación en la ficha
     $('#t3jb-modalMeta').innerHTML = `
       <span class="badge">${escapeHtml(job.ciudad || 'Ubicación')}</span>
       <span class="badge">${coinSVG()} <span>${salaryPrettyFromCSV(job.sueldo)}</span></span>
@@ -499,7 +636,7 @@
   $('#t3jb-modal').addEventListener('click', (e)=>{ if(e.target.id==='t3jb-modal') { closeModal(); history.replaceState(null,'',location.pathname+location.search); } });
   window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeModal(); history.replaceState(null,'',location.pathname+location.search); } });
 
-  // Profundidad: abrir modal desde hash #/job/{id}
+  // Hash routing para abrir directamente un job
   function handleHashRoute(){
     const h=location.hash||'';
     const m=h.match(/^#\/job\/(.+)$/);
@@ -511,7 +648,7 @@
   }
   window.addEventListener('hashchange', handleHashRoute);
 
-  // Schema JobPosting
+  // Schema JobPosting (SEO)
   const isoDate=s=>{ const d=new Date(s||Date.now()); return isNaN(d.getTime())?new Date().toISOString():d.toISOString(); };
   function validThrough(creacion){ const d=new Date(creacion||Date.now()); return new Date((isNaN(d)?Date.now():d.getTime()) + 60*24*3600*1000).toISOString(); }
   function injectSchemas(items){
@@ -536,7 +673,7 @@
   function applyFilters(){
     const q=$('#t3jb-q').value.trim().toLowerCase();
     const city=$('#t3jb-city').value.trim().toLowerCase();
-    state.page = 1; // reset paginación al filtrar/ordenar
+    stateUI.page = 1; // reset paginación
     state.filtered = state.jobs.filter(j=>{
       const okCity=!city || (j.ciudad||'').toLowerCase()===city;
       const txt=[j.puesto,j.infoFull,j.lugar,j.ciudad,j.sueldo,j.titular].join(' ').toLowerCase();
@@ -546,34 +683,13 @@
     renderList(state.filtered);
   }
 
-  // Sitemap (XML) — genera enlaces con hash #/job/{id}
-  function generateSitemap(){
-    const base = location.origin + location.pathname.replace(/index\.html?$/,'');
-    const urls = state.jobs.map(j => `${base}#/job/${encodeURIComponent(j.id)}`);
-    const lastmod = new Date().toISOString().slice(0,10);
-    const xmlHeader = `<?xml version="1.0" encoding="UTF-8"?>`;
-    const urlsetOpen = `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
-    const urlsetClose = `</urlset>`;
-    const body = urls.map(u => `<url><loc>${u}</loc><lastmod>${lastmod}</lastmod><changefreq>daily</changefreq><priority>0.6</priority></url>`).join('');
-    const xml = [xmlHeader, urlsetOpen, body, urlsetClose].join('\n');
-    const blob = new Blob([xml], {type:'application/xml'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'sitemap-jobs.xml';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(a.href);
-    showToast('Sitemap generado (XML descargado)', true);
-  }
-
   // Carga CSV
   async function loadCSV(){
     const candidates = csvUrls();
-    let text = null, lastErr = null;
+    let text = null;
     for(const u of candidates){
       try{ text = await tryFetch(u); break; }
-      catch(e){ lastErr = e; console.warn('CSV fail', u, e); }
+      catch(e){ console.warn('CSV fail', u, e); }
     }
     if(!text){
       $('#t3jb-empty').style.display='block';
@@ -586,11 +702,12 @@
     }
     const rows = parseCSV(text);
     state.jobs = normalizeRows(rows);
-    setHeaderDate(); buildPromo(); populateCities();
-    applyFilters(); // esto llama renderList
+    setHeaderDate(); buildPromo();
+    buildSidebar(state.jobs);
+    populateCities();
+    applyFilters(); // renderiza
     $('#t3jb-empty').style.display='none';
     showToast('Vacantes cargadas', true);
-    // si hay hash con job, abrir
     handleHashRoute();
   }
 
@@ -602,14 +719,26 @@
   $('#t3jb-refresh').addEventListener('click', loadCSV);
   $('#t3jb-retry').addEventListener('click', loadCSV);
   $('#t3jb-toList').addEventListener('click', (e)=>{ e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); });
-  $('#t3jb-sitemapBtn').addEventListener('click', generateSitemap);
 
   // Paginación: Cargar más
   $('#t3jb-loadMore').addEventListener('click', ()=>{
-    state.page++;
+    stateUI.page++;
     renderList(state.filtered);
   });
 
+  // Toggle sidebar móvil
+  $('#t3jb-asideToggle').addEventListener('click', ()=>{
+    const btn = $('#t3jb-asideToggle');
+    const inner = $('#t3jb-aside .aside-inner');
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    if(open){ inner.style.display='none'; btn.setAttribute('aria-expanded','false'); }
+    else { inner.style.display='block'; btn.setAttribute('aria-expanded','true'); }
+  });
+  // Ocultar por defecto en móvil
+  closeAsideMobile();
+  window.addEventListener('resize', closeAsideMobile);
+
+  // Top button
   const topBtn=$('#t3jb-topBtn');
   window.addEventListener('scroll', ()=>{ topBtn.style.display = window.scrollY>500 ? 'grid':'none'; });
   topBtn.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
