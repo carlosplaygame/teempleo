@@ -13,11 +13,11 @@
   <style>
     :root{
       --t3-primary:#0b3c5d; --t3-primary-600:#0e4a77;
-      --t3-accent:#f39c12; --t3-bg:#f6f8fb; --t3-card:#ffffff;
+      --t3-accent:#f39e12; --t3-bg:#f6f8fb; --t3-card:#ffffff;
       --t3-text:#1b1f23; --t3-muted:#6b7280; --radius:18px;
       --shadow:0 8px 24px rgba(0,0,0,.08);
       --st-new:#16a34a; --st-int:#f59e0b; --st-fin:#7c3aed;
-      --c1:#2563eb; --c2:#f59e0b; --c3:#10b981; --c4:#8b5cf6; --c5:#ef4444; --c6:#14b8a6; --c7:#eab308; --c8:#6366f1; --c9:#f97316; --c10:#22c55e;
+      --c1:#2563eb; --c2:#f59e0b; --c3:#10b981; --c4:#8b5cf6; --c5:#ef4444; --c6:#14b8a6; --c7:#eab308; --c8:#6366f1; --c9:#f97316; --c10:#22c55e; --c11:#0ea5e9; --c12:#d946ef;
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--t3-text);background:var(--t3-bg);line-height:1.5}
@@ -182,7 +182,6 @@
 
   <main class="wrap" id="contenido">
     <div class="layout">
-      <!-- Columna principal -->
       <section style="min-width:0">
         <div class="list-head">
           <div class="count" id="countLabel">Mostrando 0 de 0 vacantes</div>
@@ -207,7 +206,6 @@
         <div id="schemaDump" style="display:none"></div>
       </section>
 
-      <!-- Sidebar derecha -->
       <aside>
         <div class="aside-section chart">
           <h5>Especialidades más buscadas</h5>
@@ -241,7 +239,6 @@
   <button id="topBtn" class="topbtn" aria-label="Volver arriba" title="Volver arriba">↑</button>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <!-- Modal -->
   <div id="modal" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <header>
@@ -260,7 +257,6 @@
         <div id="modalFull" style="white-space:pre-wrap; margin-top:8px; display:none" class="desc"></div>
         <button class="btn secondary" id="modalToggle" style="margin-top:8px">Ver más</button>
 
-        <!-- Form embebido -->
         <div class="formWrap" id="formWrap" style="display:none; margin-top:12px">
           <iframe id="formFrame" src="" title="Formulario de aplicación"
                   style="width:100%;height:720px;border:0;border-radius:12px;box-shadow:var(--shadow)"
@@ -278,9 +274,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Agente IA (Jotform) opcional -->
-  <script src="https://cdn.jotfor.ms/agent/embedjs/0199263e5f5a7199a83430be0e855bd38fa8/embed.js"></script>
 
   <script>
   (()=>{
@@ -308,6 +301,7 @@
       {key:'Legal', rx:/\b(legal|juridic|compliance|contratos?)\b/i},
     ];
     const PALETTE=['#2563eb','#f59e0b','#10b981','#8b5cf6','#ef4444','#14b8a6','#eab308','#6366f1','#f97316','#22c55e','#0ea5e9','#d946ef'];
+    const PALETTE_AV=['#0ea5e9','#f97316','#22c55e','#8b5cf6','#ef4444','#10b981','#8b5cf6','#f59e0b','#14b8a6','#e11d48'];
 
     const $=s=>document.querySelector(s);
     const $$=s=>Array.from(document.querySelectorAll(s));
@@ -315,7 +309,6 @@
     const sanitize=s=>String(s??'').trim();
     const escapeHtml=s=>String(s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
     const slugify=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
-    const PALETTE_AV=['#0ea5e9','#f97316','#22c55e','#8b5cf6','#ef4444','#10b981','#8b5cf6','#f59e0b','#14b8a6','#e11d48'];
     const ownerColor=(seed='')=>{const str=seed||'owner';const hash=[...str].reduce((a,c)=>((a<<5)-a)+c.charCodeAt(0),0);return PALETTE_AV[Math.abs(hash)%PALETTE_AV.length];}
     const statusFromId=(id)=>{const hash=[...id].reduce((a,c)=>((a<<5)-a)+c.charCodeAt(0),0);const idx=Math.abs(hash)%3;const labels=['Nueva','Entrevistas','Finalistas'];return {idx,label:labels[idx],progress:Math.round(((idx+1)/3)*100)};}
 
@@ -358,7 +351,7 @@
         const ciudad=sanitize(r[H('Ciudad')]);
         const lugar=sanitize(r[H('Lugar centro de trabajo')]);
         const sueldo=sanitize(r[H('Sueldo Mensual')]);
-        const creacion=sanitize(r[H('Creacion')]);
+        const creacion=sanitize(r[H('Creacion')]); // no se muestra
         const infoFull=sanitize(r[H('Información de la Vacante:')]||r[H('Información de la Vacante')]);
         const link=sanitize(r[H('Link para aplicar a vacante')]);
         const titular=sanitize(r[H('Titular')]);
@@ -466,7 +459,6 @@
       updateCharts(items);
     }
 
-    /* Modal + Form embebido con fallback */
     function showModal(){ const m=$('#modal'); m.classList.add('show'); m.removeAttribute('aria-hidden'); document.body.style.overflow='hidden'; }
     function closeModal(){ const m=$('#modal'); m.classList.remove('show'); m.setAttribute('aria-hidden','true'); document.body.style.overflow=''; hideForm(); if(state.lastFocus){state.lastFocus.focus();} }
     function showForm(job){
@@ -474,23 +466,13 @@
       if(!job.link){ wrap.style.display='none'; fb.style.display='none'; toast('No hay enlace para aplicar.'); return; }
       wrap.style.display='block'; fb.style.display='none'; link.href=job.link;
 
-      // Reset + intentar cargar
       frame.src='about:blank';
-      // Si el origen bloquea X-Frame-Options, el onload puede no disparar: ponemos timeout de diagnóstico
       let fired=false;
-      const onLoad=()=>{fired=true; /* si carga, todo ok */};
+      const onLoad=()=>{fired=true;};
       frame.addEventListener('load', onLoad, {once:true});
       frame.src=job.link;
 
-      // Diagnóstico en 1500ms: si no cargó, mostrar fallback
-      setTimeout(()=>{
-        if(!fired){
-          fb.style.display='block';
-          // Opcional: abrir en la misma pestaña
-          // window.open(job.link, '_blank', 'noopener');
-        }
-      },1500);
-
+      setTimeout(()=>{ if(!fired){ fb.style.display='block'; } },1500);
       setTimeout(()=>{ frame.scrollIntoView({behavior:'smooth',block:'start'}); },100);
     }
     function hideForm(){ const wrap=$('#formWrap'), frame=$('#formFrame'); wrap.style.display='none'; frame.src='about:blank'; }
@@ -514,27 +496,25 @@
     $('#modal').addEventListener('click',(e)=>{if(e.target.id==='modal'){closeModal();history.replaceState(null,'',location.pathname+location.search);}})
     window.addEventListener('keydown',(e)=>{if(e.key==='Escape'){closeModal();history.replaceState(null,'',location.pathname+location.search);}})
 
-    /* Schema.org JobPosting */
     const isoDate=s=>{const d=new Date(s||Date.now());return isNaN(d.getTime())?new Date().toISOString():d.toISOString();}
     function validThrough(creacion){const d=new Date(creacion||Date.now());return new Date((isNaN(d)?Date.now():d.getTime())+60*24*3600*1000).toISOString();}
     function injectSchemas(items){
       const dump=$('#schemaDump'); dump.innerHTML='';
       items.forEach(j=>{
-        const payload={"@context":"https://schema.org/","@type":"JobPosting","title":j.puesto||"Vacante",
-          "description":(j.infoFull||'').replace(/\n/g,'<br>'),"datePosted":isoDate(j.creacion),"employmentType":"FULL_TIME",
+        const payload={"@context":"https://schema.org/","@type":"JobPosting","title": j.puesto || "Vacante",
+          "description": (j.infoFull||'').replace(/\n/g,'<br>'),"datePosted": isoDate(j.creacion),"employmentType":"FULL_TIME",
           "hiringOrganization":{"@type":"Organization","name":"Talento 3.0","sameAs":"https://talento3.com","logo":"https://talento3.com/wp-content/uploads/2024/04/LogoT3.png"},
-          "jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressLocality":j.ciudad||"México","streetAddress":j.lugar||""}},
-          "directApply":true,"validThrough":validThrough(j.creacion),
-          "baseSalary": j.sueldo?{"@type":"MonetaryAmount","currency":"MXN","value":{"@type":"QuantitativeValue","value":extractNumber(j.sueldo),"unitText":"MONTH"}}:undefined,
+          "jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressLocality": j.ciudad || "México","streetAddress": j.lugar || ""}},
+          "directApply": true,"validThrough": validThrough(j.creacion),
+          "baseSalary": j.sueldo ? {"@type":"MonetaryAmount","currency":"MXN","value":{"@type":"QuantitativeValue","value": extractNumber(j.sueldo),"unitText":"MONTH"}} : undefined,
           "applicantLocationRequirements":{"@type":"Country","name":"MX"}};
         const s=document.createElement('script'); s.type='application/ld+json'; s.textContent=JSON.stringify(payload); dump.appendChild(s);
       });
     }
 
-    /* ====== GRÁFICAS SIN SUPERPOSICIÓN ====== */
+    /* ====== CHARTS (coloridos y sin solapamientos) ====== */
     function colorAt(i){ return PALETTE[i % PALETTE.length]; }
 
-    // Barras VERTICALES (Categorías) — sin números
     function drawBarsVertical(canvas, labels, values){
       if(!canvas) return; const ctx=canvas.getContext('2d');
       const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
@@ -545,12 +525,10 @@
       ctx.font='12px system-ui, -apple-system, Segoe UI, Roboto, Arial';
       pairs.forEach((p,i)=>{ const x=pad+i*step+(step-barW)/2; const h=(H-40)*(p.v/maxV); const y=H-24-h;
         ctx.fillStyle=p.c; ctx.fillRect(x,y,barW,h);
-        // Etiqueta (sin número), truncada
         ctx.fillStyle='#374151'; const lab=p.l.length>12?p.l.slice(0,12)+'…':p.l; ctx.fillText(lab, x, H-8);
       });
     }
 
-    // Barras HORIZONTALES (Ciudades) — sin números, etiqueta a la izquierda
     function drawBarsHorizontal(canvas, labels, values){
       if(!canvas) return; const ctx=canvas.getContext('2d');
       const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
@@ -561,14 +539,11 @@
       const band=(H-top-bottom)/n*0.9, gap=((H-top-bottom)/n)-band;
       ctx.font='12px system-ui, -apple-system, Segoe UI, Roboto, Arial'; ctx.textBaseline='middle';
       pairs.forEach((p,i)=>{ const y=top+i*(band+gap)+band/2; const len=(W-left-right)*(p.v/maxV);
-        // etiqueta izquierda
         ctx.fillStyle='#374151'; let lab=p.l.length>18?p.l.slice(0,18)+'…':p.l; ctx.fillText(lab, 6, y);
-        // barra
         ctx.fillStyle=p.c; ctx.fillRect(left, y-band/2, Math.max(2,len), band);
       });
     }
 
-    // DONA (Skills) — sin números; leyenda aparte
     function drawDonut(canvas, labels, values, legendEl){
       if(!canvas) return; const ctx=canvas.getContext('2d');
       const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
@@ -584,11 +559,9 @@
         ctx.fillStyle=colorAt(i); ctx.fill();
         ang=a2;
       });
-      // agujero
       ctx.globalCompositeOperation='destination-out';
       ctx.beginPath(); ctx.arc(cx,cy,r2,0,Math.PI*2); ctx.fill();
       ctx.globalCompositeOperation='source-over';
-      // leyenda
       if(legendEl){
         legendEl.innerHTML='';
         labels.forEach((lab,i)=>{
@@ -602,26 +575,34 @@
     }
 
     function updateCharts(items){
-      // Categorías desde títulos
-      const byCat={}; items.forEach(j=>{ const c=inferCategory(j.puesto); byCat[c]=(byCat[c]||0)+1; });
-      const catLabels=Object.keys(byCat), catVals=Object.values(byCat);
-      drawBarsVertical($('#chartCats'), catLabels, catVals);
+      try{
+        const byCat={}; items.forEach(j=>{ const c=inferCategory(j.puesto); byCat[c]=(byCat[c]||0)+1; });
+        const catLabels=Object.keys(byCat), catVals=Object.values(byCat);
+        drawBarsVertical($('#chartCats'), catLabels, catVals);
+      }catch(e){ console.warn('Chart cats error', e); }
 
-      // Ciudades (Top 8) — barras horizontales
-      const byCity={}; items.forEach(j=>{ const c=j.ciudad||'—'; byCity[c]=(byCity[c]||0)+1; });
-      const cityLabels=Object.keys(byCity), cityVals=Object.values(byCity);
-      drawBarsHorizontal($('#chartCities'), cityLabels, cityVals);
+      try{
+        const byCity={}; items.forEach(j=>{ const c=j.ciudad||'—'; byCity[c]=(byCity[c]||0)+1; });
+        const cityLabels=Object.keys(byCity), cityVals=Object.values(byCity);
+        drawBarsHorizontal($('#chartCities'), cityLabels, cityVals);
+      }catch(e){ console.warn('Chart cities error', e); }
 
-      // Habilidades — dona + leyenda
-      const skillCount={}; items.forEach(j=>{ const s=countSkills(j.infoFull); Object.entries(s).forEach(([k,v])=>{skillCount[k]=(skillCount[k]||0)+v;}); });
-      const skillLabels=Object.keys(skillCount), skillVals=Object.values(skillCount);
-      drawDonut($('#chartSkills'), skillLabels, skillVals, $('#legendSkills'));
+      try{
+        const skillCount={}; items.forEach(j=>{ const s=countSkills(j.infoFull); Object.entries(s).forEach(([k,v])=>{skillCount[k]=(skillCount[k]||0)+v;}); });
+        const skillLabels=Object.keys(skillCount), skillVals=Object.values(skillCount);
+        drawDonut($('#chartSkills'), skillLabels, skillVals, $('#legendSkills'));
+      }catch(e){ console.warn('Chart skills error', e); }
     }
 
     function inferCategory(title){ for(const r of CAT_RULES){ if(r.rx.test(title||'')) return r.key; } return 'Otros'; }
     function countSkills(text){
+      // FIX: no usar new RegExp(r.rx,'gi'); usar el source del regex para re-compilar con flags, o mejor r.rx globalmente
       const counts={}; const s=String(text||'');
-      SKILL_RULES.forEach(r=>{ const matches=s.match(r.rx); counts[r.key]=(counts[r.key]||0)+(matches? (s.match(new RegExp(r.rx,'gi'))||[]).length : 0); });
+      SKILL_RULES.forEach(r=>{
+        const rx = new RegExp(r.rx.source, 'gi');  // <- corrección
+        const matches = s.match(rx);
+        counts[r.key] = (counts[r.key]||0) + (matches ? matches.length : 0);
+      });
       return counts;
     }
 
@@ -693,25 +674,13 @@
     window.addEventListener('scroll', ()=>{ topBtn.style.display = window.scrollY>500 ? 'grid':'none'; });
     topBtn.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-    // SEO schemas
-    const isoDate=s=>{const d=new Date(s||Date.now());return isNaN(d.getTime())?new Date().toISOString():d.toISOString();};
-    function validThrough(creacion){const d=new Date(creacion||Date.now());return new Date((isNaN(d)?Date.now():d.getTime())+60*24*3600*1000).toISOString();}
-    function injectSchemas(items){
-      const dump=$('#schemaDump'); dump.innerHTML='';
-      items.forEach(j=>{
-        const payload={"@context":"https://schema.org/","@type":"JobPosting","title": j.puesto || "Vacante",
-          "description": (j.infoFull||'').replace(/\n/g,'<br>'),"datePosted": isoDate(j.creacion),"employmentType":"FULL_TIME",
-          "hiringOrganization":{"@type":"Organization","name":"Talento 3.0","sameAs":"https://talento3.com","logo":"https://talento3.com/wp-content/uploads/2024/04/LogoT3.png"},
-          "jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressLocality": j.ciudad || "México","streetAddress": j.lugar || ""}},
-          "directApply": true,"validThrough": validThrough(j.creacion),
-          "baseSalary": j.sueldo ? {"@type":"MonetaryAmount","currency":"MXN","value":{"@type":"QuantitativeValue","value": extractNumber(j.sueldo),"unitText":"MONTH"}} : undefined,
-          "applicantLocationRequirements":{"@type":"Country","name":"MX"}};
-        const s=document.createElement('script'); s.type='application/ld+json'; s.textContent=JSON.stringify(payload); dump.appendChild(s);
-      });
-    }
+    // Fecha y banner
+    (function initHead(){
+      const now=new Date(); const fmt=now.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
+      $('#dateNow').textContent='Fecha: '+fmt.charAt(0).toUpperCase()+fmt.slice(1); $('#year').textContent=now.getFullYear();
+      const track=$('#promoTrack'); track.innerHTML=''; const span=document.createElement('span'); span.className='msg'; span.textContent=PROMO_MESSAGES.join('   •   '); track.appendChild(span);
+    })();
 
-    // Init
-    (function initHead(){ const now=new Date(); const fmt=now.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}); $('#dateNow').textContent='Fecha: '+fmt.charAt(0).toUpperCase()+fmt.slice(1); $('#year').textContent=now.getFullYear(); const track=$('#promoTrack'); track.innerHTML=''; const span=document.createElement('span'); span.className='msg'; span.textContent=PROMO_MESSAGES.join('   •   '); track.appendChild(span); })();
     loadCSV();
   })();
   </script>
