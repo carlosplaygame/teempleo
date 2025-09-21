@@ -385,8 +385,8 @@
   function csvUrls(){
     const fromAttr = root.dataset.csv && String(root.dataset.csv).trim();
     const absolute = (() => { if(!fromAttr) return null; try { return new URL(fromAttr, location.origin).toString(); } catch { return fromAttr; }})();
-    const alt1 = location.origin + '/wp-content/uploads/empleos/positions.csv';
-    const alt2 = location.origin + '/empleos/positions.csv';
+    const alt1 = location.origin + '/positions.csv';
+    const alt2 = location.origin + '/positions.csv';
     return [ absolute, alt1, alt2, 'positions.csv' ].filter(Boolean);
   }
   async function tryFetch(url){
@@ -845,7 +845,7 @@
       updateStats(0,0); injectSchemas([]);
       const tried = candidates.map(u=>`<li><code>${u}</code></li>`).join('');
       $('#t3jb-emptyMsg').innerHTML = `No se pudo cargar el CSV (posible CORS o ruta). Probé:<ul>${tried}</ul>
-      <p><strong>Sugerencia:</strong> sube <code>positions.csv</code> a <code>/wp-content/uploads/empleos/</code> y usa esta URL exacta en <code>data-csv</code>:<br><code>${location.origin}/wp-content/uploads/empleos/positions.csv</code></p>`;
+      <p><strong>Sugerencia:</strong> sube <code>positions.csv</code> a <code>/wp-content/uploads/empleos/</code> y usa esta URL exacta en <code>data-csv</code>:<br><code>${location.origin}/positions.csv</code></p>`;
       return;
     }
     const rows = parseCSV(text);
