@@ -99,15 +99,20 @@
     #t3jb .modal header{background:linear-gradient(135deg,#0b3c5d 0%, #102a43 100%);color:#fff;position:relative}
     #t3jb .modal header .wrap{padding:14px 18px}
     #t3jb .modal .close{position:absolute;top:10px;right:12px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:10px;padding:6px 10px;cursor:pointer}
-    #t3jb .modal .body{padding:16px 18px;max-height:70vh;overflow:auto}
+    #t3jb .modal .body{padding:16px 18px;max-height:74vh;overflow:auto}
     #t3jb .modal .meta{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
     #t3jb .modal .badge{background:#eef2ff;color:#3730a3}
     #t3jb .modal .actions{margin-top:12px}
 
+    /* Form embebido */
+    #t3jb .formWrap{display:none;margin-top:12px}
+    #t3jb .formWrap iframe{width:100%;height:680px;border:0;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+    #t3jb .formFallback{margin-top:8px;font-size:13px;color:#6b7280}
+
     /* Paginación */
     #t3jb .pager{display:flex;justify-content:center;margin:18px 0}
 
-    /* Mejoras móviles (tarjetas más cómodas) */
+    /* Mejoras móviles */
     @media(max-width:600px){
       #t3jb .wrap{padding:12px}
       #t3jb .card{padding:16px}
@@ -197,10 +202,6 @@
             <h4 class="aside-title">Regiones</h4>
             <ul id="t3jb-regions" class="aside-list"></ul>
           </div>
-          <div class="aside-section">
-            <h4 class="aside-title">Puestos (títulos)</h4>
-            <ul id="t3jb-titles" class="aside-list"></ul>
-          </div>
         </div>
       </aside>
 
@@ -252,8 +253,18 @@
         <div class="desc" id="t3jb-modalShort"></div>
         <div id="t3jb-modalFull" style="white-space:pre-wrap; margin-top:8px; display:none" class="desc"></div>
         <button class="btn secondary" id="t3jb-modalToggle" style="margin-top:8px">Ver más</button>
+
+        <!-- Formulario embebido -->
+        <div class="formWrap" id="t3jb-formWrap">
+          <iframe id="t3jb-formFrame" src="" title="Formulario de aplicación"></iframe>
+          <div class="formFallback" id="t3jb-formFallback" style="display:none">
+            Si el formulario no se visualiza, puedes abrirlo aquí:
+            <a id="t3jb-formLink" href="#" target="_blank" rel="noopener">Abrir formulario</a>
+          </div>
+        </div>
+
         <div class="actions">
-          <a id="t3jb-modalApply" class="btn" href="#" target="_blank" rel="noopener">Aplicar</a>
+          <button id="t3jb-modalApply" class="btn">Aplicar</button>
           <a id="t3jb-modalShareWA" class="btn secondary" href="#" target="_blank" rel="noopener" title="WhatsApp (compartir con un amigo o conocido)">WhatsApp (compartir con un amigo)</a>
         </div>
       </div>
@@ -396,7 +407,7 @@
     track.appendChild(span);
   }
 
-  // -------- Sidebar: categorías, regiones y títulos --------
+  // -------- Sidebar: categorías y regiones --------
   const CAT_RULES = [
     {key:'Ventas', rx:/\b(ventas?|comercial|account|ejecutiv[oa]|kpi|crm)\b/i},
     {key:'Finanzas', rx:/\b(finanzas?|contab|tesorer|cobranz|fiscal|auditor)\b/i},
@@ -429,23 +440,16 @@
     const regions = [...new Set(data.map(j=>j.ciudad).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
     $('#t3jb-regions').innerHTML = regions.map(c=>`<li><a href="#" data-filter-region="${escapeHtml(c)}">${escapeHtml(c)}</a></li>`).join('');
 
-    // Títulos
-    const maxTitles = 40;
-    const items = data.slice(0, maxTitles);
-    $('#t3jb-titles').innerHTML = items.map(j=>`<li><a href="#/job/${encodeURIComponent(j.id)}" data-open-info="${j.id}">${escapeHtml(j.puesto || 'Vacante')}</a></li>`).join('');
-
     // Eventos
     $('#t3jb-cats').querySelectorAll('[data-filter-cat]').forEach(a=>{
       a.addEventListener('click',(e)=>{
         e.preventDefault();
         const cat = e.currentTarget.getAttribute('data-filter-cat');
-        // Filtro por categoría: aplicamos sobre el puesto
         $('#t3jb-q').value = '';
         $('#t3jb-city').value = '';
         state.page = 1;
         state.filtered = state.jobs.filter(j=>inferCategory(j.puesto)===cat);
         renderList(state.filtered);
-        // En móvil, ocultamos sidebar
         closeAsideMobile();
       });
     });
@@ -456,15 +460,6 @@
         $('#t3jb-q').value = '';
         $('#t3jb-city').value = region;
         applyFilters();
-        closeAsideMobile();
-      });
-    });
-    // Abrir títulos desde el sidebar
-    $('#t3jb-titles').querySelectorAll('[data-open-info]').forEach(a=>{
-      a.addEventListener('click',(e)=>{
-        e.preventDefault();
-        const id=e.currentTarget.getAttribute('data-open-info');
-        const job=state.jobs.find(x=>x.id===id); if(job){ openModal(job,'info'); location.hash = '#/job/'+encodeURIComponent(id); }
         closeAsideMobile();
       });
     });
@@ -482,6 +477,9 @@
     if (window.matchMedia('(max-width: 1099px)').matches){
       inner.style.display='none';
       btn.setAttribute('aria-expanded','false');
+    } else {
+      inner.style.display='block';
+      btn.setAttribute('aria-expanded','true');
     }
   }
 
@@ -596,7 +594,40 @@
     injectSchemas(paged);
   }
 
-  // Modal
+  // Modal + Form embebido
+  function showForm(job){
+    const wrap = $('#t3jb-formWrap');
+    const frame = $('#t3jb-formFrame');
+    const fallback = $('#t3jb-formFallback');
+    const link = $('#t3jb-formLink');
+
+    if(job.link){
+      frame.src = job.link;
+      link.href = job.link;
+      wrap.style.display = 'block';
+      fallback.style.display = 'none';
+
+      // Si el proveedor bloquea el embed, mostramos fallback tras 2.5s si el frame no se carga
+      let loaded = false;
+      const onLoad = ()=>{ loaded = true; fallback.style.display = 'none'; };
+      frame.addEventListener('load', onLoad, { once:true });
+      setTimeout(()=>{ if(!loaded){ fallback.style.display = 'block'; } }, 2500);
+      
+      // Scroll dentro del modal hacia el formulario
+      setTimeout(()=>{ frame.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
+    } else {
+      wrap.style.display = 'none';
+      fallback.style.display = 'none';
+      showToast('No hay enlace para aplicar en esta vacante.');
+    }
+  }
+  function hideForm(){
+    const wrap = $('#t3jb-formWrap');
+    const frame = $('#t3jb-formFrame');
+    wrap.style.display = 'none';
+    frame.src = '';
+  }
+
   function openModal(job, mode='info'){
     state.current = job;
     $('#t3jb-modalTitle').textContent = job.puesto || 'Vacante';
@@ -610,27 +641,27 @@
     $('#t3jb-modalFull').textContent = job.infoFull || '';
     $('#t3jb-modalFull').style.display = 'none';
     $('#t3jb-modalToggle').textContent = 'Ver más';
+    hideForm();
 
-    const applyBtn = $('#t3jb-modalApply');
-    if(job.link){ applyBtn.href = job.link; applyBtn.removeAttribute('aria-disabled'); }
-    else{ applyBtn.href = '#'; applyBtn.setAttribute('aria-disabled','true'); }
-
-    const wa = waHref(job);
+    const wa = job.link ? `https://api.whatsapp.com/send?text=${encodeURIComponent(\`Creo que este empleo te puede interesar: \${job.puesto} 💼\\nAplica aquí: \${job.link} ✨📲\`)}` : null;
     const waBtn = $('#t3jb-modalShareWA');
     if(wa){ waBtn.href = wa; waBtn.removeAttribute('aria-disabled'); }
     else{ waBtn.href = '#'; waBtn.setAttribute('aria-disabled','true'); }
 
     showModal();
-    if(mode==='apply'){ setTimeout(()=>applyBtn.focus(), 60); }
+    if(mode==='apply'){ showForm(job); }
   }
   function showModal(){ const m=$('#t3jb-modal'); m.classList.add('show'); m.removeAttribute('aria-hidden'); document.body.style.overflow='hidden'; }
-  function closeModal(){ const m=$('#t3jb-modal'); m.classList.remove('show'); m.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if(state.lastFocus){ state.lastFocus.focus(); } }
+  function closeModal(){ const m=$('#t3jb-modal'); m.classList.remove('show'); m.setAttribute('aria-hidden','true'); document.body.style.overflow=''; hideForm(); if(state.lastFocus){ state.lastFocus.focus(); } }
 
   $('#t3jb-modalToggle').addEventListener('click', ()=>{
     const full=$('#t3jb-modalFull');
     const isOpen = full.style.display!=='none';
     if(isOpen){ full.style.display='none'; $('#t3jb-modalToggle').textContent='Ver más'; }
     else { full.style.display='block'; $('#t3jb-modalToggle').textContent='Ver menos'; }
+  });
+  $('#t3jb-modalApply').addEventListener('click', ()=>{
+    if(state.current){ showForm(state.current); }
   });
   $('#t3jb-modalClose').addEventListener('click', ()=>{ closeModal(); history.replaceState(null,'',location.pathname+location.search); });
   $('#t3jb-modal').addEventListener('click', (e)=>{ if(e.target.id==='t3jb-modal') { closeModal(); history.replaceState(null,'',location.pathname+location.search); } });
@@ -702,13 +733,21 @@
     }
     const rows = parseCSV(text);
     state.jobs = normalizeRows(rows);
+
+    // Inicializar UI y MOSTRAR TODO desde el arranque
     setHeaderDate(); buildPromo();
     buildSidebar(state.jobs);
     populateCities();
-    applyFilters(); // renderiza
+    state.filtered = [...state.jobs];         // ⟵ muestra todas al cargar
+    renderList(state.filtered);               // ⟵ render inmediato
     $('#t3jb-empty').style.display='none';
     showToast('Vacantes cargadas', true);
     handleHashRoute();
+  }
+
+  function populateCities(){
+    const cities=[...new Set(state.jobs.map(j=>j.ciudad).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+    $('#t3jb-city').innerHTML = `<option value="">Todas las ciudades</option>` + cities.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
   }
 
   // Eventos UI
@@ -734,7 +773,7 @@
     if(open){ inner.style.display='none'; btn.setAttribute('aria-expanded','false'); }
     else { inner.style.display='block'; btn.setAttribute('aria-expanded','true'); }
   });
-  // Ocultar por defecto en móvil
+  // Mostrar/ocultar según ancho
   closeAsideMobile();
   window.addEventListener('resize', closeAsideMobile);
 
