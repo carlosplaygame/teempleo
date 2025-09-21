@@ -11,13 +11,13 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://talento3.com/wp-content/uploads/2024/04/LogoT3.png">
   <style>
-    /* ======= Estilos ======= */
     :root{
       --t3-primary:#0b3c5d; --t3-primary-600:#0e4a77;
       --t3-accent:#f39c12; --t3-bg:#f6f8fb; --t3-card:#ffffff;
       --t3-text:#1b1f23; --t3-muted:#6b7280; --radius:18px;
       --shadow:0 8px 24px rgba(0,0,0,.08);
       --st-new:#16a34a; --st-int:#f59e0b; --st-fin:#7c3aed;
+      --c1:#2563eb; --c2:#f59e0b; --c3:#10b981; --c4:#8b5cf6; --c5:#ef4444; --c6:#14b8a6; --c7:#eab308; --c8:#6366f1; --c9:#f97316; --c10:#22c55e;
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--t3-text);background:var(--t3-bg);line-height:1.5}
@@ -25,7 +25,6 @@
     a:hover{text-decoration:underline}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-    /* Header */
     header{background:linear-gradient(135deg, var(--t3-primary) 0%, #102a43 100%);color:#fff;position:sticky;top:0;z-index:60;box-shadow:0 4px 18px rgba(0,0,0,.15)}
     .wrap{max-width:1280px;margin:0 auto;padding:16px}
     .nav{display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
@@ -38,7 +37,6 @@
     .stats{display:flex;align-items:center;gap:8px;color:#fff;font-size:14px;opacity:.95}
     .head-actions{display:flex;align-items:center;gap:12px}
 
-    /* Toolbar */
     .toolbar{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
     @media(min-width:900px){.toolbar{grid-template-columns:2.2fr 1.1fr 1.1fr auto auto}}
     .input, select{border:1px solid #e5e7eb;background:#fff;border-radius:12px;padding:12px 14px;outline:none;box-shadow:inset 0 1px 0 rgba(0,0,0,.02);font-size:14px}
@@ -51,13 +49,11 @@
     .searchWrap .input{border-radius:12px 0 0 12px;border-right:0}
     .searchWrap .btn.tiny{border-radius:0 12px 12px 0;height:100%;padding:0;display:grid;place-items:center;min-width:44px}
 
-    /* Legend */
     .legend{display:flex;gap:10px;align-items:center;margin-top:10px;font-size:12px;opacity:.95}
     .dot{display:inline-flex;align-items:center;gap:6px}
     .dot i{display:inline-block;width:10px;height:10px;border-radius:999px;background:#fff;opacity:.95}
     .dot.new i{background:var(--st-new)} .dot.int i{background:var(--st-int)} .dot.fin i{background:var(--st-fin)}
 
-    /* Promo ticker */
     .promo{background:linear-gradient(90deg,#fff 0%, #fff7ec 35%, #ffe4b8 100%); border-top:1px solid #f4cf94; border-bottom:1px solid #f4cf94}
     .promo .box{max-width:1280px;margin:0 auto;padding:8px 16px;display:flex;gap:12px;align-items:center}
     .ticker{overflow:hidden; white-space:nowrap; flex:1; mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent);}
@@ -66,21 +62,24 @@
     .promo .msg{display:inline-block; margin-right:28px; color:#5b3b00; font-weight:600}
     .promo .msg a{color:#7a4b00}
 
-    /* Layout principal (sidebar derecha en desktop) */
     main{padding:24px 0}
     .layout{display:grid;grid-template-columns:1fr;gap:20px}
-    @media(min-width:1100px){.layout{grid-template-columns:1fr 320px}}
+    @media(min-width:1100px){.layout{grid-template-columns:1fr 340px}}
     aside{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:14px;height:fit-content;position:sticky;top:90px}
     .aside-title{font-weight:800;margin:0 0 8px 0}
     .aside-section{margin-bottom:18px}
     .chart{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:10px}
     .chart h5{margin:0 0 8px 0;font-size:13px;color:#374151}
-    canvas{width:100%;height:160px;display:block}
+    canvas{width:100%;height:180px;display:block}
+    @media(max-width:700px){ canvas{height:200px} }
+    .legend-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+    .legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:#374151;background:#fff;border:1px solid #e5e7eb;border-radius:999px;padding:4px 8px}
+    .legend-swatch{width:10px;height:10px;border-radius:2px}
+
     .quotes{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px}
     .quote{font-size:13px;color:#374151;margin:0 0 10px 0}
     .quote small{display:block;color:#6b7280;margin-top:4px}
 
-    /* Lista de vacantes */
     .list-head{display:flex;align-items:center;justify-content:space-between;margin:10px 0 16px 0;gap:8px;flex-wrap:wrap}
     .count{font-weight:700;color:var(--t3-primary-600)}
     .hint{font-size:12px;color:var(--t3-muted)}
@@ -101,12 +100,10 @@
 
     footer{padding:24px 0;color:var(--t3-muted);font-size:13px}
 
-    /* Toast + TopBtn */
     .toast{position:fixed;right:16px;bottom:16px;background:#111827;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);transform:translateY(16px);opacity:0;pointer-events:none;transition:.25s ease;z-index:200}
     .toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
     .topbtn{position:fixed;right:16px;bottom:16px;background:var(--t3-primary);color:#fff;border:0;border-radius:999px;width:46px;height:46px;display:grid;place-items:center;box-shadow:var(--shadow);cursor:pointer;display:none;z-index:200}
 
-    /* Estado */
     .status-row{display:flex;align-items:center;gap:10px}
     .status-pill{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid #e5e7eb;background:#fff}
     .progress{position:relative;width:100%;height:8px;border-radius:999px;background:#eef2f7;overflow:hidden}
@@ -115,7 +112,6 @@
     .avatar{width:30px;height:30px;border-radius:999px;display:grid;place-items:center;box-shadow:0 1px 0 rgba(0,0,0,.06)}
     .avatar svg{width:18px;height:18px;display:block}
 
-    /* Modal */
     .modal-backdrop{position:fixed;inset:0;background:rgba(17,24,39,.6);display:none;z-index:300}
     .modal-backdrop.show{display:grid;place-items:center;animation:fadeIn .18s ease}
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -224,6 +220,7 @@
         <div class="aside-section chart">
           <h5>Habilidades requeridas</h5>
           <canvas id="chartSkills"></canvas>
+          <div id="legendSkills" class="legend-list" aria-hidden="true"></div>
         </div>
         <div class="aside-section quotes">
           <h5 class="aside-title" style="margin-bottom:8px">Lo que dicen</h5>
@@ -265,9 +262,11 @@
 
         <!-- Form embebido -->
         <div class="formWrap" id="formWrap" style="display:none; margin-top:12px">
-          <iframe id="formFrame" src="" title="Formulario de aplicación" style="width:100%;height:720px;border:0;border-radius:12px;box-shadow:var(--shadow)"></iframe>
+          <iframe id="formFrame" src="" title="Formulario de aplicación"
+                  style="width:100%;height:720px;border:0;border-radius:12px;box-shadow:var(--shadow)"
+                  allow="fullscreen; geolocation *; microphone *; camera *" referrerpolicy="no-referrer"></iframe>
           <div class="formFallback" id="formFallback" style="display:none;margin-top:8px">
-            Si el formulario no se visualiza, puedes abrirlo aquí:
+            <strong>No pudimos incrustar el formulario aquí.</strong> Ábrelo en esta página:
             <a id="formLink" href="#" target="_blank" rel="noopener">Abrir formulario</a>
           </div>
         </div>
@@ -285,12 +284,10 @@
 
   <script>
   (()=>{
-    /* ===== Config ===== */
-    const CSV_URL = 'positions.csv'; // Debe estar en la misma carpeta que este HTML
-    const PROMO_MESSAGES = ["Información y Ventas (800) 00 106 89","Escríbenos: info@talento3.com","Visita: www.talento3.com"];
+    const CSV_URL='positions.csv';
+    const PROMO_MESSAGES=["Información y Ventas (800) 00 106 89","Escríbenos: info@talento3.com","Visita: www.talento3.com"];
 
-    // HABILIDADES: edita/add según tus necesidades
-    const SKILL_RULES = [
+    const SKILL_RULES=[
       {key:'Inglés', rx:/\bingl[eé]s\b/i},
       {key:'Excel/Office', rx:/\b(excel|office|hojas de c[aá]lculo)\b/i},
       {key:'Liderazgo', rx:/\bliderazg|lider\b/i},
@@ -300,8 +297,7 @@
       {key:'Ventas/Negociación', rx:/\bventas?|negociaci[oó]n\b/i},
       {key:'Calidad/Seguridad', rx:/\b(calidad|seguridad|hse|sso|iso)\b/i},
     ];
-
-    const CAT_RULES = [
+    const CAT_RULES=[
       {key:'Ventas', rx:/\b(ventas?|comercial|account|ejecutiv[oa]|kpi|crm)\b/i},
       {key:'Finanzas', rx:/\b(finanzas?|contab|tesorer|cobranz|fiscal|auditor)\b/i},
       {key:'RH', rx:/\b(recursos humanos|rh|talento|recluta|nomina|capacita)\b/i},
@@ -311,39 +307,34 @@
       {key:'Marketing', rx:/\b(marketing|mercadotecnia|brand|contenido|seo|social|growth)\b/i},
       {key:'Legal', rx:/\b(legal|juridic|compliance|contratos?)\b/i},
     ];
+    const PALETTE=['#2563eb','#f59e0b','#10b981','#8b5cf6','#ef4444','#14b8a6','#eab308','#6366f1','#f97316','#22c55e','#0ea5e9','#d946ef'];
 
-    /* ===== Utils ===== */
-    const $ = sel => document.querySelector(sel);
-    const $$ = sel => Array.from(document.querySelectorAll(sel));
-    const toast = (msg, ok=false)=>{ const t=$('#toast'); t.textContent=msg; t.style.background=ok?'linear-gradient(135deg,#15803d,#16a34a)':'#111827'; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2400); };
-    const sanitize = (s='')=>String(s??'').trim();
-    const escapeHtml = (s='')=>String(s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-    const slugify = s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
-    const PALETTE=['#0ea5e9','#f97316','#22c55e','#a855f7','#ef4444','#10b981','#8b5cf6','#f59e0b','#14b8a6','#e11d48'];
-    const ownerColor = (seed='')=>{ const str=seed||'owner'; const hash=[...str].reduce((a,c)=>((a<<5)-a)+c.charCodeAt(0),0); return PALETTE[Math.abs(hash)%PALETTE.length]; };
-    const statusFromId = (id)=>{ const hash=[...id].reduce((a,c)=>((a<<5)-a)+c.charCodeAt(0),0); const idx=Math.abs(hash)%3; const labels=['Nueva','Entrevistas','Finalistas']; return { idx, label:labels[idx], progress:Math.round(((idx+1)/3)*100) }; };
+    const $=s=>document.querySelector(s);
+    const $$=s=>Array.from(document.querySelectorAll(s));
+    const toast=(m,ok=false)=>{const t=$('#toast');t.textContent=m;t.style.background=ok?'linear-gradient(135deg,#15803d,#16a34a)':'#111827';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400)}
+    const sanitize=s=>String(s??'').trim();
+    const escapeHtml=s=>String(s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    const slugify=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+    const PALETTE_AV=['#0ea5e9','#f97316','#22c55e','#8b5cf6','#ef4444','#10b981','#8b5cf6','#f59e0b','#14b8a6','#e11d48'];
+    const ownerColor=(seed='')=>{const str=seed||'owner';const hash=[...str].reduce((a,c)=>((a<<5)-a)+c.charCodeAt(0),0);return PALETTE_AV[Math.abs(hash)%PALETTE_AV.length];}
+    const statusFromId=(id)=>{const hash=[...id].reduce((a,c)=>((a<<5)-a)+c.charCodeAt(0),0);const idx=Math.abs(hash)%3;const labels=['Nueva','Entrevistas','Finalistas'];return {idx,label:labels[idx],progress:Math.round(((idx+1)/3)*100)};}
 
     const formatWithCommas=n=>String(n||'').replace(/\B(?=(\d{3})+(?!\d))/g,',');
-    const parseWholeAmount=raw=>{ if(raw==null) return null; const s=String(raw).replace(/\s+/g,''); const m=s.match(/(\d{1,3}(?:[.,]\d{3})+|\d+)(?:[.,](\d{1,2}))?/); if(!m) return null; const whole=m[1].replace(/[^\d]/g,''); return whole && /^\d+$/.test(whole) ? whole : null; };
-    const salaryPrettyFromCSV=r=>{ const w=parseWholeAmount(r); return w ? ('$'+formatWithCommas(w)+' MXN') : 'No especificado'; };
-    const extractNumber=r=>{ const w=parseWholeAmount(r); return w?parseInt(w,10):undefined; };
-    const shortByPercent=(s,pct=0.25,max=1000)=>{ if(!s) return ''; const len=s.length; let n=Math.max(1,Math.floor(len*pct)); n=Math.min(n,max); return n>=len?s:s.slice(0,n)+'…'; };
+    const parseWholeAmount=raw=>{if(raw==null)return null;const s=String(raw).replace(/\s+/g,'');const m=s.match(/(\d{1,3}(?:[.,]\d{3})+|\d+)(?:[.,](\d{1,2}))?/);if(!m)return null;const whole=m[1].replace(/[^\d]/g,'');return whole&&/^\d+$/.test(whole)?whole:null};
+    const salaryPrettyFromCSV=r=>{const w=parseWholeAmount(r);return w?('$'+formatWithCommas(w)+' MXN'):'No especificado';};
+    const extractNumber=r=>{const w=parseWholeAmount(r);return w?parseInt(w,10):undefined;};
+    const shortByPercent=(s,p=0.25,max=1000)=>{if(!s)return'';const L=s.length;let n=Math.max(1,Math.floor(L*p));n=Math.min(n,max);return n>=L?s:s.slice(0,n)+'…';};
     const parseDate=s=>{const d=new Date(s||'');return isNaN(d)?null:d;};
-
     const coinSVG=()=>`<svg class="coin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#ffd166"/><circle cx="12" cy="12" r="8" fill="#fbbf24"/><path d="M9 9.5h5.5M9 14.5h5.5M12 7v10" stroke="#8a5a00" stroke-width="1.5" stroke-linecap="round"/></svg>`;
-    const waMessage = j => `Creo que este empleo te puede interesar: ${j.puesto} 💼\nAplica aquí: ${j.link} ✨📲`;
-    const waHref = j => j?.link ? `https://api.whatsapp.com/send?text=${encodeURIComponent(waMessage(j))}` : null;
+    const waMessage=j=>`Creo que este empleo te puede interesar: ${j.puesto} 💼\nAplica aquí: ${j.link} ✨📲`;
+    const waHref=j=> j?.link ? `https://api.whatsapp.com/send?text=${encodeURIComponent(waMessage(j))}` : null;
 
-    /* Fecha y banner */
     function setHeaderDate(){ const now=new Date(); const long=now.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}); $('#dateNow').textContent='Fecha: '+long.charAt(0).toUpperCase()+long.slice(1); $('#year').textContent=now.getFullYear(); }
     function buildPromo(){ const track=$('#promoTrack'); track.innerHTML=''; const span=document.createElement('span'); span.className='msg'; span.textContent=PROMO_MESSAGES.join('   •   '); track.appendChild(span); }
 
-    /* CSV parser robusto */
     function parseCSV(text){
-      text=String(text||'').replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n');
-      if(!text.trim()) return [];
-      const firstLine=text.split('\n').find(l=>l.trim().length)||'';
-      const cands=[',',';','\t','|']; const count=(l,d)=>(l.match(new RegExp('\\'+d,'g'))||[]).length;
+      text=String(text||'').replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n'); if(!text.trim()) return [];
+      const firstLine=text.split('\n').find(l=>l.trim().length)||''; const cands=[',',';','\t','|']; const count=(l,d)=>(l.match(new RegExp('\\'+d,'g'))||[]).length;
       let best=cands[0],bestN=-1; for(const d of cands){const n=count(firstLine,d); if(n>bestN){best=d;bestN=n;}}
       function parseWith(del){const rows=[];let i=0,field='',row=[],inQ=false;const pushF=()=>{row.push(field);field=''};const pushR=()=>{rows.push(row);row=[]};
         while(i<text.length){const ch=text[i];
@@ -358,19 +349,17 @@
       const data=table.slice(1).filter(r=>r.some(x=>String(x??'').trim()!=='')); return data.map(r=>{const o={};headers.forEach((h,i)=>o[h]=r[i]!==undefined?r[i]:'');return o;});
     }
 
-    /* Normalización */
     function normalizeRows(rows){
       const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[:]/g,'').replace(/\s+/g,' ').trim();
       const idx={}; Object.keys(rows[0]).forEach(h=>{idx[norm(h)]=h});
       const H=raw=>idx[norm(raw)]??raw;
-
       return rows.map((r,i)=>{
         const puesto=sanitize(r[H('Puesto')]);
         const ciudad=sanitize(r[H('Ciudad')]);
         const lugar=sanitize(r[H('Lugar centro de trabajo')]);
         const sueldo=sanitize(r[H('Sueldo Mensual')]);
-        const creacion=sanitize(r[H('Creacion')]); // no se muestra
-        const infoFull=sanitize(r[H('Información de la Vacante:')] || r[H('Información de la Vacante')]);
+        const creacion=sanitize(r[H('Creacion')]);
+        const infoFull=sanitize(r[H('Información de la Vacante:')]||r[H('Información de la Vacante')]);
         const link=sanitize(r[H('Link para aplicar a vacante')]);
         const titular=sanitize(r[H('Titular')]);
         const id=`${slugify(puesto||'vacante')}-${i+1}`;
@@ -383,10 +372,8 @@
       });
     }
 
-    /* Estado */
     const state={jobs:[],filtered:[],page:1,pageSize:12,current:null,lastFocus:null};
 
-    /* UI */
     function populateCities(){
       const cities=[...new Set(state.jobs.map(j=>j.ciudad).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
       $('#city').innerHTML = `<option value="">Todas las ciudades</option>` + cities.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
@@ -476,24 +463,39 @@
 
       updateStats(paged.length, state.jobs.length);
       injectSchemas(paged);
-      updateCharts(items); // con la lista completa filtrada (no paginada)
+      updateCharts(items);
     }
 
-    /* Modal + Form embebido */
+    /* Modal + Form embebido con fallback */
     function showModal(){ const m=$('#modal'); m.classList.add('show'); m.removeAttribute('aria-hidden'); document.body.style.overflow='hidden'; }
     function closeModal(){ const m=$('#modal'); m.classList.remove('show'); m.setAttribute('aria-hidden','true'); document.body.style.overflow=''; hideForm(); if(state.lastFocus){state.lastFocus.focus();} }
-
     function showForm(job){
       const wrap=$('#formWrap'), frame=$('#formFrame'), fb=$('#formFallback'), link=$('#formLink');
-      if(job.link){ frame.src=job.link; link.href=job.link; wrap.style.display='block'; fb.style.display='none';
-        let loaded=false; const onLoad=()=>{loaded=true; fb.style.display='none';}; frame.addEventListener('load',onLoad,{once:true});
-        setTimeout(()=>{ if(!loaded) fb.style.display='block'; },2500);
-        setTimeout(()=>{ frame.scrollIntoView({behavior:'smooth',block:'start'}); },100);
-      }else{ wrap.style.display='none'; fb.style.display='none'; toast('No hay enlace para aplicar.'); }
-    }
-    function hideForm(){ const wrap=$('#formWrap'), frame=$('#formFrame'); wrap.style.display='none'; frame.src=''; }
+      if(!job.link){ wrap.style.display='none'; fb.style.display='none'; toast('No hay enlace para aplicar.'); return; }
+      wrap.style.display='block'; fb.style.display='none'; link.href=job.link;
 
-    function openModal(job, mode='info'){
+      // Reset + intentar cargar
+      frame.src='about:blank';
+      // Si el origen bloquea X-Frame-Options, el onload puede no disparar: ponemos timeout de diagnóstico
+      let fired=false;
+      const onLoad=()=>{fired=true; /* si carga, todo ok */};
+      frame.addEventListener('load', onLoad, {once:true});
+      frame.src=job.link;
+
+      // Diagnóstico en 1500ms: si no cargó, mostrar fallback
+      setTimeout(()=>{
+        if(!fired){
+          fb.style.display='block';
+          // Opcional: abrir en la misma pestaña
+          // window.open(job.link, '_blank', 'noopener');
+        }
+      },1500);
+
+      setTimeout(()=>{ frame.scrollIntoView({behavior:'smooth',block:'start'}); },100);
+    }
+    function hideForm(){ const wrap=$('#formWrap'), frame=$('#formFrame'); wrap.style.display='none'; frame.src='about:blank'; }
+
+    function openModal(job,mode='info'){
       state.current=job;
       $('#modalTitle').textContent=job.puesto||'Vacante';
       $('#modalMeta').innerHTML=`<span class="badge">${escapeHtml(job.ciudad||'Ubicación')}</span> <span class="badge">💰 ${salaryPrettyFromCSV(job.sueldo)}</span>`;
@@ -502,72 +504,127 @@
       $('#modalShort').textContent=job.infoShort||'';
       $('#modalFull').textContent=job.infoFull||''; $('#modalFull').style.display='none'; $('#modalToggle').textContent='Ver más';
 
-      const wa = waHref(job); const waBtn=$('#modalShareWA'); if(wa){ waBtn.href=wa; waBtn.removeAttribute('aria-disabled'); } else { waBtn.href='#'; waBtn.setAttribute('aria-disabled','true'); }
+      const wa=waHref(job); const waBtn=$('#modalShareWA'); if(wa){ waBtn.href=wa; waBtn.removeAttribute('aria-disabled'); } else { waBtn.href='#'; waBtn.setAttribute('aria-disabled','true'); }
       $('#modalApply').onclick=()=>showForm(job);
 
       showModal(); if(mode==='apply') showForm(job);
     }
-    $('#modalToggle').addEventListener('click',()=>{ const full=$('#modalFull'); const open=full.style.display!=='none'; if(open){ full.style.display='none'; $('#modalToggle').textContent='Ver más'; } else { full.style.display='block'; $('#modalToggle').textContent='Ver menos'; } });
-    $('#modalClose').addEventListener('click',()=>{ closeModal(); history.replaceState(null,'',location.pathname+location.search); });
-    $('#modal').addEventListener('click',(e)=>{ if(e.target.id==='modal'){ closeModal(); history.replaceState(null,'',location.pathname+location.search); } });
-    window.addEventListener('keydown',(e)=>{ if(e.key==='Escape'){ closeModal(); history.replaceState(null,'',location.pathname+location.search); } });
+    $('#modalToggle').addEventListener('click',()=>{const full=$('#modalFull');const open=full.style.display!=='none';if(open){full.style.display='none';$('#modalToggle').textContent='Ver más';}else{full.style.display='block';$('#modalToggle').textContent='Ver menos';}})
+    $('#modalClose').addEventListener('click',()=>{closeModal();history.replaceState(null,'',location.pathname+location.search);})
+    $('#modal').addEventListener('click',(e)=>{if(e.target.id==='modal'){closeModal();history.replaceState(null,'',location.pathname+location.search);}})
+    window.addEventListener('keydown',(e)=>{if(e.key==='Escape'){closeModal();history.replaceState(null,'',location.pathname+location.search);}})
 
     /* Schema.org JobPosting */
-    const isoDate=s=>{ const d=new Date(s||Date.now()); return isNaN(d.getTime())?new Date().toISOString():d.toISOString(); };
-    function validThrough(creacion){ const d=new Date(creacion||Date.now()); return new Date((isNaN(d)?Date.now():d.getTime()) + 60*24*3600*1000).toISOString(); }
+    const isoDate=s=>{const d=new Date(s||Date.now());return isNaN(d.getTime())?new Date().toISOString():d.toISOString();}
+    function validThrough(creacion){const d=new Date(creacion||Date.now());return new Date((isNaN(d)?Date.now():d.getTime())+60*24*3600*1000).toISOString();}
     function injectSchemas(items){
       const dump=$('#schemaDump'); dump.innerHTML='';
       items.forEach(j=>{
-        const payload={"@context":"https://schema.org/","@type":"JobPosting","title": j.puesto || "Vacante",
-          "description": (j.infoFull||'').replace(/\n/g,'<br>'),"datePosted": isoDate(j.creacion),"employmentType":"FULL_TIME",
+        const payload={"@context":"https://schema.org/","@type":"JobPosting","title":j.puesto||"Vacante",
+          "description":(j.infoFull||'').replace(/\n/g,'<br>'),"datePosted":isoDate(j.creacion),"employmentType":"FULL_TIME",
           "hiringOrganization":{"@type":"Organization","name":"Talento 3.0","sameAs":"https://talento3.com","logo":"https://talento3.com/wp-content/uploads/2024/04/LogoT3.png"},
-          "jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressLocality": j.ciudad || "México","streetAddress": j.lugar || ""}},
-          "directApply": true,"validThrough": validThrough(j.creacion),
-          "baseSalary": j.sueldo ? {"@type":"MonetaryAmount","currency":"MXN","value":{"@type":"QuantitativeValue","value": extractNumber(j.sueldo),"unitText":"MONTH"}} : undefined,
+          "jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressLocality":j.ciudad||"México","streetAddress":j.lugar||""}},
+          "directApply":true,"validThrough":validThrough(j.creacion),
+          "baseSalary": j.sueldo?{"@type":"MonetaryAmount","currency":"MXN","value":{"@type":"QuantitativeValue","value":extractNumber(j.sueldo),"unitText":"MONTH"}}:undefined,
           "applicantLocationRequirements":{"@type":"Country","name":"MX"}};
         const s=document.createElement('script'); s.type='application/ld+json'; s.textContent=JSON.stringify(payload); dump.appendChild(s);
       });
     }
 
-    /* Gráficos */
+    /* ====== GRÁFICAS SIN SUPERPOSICIÓN ====== */
+    function colorAt(i){ return PALETTE[i % PALETTE.length]; }
+
+    // Barras VERTICALES (Categorías) — sin números
+    function drawBarsVertical(canvas, labels, values){
+      if(!canvas) return; const ctx=canvas.getContext('2d');
+      const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
+      ctx.clearRect(0,0,W,H); if(!values.length) return;
+      const pairs=labels.map((l,i)=>({l:String(l), v:values[i], c:colorAt(i)})).sort((a,b)=>b.v-a.v).slice(0,8);
+      const maxV=Math.max(...pairs.map(p=>p.v))||1, n=pairs.length, pad=14;
+      const step=(W-pad*2)/n, barW=step*0.66;
+      ctx.font='12px system-ui, -apple-system, Segoe UI, Roboto, Arial';
+      pairs.forEach((p,i)=>{ const x=pad+i*step+(step-barW)/2; const h=(H-40)*(p.v/maxV); const y=H-24-h;
+        ctx.fillStyle=p.c; ctx.fillRect(x,y,barW,h);
+        // Etiqueta (sin número), truncada
+        ctx.fillStyle='#374151'; const lab=p.l.length>12?p.l.slice(0,12)+'…':p.l; ctx.fillText(lab, x, H-8);
+      });
+    }
+
+    // Barras HORIZONTALES (Ciudades) — sin números, etiqueta a la izquierda
+    function drawBarsHorizontal(canvas, labels, values){
+      if(!canvas) return; const ctx=canvas.getContext('2d');
+      const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
+      ctx.clearRect(0,0,W,H); if(!values.length) return;
+      const pairs=labels.map((l,i)=>({l:String(l), v:values[i], c:colorAt(i)})).sort((a,b)=>b.v-a.v).slice(0,8);
+      const maxV=Math.max(...pairs.map(p=>p.v))||1, n=pairs.length;
+      const top=10, bottom=10, left=90, right=10;
+      const band=(H-top-bottom)/n*0.9, gap=((H-top-bottom)/n)-band;
+      ctx.font='12px system-ui, -apple-system, Segoe UI, Roboto, Arial'; ctx.textBaseline='middle';
+      pairs.forEach((p,i)=>{ const y=top+i*(band+gap)+band/2; const len=(W-left-right)*(p.v/maxV);
+        // etiqueta izquierda
+        ctx.fillStyle='#374151'; let lab=p.l.length>18?p.l.slice(0,18)+'…':p.l; ctx.fillText(lab, 6, y);
+        // barra
+        ctx.fillStyle=p.c; ctx.fillRect(left, y-band/2, Math.max(2,len), band);
+      });
+    }
+
+    // DONA (Skills) — sin números; leyenda aparte
+    function drawDonut(canvas, labels, values, legendEl){
+      if(!canvas) return; const ctx=canvas.getContext('2d');
+      const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
+      ctx.clearRect(0,0,W,H);
+      const total=values.reduce((a,b)=>a+b,0);
+      if(!total){ if(legendEl) legendEl.innerHTML=''; return; }
+      const cx=W/2, cy=H/2, r=Math.min(W,H)/2-10, r2=r*0.58;
+      let ang= -Math.PI/2;
+      labels.forEach((lab,i)=>{
+        const val=values[i]; if(!val) return;
+        const frac=val/total; const a2=ang+2*Math.PI*frac;
+        ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,ang,a2); ctx.closePath();
+        ctx.fillStyle=colorAt(i); ctx.fill();
+        ang=a2;
+      });
+      // agujero
+      ctx.globalCompositeOperation='destination-out';
+      ctx.beginPath(); ctx.arc(cx,cy,r2,0,Math.PI*2); ctx.fill();
+      ctx.globalCompositeOperation='source-over';
+      // leyenda
+      if(legendEl){
+        legendEl.innerHTML='';
+        labels.forEach((lab,i)=>{
+          const val=values[i]; if(!val) return;
+          const item=document.createElement('span'); item.className='legend-item';
+          const sw=document.createElement('span'); sw.className='legend-swatch'; sw.style.background=colorAt(i);
+          const tx=document.createElement('span'); tx.textContent=lab;
+          item.appendChild(sw); item.appendChild(tx); legendEl.appendChild(item);
+        });
+      }
+    }
+
+    function updateCharts(items){
+      // Categorías desde títulos
+      const byCat={}; items.forEach(j=>{ const c=inferCategory(j.puesto); byCat[c]=(byCat[c]||0)+1; });
+      const catLabels=Object.keys(byCat), catVals=Object.values(byCat);
+      drawBarsVertical($('#chartCats'), catLabels, catVals);
+
+      // Ciudades (Top 8) — barras horizontales
+      const byCity={}; items.forEach(j=>{ const c=j.ciudad||'—'; byCity[c]=(byCity[c]||0)+1; });
+      const cityLabels=Object.keys(byCity), cityVals=Object.values(byCity);
+      drawBarsHorizontal($('#chartCities'), cityLabels, cityVals);
+
+      // Habilidades — dona + leyenda
+      const skillCount={}; items.forEach(j=>{ const s=countSkills(j.infoFull); Object.entries(s).forEach(([k,v])=>{skillCount[k]=(skillCount[k]||0)+v;}); });
+      const skillLabels=Object.keys(skillCount), skillVals=Object.values(skillCount);
+      drawDonut($('#chartSkills'), skillLabels, skillVals, $('#legendSkills'));
+    }
+
     function inferCategory(title){ for(const r of CAT_RULES){ if(r.rx.test(title||'')) return r.key; } return 'Otros'; }
     function countSkills(text){
       const counts={}; const s=String(text||'');
       SKILL_RULES.forEach(r=>{ const matches=s.match(r.rx); counts[r.key]=(counts[r.key]||0)+(matches? (s.match(new RegExp(r.rx,'gi'))||[]).length : 0); });
       return counts;
     }
-    function drawBarChart(canvas, labels, values, {maxBars=8, padding=12}={}){
-      if(!canvas) return; const ctx=canvas.getContext('2d');
-      const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
-      ctx.clearRect(0,0,W,H); if(!values.length) return;
-      const pairs=labels.map((l,i)=>({l: String(l), v: values[i]})).sort((a,b)=>b.v-a.v).slice(0,maxBars);
-      const maxV=Math.max(...pairs.map(p=>p.v))||1; const n=pairs.length;
-      const barW=(W-padding*2)/n*0.7; const step=(W-padding*2)/n;
-      ctx.font='12px system-ui, -apple-system, Segoe UI, Roboto, Arial';
-      pairs.forEach((p,i)=>{ const x=padding+i*step+(step-barW)/2; const h=(H-40)*(p.v/maxV); const y=H-24-h;
-        ctx.fillStyle='#0b3c5d'; ctx.fillRect(x,y,barW,h);
-        ctx.fillStyle='#111827'; ctx.fillText(String(p.v),x,y-4);
-        ctx.fillStyle='#6b7280'; const lab=p.l.length>12?p.l.slice(0,12)+'…':p.l; ctx.fillText(lab,x,H-8);
-      });
-    }
-    function updateCharts(items){
-      // Categorías
-      const byCat={}; items.forEach(j=>{ const c=inferCategory(j.puesto); byCat[c]=(byCat[c]||0)+1; });
-      const catLabels=Object.keys(byCat), catVals=Object.values(byCat);
-      drawBarChart($('#chartCats'), catLabels, catVals, {maxBars:8});
 
-      // Regiones (Top 8)
-      const byCity={}; items.forEach(j=>{ const c=j.ciudad||'—'; byCity[c]=(byCity[c]||0)+1; });
-      const cityLabels=Object.keys(byCity), cityVals=Object.values(byCity);
-      drawBarChart($('#chartCities'), cityLabels, cityVals, {maxBars:8});
-
-      // Habilidades
-      const skillCount={}; items.forEach(j=>{ const c=countSkills(j.infoFull); Object.entries(c).forEach(([k,v])=>{skillCount[k]=(skillCount[k]||0)+v;}); });
-      const skillLabels=Object.keys(skillCount), skillVals=Object.values(skillCount);
-      drawBarChart($('#chartSkills'), skillLabels, skillVals, {maxBars:8});
-    }
-
-    /* Filtros */
     function applyFilters(){
       const q=$('#q').value.trim().toLowerCase();
       const city=$('#city').value.trim().toLowerCase();
@@ -581,15 +638,13 @@
       renderList(state.filtered);
     }
 
-    /* Fetch CSV (desde la misma carpeta). Nota: con file:// algunos navegadores bloquean fetch. */
     async function loadCSV(){
       try{
         const res = await fetch(CSV_URL + '?t=' + Date.now(), {cache:'no-store'});
         if(!res.ok) throw new Error('HTTP ' + res.status);
         const text = await res.text();
-        // Si huele a HTML (por bloqueo/CORS), mostrar vacío
         const head = text.slice(0,180).toLowerCase();
-        if(head.includes('<!doctype') || head.includes('<html')) throw new Error('El navegador devolvió HTML (posible bloqueo por file://).');
+        if(head.includes('<!doctype') || head.includes('<html')) throw new Error('Respuesta HTML (posible bloqueo por file://).');
         const rows = parseCSV(text);
         if(!rows.length) throw new Error('CSV vacío o sin filas útiles.');
         state.jobs = normalizeRows(rows);
@@ -609,21 +664,18 @@
       updateStats(0,0); injectSchemas([]);
     }
 
-    /* Hash routing para abrir modal directo */
     function handleHashRoute(){ const h=location.hash||''; const m=h.match(/^#\/job\/(.+)$/); if(m){ const id=decodeURIComponent(m[1]); const job=state.jobs.find(j=>j.id===id); if(job) openModal(job,'info'); } }
     window.addEventListener('hashchange', handleHashRoute);
 
-    /* Eventos UI */
-    $('#q').addEventListener('keydown', (e)=>{ if(e.key==='Enter') applyFilters(); });
+    $('#q').addEventListener('keydown',(e)=>{ if(e.key==='Enter') applyFilters(); });
     $('#doSearch').addEventListener('click', applyFilters);
     $('#city').addEventListener('change', applyFilters);
     $('#sort').addEventListener('change', ()=>renderList(state.filtered));
     $('#refresh').addEventListener('click', loadCSV);
     $('#retry').addEventListener('click', loadCSV);
-    $('#toList').addEventListener('click', (e)=>{ e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); });
+    $('#toList').addEventListener('click',(e)=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});
     $('#loadMore').addEventListener('click', ()=>{ state.page++; renderList(state.filtered); });
 
-    // Carga manual CSV si abriste con file://
     $('#pickCsv')?.addEventListener('click', ()=> $('#fileInput').click());
     $('#fileInput')?.addEventListener('change', async e=>{
       const f=e.target.files?.[0]; if(!f) return;
@@ -637,13 +689,30 @@
       toast('Vacantes cargadas (archivo local)', true);
     });
 
-    /* Extras UI */
     const topBtn=$('#topBtn');
     window.addEventListener('scroll', ()=>{ topBtn.style.display = window.scrollY>500 ? 'grid':'none'; });
     topBtn.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-    /* Init */
-    setHeaderDate(); buildPromo(); loadCSV();
+    // SEO schemas
+    const isoDate=s=>{const d=new Date(s||Date.now());return isNaN(d.getTime())?new Date().toISOString():d.toISOString();};
+    function validThrough(creacion){const d=new Date(creacion||Date.now());return new Date((isNaN(d)?Date.now():d.getTime())+60*24*3600*1000).toISOString();}
+    function injectSchemas(items){
+      const dump=$('#schemaDump'); dump.innerHTML='';
+      items.forEach(j=>{
+        const payload={"@context":"https://schema.org/","@type":"JobPosting","title": j.puesto || "Vacante",
+          "description": (j.infoFull||'').replace(/\n/g,'<br>'),"datePosted": isoDate(j.creacion),"employmentType":"FULL_TIME",
+          "hiringOrganization":{"@type":"Organization","name":"Talento 3.0","sameAs":"https://talento3.com","logo":"https://talento3.com/wp-content/uploads/2024/04/LogoT3.png"},
+          "jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressLocality": j.ciudad || "México","streetAddress": j.lugar || ""}},
+          "directApply": true,"validThrough": validThrough(j.creacion),
+          "baseSalary": j.sueldo ? {"@type":"MonetaryAmount","currency":"MXN","value":{"@type":"QuantitativeValue","value": extractNumber(j.sueldo),"unitText":"MONTH"}} : undefined,
+          "applicantLocationRequirements":{"@type":"Country","name":"MX"}};
+        const s=document.createElement('script'); s.type='application/ld+json'; s.textContent=JSON.stringify(payload); dump.appendChild(s);
+      });
+    }
+
+    // Init
+    (function initHead(){ const now=new Date(); const fmt=now.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}); $('#dateNow').textContent='Fecha: '+fmt.charAt(0).toUpperCase()+fmt.slice(1); $('#year').textContent=now.getFullYear(); const track=$('#promoTrack'); track.innerHTML=''; const span=document.createElement('span'); span.className='msg'; span.textContent=PROMO_MESSAGES.join('   •   '); track.appendChild(span); })();
+    loadCSV();
   })();
   </script>
 </body>
