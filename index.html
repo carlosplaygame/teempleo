@@ -44,7 +44,10 @@
     .btn.secondary{background:#fff;color:var(--t3-primary);border:1px solid #e5e7eb}
     .btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35);box-shadow:none}
     .btn:hover{transform:translateY(-1px)}
-    .btn.small{padding:8px 12px;font-size:13px;border-radius:10px}
+    .btn.small{padding:8px 12px;font-size:12px;border-radius:10px}
+    .btn.tiny{padding:6px 8px;font-size:12px;border-radius:10px}
+    .btn.wa{display:inline-flex;align-items:center;gap:6px}
+    .wa-icon{width:16px;height:16px;display:inline-block}
     .searchWrap{display:grid;grid-template-columns:1fr 44px;align-items:stretch}
     .searchWrap .input{border-radius:12px 0 0 12px;border-right:0}
     .searchWrap .btn.tiny{border-radius:0 12px 12px 0;height:100%;padding:0;display:grid;place-items:center;min-width:44px}
@@ -76,9 +79,14 @@
     .legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:#374151;background:#fff;border:1px solid #e5e7eb;border-radius:999px;padding:4px 8px}
     .legend-swatch{width:10px;height:10px;border-radius:2px}
 
-    .quotes{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px}
-    .quote{font-size:13px;color:#374151;margin:0 0 10px 0}
-    .quote small{display:block;color:#6b7280;margin-top:4px}
+    .quotes{display:grid;gap:12px}
+    .tweet{border:1px solid #e5e7eb;border-radius:14px;padding:12px;background:#fff;box-shadow:var(--shadow)}
+    .tweet .head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+    .tweet .avatar{width:34px;height:34px;border-radius:999px;background:#eef2ff;display:grid;place-items:center;font-weight:700;color:#374151}
+    .tweet .name{font-weight:800;margin:0}
+    .tweet .role{font-size:12px;color:#6b7280}
+    .tweet .body{font-size:14px;color:#111827;margin-top:6px}
+    .tweet .meta{font-size:12px;color:#9ca3af;margin-top:8px}
 
     .list-head{display:flex;align-items:center;justify-content:space-between;margin:10px 0 16px 0;gap:8px;flex-wrap:wrap}
     .count{font-weight:700;color:var(--t3-primary-600)}
@@ -207,24 +215,63 @@
       </section>
 
       <aside>
-        <div class="aside-section chart">
-          <h5>Especialidades más buscadas</h5>
-          <canvas id="chartCats"></canvas>
-        </div>
-        <div class="aside-section chart">
-          <h5>Vacantes por región (Top 8)</h5>
-          <canvas id="chartCities"></canvas>
-        </div>
+        <!-- 1) HABILIDADES (dona) -->
         <div class="aside-section chart">
           <h5>Habilidades requeridas</h5>
           <canvas id="chartSkills"></canvas>
           <div id="legendSkills" class="legend-list" aria-hidden="true"></div>
         </div>
-        <div class="aside-section quotes">
+
+        <!-- 2) REGIONES (barras horizontales mejor lectura) -->
+        <div class="aside-section chart">
+          <h5>Vacantes por región (Top 8)</h5>
+          <canvas id="chartCities"></canvas>
+        </div>
+
+        <!-- 3) ESPECIALIDADES (burbujas) -->
+        <div class="aside-section chart">
+          <h5>Especialidades más buscadas</h5>
+          <canvas id="chartCats"></canvas>
+        </div>
+
+        <!-- Testimonios estilo tweet -->
+        <div class="aside-section">
           <h5 class="aside-title" style="margin-bottom:8px">Lo que dicen</h5>
-          <p class="quote">“Proceso claro y ágil; recibimos postulaciones relevantes.”<small>Gerente de Operaciones</small></p>
-          <p class="quote">“Excelente visibilidad y candidatos calificados.”<small>Directora de RH</small></p>
-          <p class="quote">“La asistencia con IA elevó la tasa de respuesta.”<small>Líder de Selección</small></p>
+          <div class="quotes">
+            <article class="tweet">
+              <div class="head">
+                <div class="avatar">MG</div>
+                <div>
+                  <p class="name">María Gómez</p>
+                  <div class="role">Gerente de Operaciones</div>
+                </div>
+              </div>
+              <div class="body">“Proceso claro y ágil; recibimos postulaciones relevantes.”</div>
+              <div class="meta">Hace 3 días · CDMX</div>
+            </article>
+            <article class="tweet">
+              <div class="head">
+                <div class="avatar">AC</div>
+                <div>
+                  <p class="name">Ana Caballero</p>
+                  <div class="role">Directora de RH</div>
+                </div>
+              </div>
+              <div class="body">“Excelente visibilidad y candidatos calificados.”</div>
+              <div class="meta">Hace 1 semana · Monterrey</div>
+            </article>
+            <article class="tweet">
+              <div class="head">
+                <div class="avatar">JL</div>
+                <div>
+                  <p class="name">Javier López</p>
+                  <div class="role">Líder de Selección</div>
+                </div>
+              </div>
+              <div class="body">“La asistencia con IA elevó la tasa de respuesta.”</div>
+              <div class="meta">Hace 2 semanas · Guadalajara</div>
+            </article>
+          </div>
         </div>
       </aside>
     </div>
@@ -239,6 +286,7 @@
   <button id="topBtn" class="topbtn" aria-label="Volver arriba" title="Volver arriba">↑</button>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
+  <!-- Modal -->
   <div id="modal" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <header>
@@ -257,19 +305,12 @@
         <div id="modalFull" style="white-space:pre-wrap; margin-top:8px; display:none" class="desc"></div>
         <button class="btn secondary" id="modalToggle" style="margin-top:8px">Ver más</button>
 
-        <div class="formWrap" id="formWrap" style="display:none; margin-top:12px">
-          <iframe id="formFrame" src="" title="Formulario de aplicación"
-                  style="width:100%;height:720px;border:0;border-radius:12px;box-shadow:var(--shadow)"
-                  allow="fullscreen; geolocation *; microphone *; camera *" referrerpolicy="no-referrer"></iframe>
-          <div class="formFallback" id="formFallback" style="display:none;margin-top:8px">
-            <strong>No pudimos incrustar el formulario aquí.</strong> Ábrelo en esta página:
-            <a id="formLink" href="#" target="_blank" rel="noopener">Abrir formulario</a>
-          </div>
-        </div>
-
         <div class="actions">
           <button id="modalApply" class="btn">Aplicar</button>
-          <a id="modalShareWA" class="btn secondary" href="#" target="_blank" rel="noopener" title="WhatsApp (compartir con un amigo o conocido)">WhatsApp (compartir con un amigo)</a>
+          <a id="modalShareWA" class="btn secondary small wa" href="#" target="_blank" rel="noopener" title="Compartir por WhatsApp (con un amigo o conocido)">
+            <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#25D366" d="M20.5 3.5A10 10 0 0 0 3.6 18.4L3 21l2.7-.6A10 10 0 1 0 20.5 3.5z"/><path fill="#fff" d="M17.2 14.4c-.2.6-1 .9-1.6.6-1.7-.8-3.7-2.1-4.8-4-.4-.6-.1-1.4.5-1.6l.6-.3c.3-.2.4-.6.3-.9l-.4-1.2c-.2-.6-.9-1-.1-1.1h.2c.4 0 .8.3 1 .6l.5.9c.2.4.1.9-.2 1.2l-.2.2c-.2.2-.2.5-.1.7.4.7 1.3 1.9 2.9 2.6.2.1.5 0 .7-.1l.3-.3c.3-.3.8-.4 1.2-.2l1 .4c.4.2.7.5.6.9l-.4 1.2z"/></svg>
+            WhatsApp (compartir con un amigo)
+          </a>
         </div>
       </div>
     </div>
@@ -289,6 +330,10 @@
       {key:'Análisis de datos', rx:/\b(datos|analytics?|power ?bi|tableau|sql|python)\b/i},
       {key:'Ventas/Negociación', rx:/\bventas?|negociaci[oó]n\b/i},
       {key:'Calidad/Seguridad', rx:/\b(calidad|seguridad|hse|sso|iso)\b/i},
+      {key:'Atención al cliente', rx:/\bcliente|atenci[oó]n\b/i},
+      {key:'Compras/Procura', rx:/\bcompras?|procura|suministro\b/i},
+      {key:'Planeación', rx:/\bplaneaci[oó]n|planeaci[oó]n\b/i},
+      {key:'Comunicación', rx:/\bcomunicaci[oó]n\b/i},
     ];
     const CAT_RULES=[
       {key:'Ventas', rx:/\b(ventas?|comercial|account|ejecutiv[oa]|kpi|crm)\b/i},
@@ -299,6 +344,8 @@
       {key:'Logística', rx:/\b(logistic|almacen|suministro|cadena|transporte|rutas)\b/i},
       {key:'Marketing', rx:/\b(marketing|mercadotecnia|brand|contenido|seo|social|growth)\b/i},
       {key:'Legal', rx:/\b(legal|juridic|compliance|contratos?)\b/i},
+      {key:'Compras', rx:/\bcompras?|procura\b/i},
+      {key:'Atención al cliente', rx:/\bcliente|atenci[oó]n\b/i},
     ];
     const PALETTE=['#2563eb','#f59e0b','#10b981','#8b5cf6','#ef4444','#14b8a6','#eab308','#6366f1','#f97316','#22c55e','#0ea5e9','#d946ef'];
     const PALETTE_AV=['#0ea5e9','#f97316','#22c55e','#8b5cf6','#ef4444','#10b981','#8b5cf6','#f59e0b','#14b8a6','#e11d48'];
@@ -325,6 +372,7 @@
     function setHeaderDate(){ const now=new Date(); const long=now.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}); $('#dateNow').textContent='Fecha: '+long.charAt(0).toUpperCase()+long.slice(1); $('#year').textContent=now.getFullYear(); }
     function buildPromo(){ const track=$('#promoTrack'); track.innerHTML=''; const span=document.createElement('span'); span.className='msg'; span.textContent=PROMO_MESSAGES.join('   •   '); track.appendChild(span); }
 
+    /* ---------- CSV PARSER ---------- */
     function parseCSV(text){
       text=String(text||'').replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n'); if(!text.trim()) return [];
       const firstLine=text.split('\n').find(l=>l.trim().length)||''; const cands=[',',';','\t','|']; const count=(l,d)=>(l.match(new RegExp('\\'+d,'g'))||[]).length;
@@ -404,7 +452,12 @@
 
       paged.forEach(j=>{
         const wa=waHref(j);
-        const shareBtn = wa ? `<a class="btn secondary" href="${wa}" target="_blank" rel="noopener" title="WhatsApp (compartir con un amigo o conocido)">WhatsApp (compartir con un amigo)</a>` : `<button class="btn secondary" disabled>WhatsApp (compartir)</button>`;
+        const shareBtn = wa
+          ? `<a class="btn secondary small wa" href="${wa}" target="_blank" rel="noopener" title="Compartir por WhatsApp (con un amigo o conocido)">
+               <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#25D366" d="M20.5 3.5A10 10 0 0 0 3.6 18.4L3 21l2.7-.6A10 10 0 1 0 20.5 3.5z"/><path fill="#fff" d="M17.2 14.4c-.2.6-1 .9-1.6.6-1.7-.8-3.7-2.1-4.8-4-.4-.6-.1-1.4.5-1.6l.6-.3c.3-.2.4-.6.3-.9l-.4-1.2c-.2-.6-.9-1-.1-1.1h.2c.4 0 .8.3 1 .6l.5.9c.2.4.1.9-.2 1.2l-.2.2c-.2.2-.2.5-.1.7.4.7 1.3 1.9 2.9 2.6.2.1.5 0 .7-.1l.3-.3c.3-.3.8-.4 1.2-.2l1 .4c.4.2.7.5.6.9l-.4 1.2z"/></svg>
+               WhatsApp (compartir con un amigo)
+             </a>`
+          : `<button class="btn secondary small" disabled>WhatsApp (compartir)</button>`;
         const applyBtn = j.link ? `<button class="btn" data-open-apply="${j.id}">Aplicar</button>` : `<button class="btn" disabled>Aplicar</button>`;
         const statusPct=j.status.progress, statusLbl=j.status.label;
 
@@ -459,23 +512,15 @@
       updateCharts(items);
     }
 
+    /* ---------- Modal / Aplicar (abre nueva pestaña) ---------- */
     function showModal(){ const m=$('#modal'); m.classList.add('show'); m.removeAttribute('aria-hidden'); document.body.style.overflow='hidden'; }
-    function closeModal(){ const m=$('#modal'); m.classList.remove('show'); m.setAttribute('aria-hidden','true'); document.body.style.overflow=''; hideForm(); if(state.lastFocus){state.lastFocus.focus();} }
-    function showForm(job){
-      const wrap=$('#formWrap'), frame=$('#formFrame'), fb=$('#formFallback'), link=$('#formLink');
-      if(!job.link){ wrap.style.display='none'; fb.style.display='none'; toast('No hay enlace para aplicar.'); return; }
-      wrap.style.display='block'; fb.style.display='none'; link.href=job.link;
+    function closeModal(){ const m=$('#modal'); m.classList.remove('show'); m.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if(state.lastFocus){state.lastFocus.focus();} }
 
-      frame.src='about:blank';
-      let fired=false;
-      const onLoad=()=>{fired=true;};
-      frame.addEventListener('load', onLoad, {once:true});
-      frame.src=job.link;
-
-      setTimeout(()=>{ if(!fired){ fb.style.display='block'; } },1500);
-      setTimeout(()=>{ frame.scrollIntoView({behavior:'smooth',block:'start'}); },100);
+    function openApply(job){
+      if(!job?.link){ toast('No hay enlace para aplicar.'); return; }
+      toast('Abriendo formulario de aplicación…', true);
+      window.open(job.link, '_blank', 'noopener');
     }
-    function hideForm(){ const wrap=$('#formWrap'), frame=$('#formFrame'); wrap.style.display='none'; frame.src='about:blank'; }
 
     function openModal(job,mode='info'){
       state.current=job;
@@ -487,15 +532,16 @@
       $('#modalFull').textContent=job.infoFull||''; $('#modalFull').style.display='none'; $('#modalToggle').textContent='Ver más';
 
       const wa=waHref(job); const waBtn=$('#modalShareWA'); if(wa){ waBtn.href=wa; waBtn.removeAttribute('aria-disabled'); } else { waBtn.href='#'; waBtn.setAttribute('aria-disabled','true'); }
-      $('#modalApply').onclick=()=>showForm(job);
+      $('#modalApply').onclick=()=>openApply(job);
 
-      showModal(); if(mode==='apply') showForm(job);
+      showModal(); if(mode==='apply') openApply(job);
     }
     $('#modalToggle').addEventListener('click',()=>{const full=$('#modalFull');const open=full.style.display!=='none';if(open){full.style.display='none';$('#modalToggle').textContent='Ver más';}else{full.style.display='block';$('#modalToggle').textContent='Ver menos';}})
     $('#modalClose').addEventListener('click',()=>{closeModal();history.replaceState(null,'',location.pathname+location.search);})
     $('#modal').addEventListener('click',(e)=>{if(e.target.id==='modal'){closeModal();history.replaceState(null,'',location.pathname+location.search);}})
     window.addEventListener('keydown',(e)=>{if(e.key==='Escape'){closeModal();history.replaceState(null,'',location.pathname+location.search);}})
 
+    /* ---------- Schema.org JobPosting ---------- */
     const isoDate=s=>{const d=new Date(s||Date.now());return isNaN(d.getTime())?new Date().toISOString():d.toISOString();}
     function validThrough(creacion){const d=new Date(creacion||Date.now());return new Date((isNaN(d)?Date.now():d.getTime())+60*24*3600*1000).toISOString();}
     function injectSchemas(items){
@@ -512,38 +558,10 @@
       });
     }
 
-    /* ====== CHARTS (coloridos y sin solapamientos) ====== */
+    /* ---------- GRÁFICAS ---------- */
     function colorAt(i){ return PALETTE[i % PALETTE.length]; }
 
-    function drawBarsVertical(canvas, labels, values){
-      if(!canvas) return; const ctx=canvas.getContext('2d');
-      const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
-      ctx.clearRect(0,0,W,H); if(!values.length) return;
-      const pairs=labels.map((l,i)=>({l:String(l), v:values[i], c:colorAt(i)})).sort((a,b)=>b.v-a.v).slice(0,8);
-      const maxV=Math.max(...pairs.map(p=>p.v))||1, n=pairs.length, pad=14;
-      const step=(W-pad*2)/n, barW=step*0.66;
-      ctx.font='12px system-ui, -apple-system, Segoe UI, Roboto, Arial';
-      pairs.forEach((p,i)=>{ const x=pad+i*step+(step-barW)/2; const h=(H-40)*(p.v/maxV); const y=H-24-h;
-        ctx.fillStyle=p.c; ctx.fillRect(x,y,barW,h);
-        ctx.fillStyle='#374151'; const lab=p.l.length>12?p.l.slice(0,12)+'…':p.l; ctx.fillText(lab, x, H-8);
-      });
-    }
-
-    function drawBarsHorizontal(canvas, labels, values){
-      if(!canvas) return; const ctx=canvas.getContext('2d');
-      const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
-      ctx.clearRect(0,0,W,H); if(!values.length) return;
-      const pairs=labels.map((l,i)=>({l:String(l), v:values[i], c:colorAt(i)})).sort((a,b)=>b.v-a.v).slice(0,8);
-      const maxV=Math.max(...pairs.map(p=>p.v))||1, n=pairs.length;
-      const top=10, bottom=10, left=90, right=10;
-      const band=(H-top-bottom)/n*0.9, gap=((H-top-bottom)/n)-band;
-      ctx.font='12px system-ui, -apple-system, Segoe UI, Roboto, Arial'; ctx.textBaseline='middle';
-      pairs.forEach((p,i)=>{ const y=top+i*(band+gap)+band/2; const len=(W-left-right)*(p.v/maxV);
-        ctx.fillStyle='#374151'; let lab=p.l.length>18?p.l.slice(0,18)+'…':p.l; ctx.fillText(lab, 6, y);
-        ctx.fillStyle=p.c; ctx.fillRect(left, y-band/2, Math.max(2,len), band);
-      });
-    }
-
+    // DONA (Skills) — sin números; leyenda aparte
     function drawDonut(canvas, labels, values, legendEl){
       if(!canvas) return; const ctx=canvas.getContext('2d');
       const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
@@ -574,38 +592,85 @@
       }
     }
 
+    // Barras HORIZONTALES (Ciudades) con etiqueta pequeña, y dentro si hay espacio
+    function drawBarsHorizontal(canvas, labels, values){
+      if(!canvas) return; const ctx=canvas.getContext('2d');
+      const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
+      ctx.clearRect(0,0,W,H); if(!values.length) return;
+      const pairs=labels.map((l,i)=>({l:String(l), v:values[i], c:colorAt(i)})).sort((a,b)=>b.v-a.v).slice(0,8);
+      const maxV=Math.max(...pairs.map(p=>p.v))||1, n=pairs.length;
+      const top=8, bottom=8, left=12, right=10;
+      const band=((H-top-bottom)/n)*0.82, gap=((H-top-bottom)/n)-band;
+      ctx.textBaseline='middle';
+      pairs.forEach((p,i)=>{
+        const y=top+i*(band+gap)+band/2; const full=(W-left-right); const len=full*(p.v/maxV);
+        // barra
+        ctx.fillStyle=p.c; ctx.fillRect(left, y-band/2, Math.max(3,len), band);
+        // texto
+        const label=(p.l.length>24? p.l.slice(0,24)+'…' : p.l);
+        ctx.font='11px system-ui, -apple-system, Segoe UI, Roboto, Arial';
+        if(len>80){
+          ctx.fillStyle='#ffffff';
+          ctx.fillText(label, left+8, y);
+        }else{
+          ctx.fillStyle='#374151';
+          ctx.fillText(label, left+len+6, y);
+        }
+      });
+    }
+
+    // Burbujas (Especialidades)
+    function drawBubbles(canvas, labels, values){
+      if(!canvas) return; const ctx=canvas.getContext('2d');
+      const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
+      ctx.clearRect(0,0,W,H); if(!values.length) return;
+      const pairs=labels.map((l,i)=>({l:String(l), v:values[i]})).filter(p=>p.v>0).sort((a,b)=>b.v-a.v).slice(0,12);
+      const maxV=Math.max(...pairs.map(p=>p.v))||1;
+      // layout simple en filas
+      const cols=3, cellW=W/cols, rows=Math.ceil(pairs.length/cols), cellH=H/Math.max(1,rows);
+      ctx.font='12px system-ui, -apple-system, Segoe UI, Roboto, Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      pairs.forEach((p,idx)=>{
+        const col=idx%cols, row=Math.floor(idx/cols);
+        const cx=cellW*col + cellW/2, cy=cellH*row + cellH/2;
+        const r=Math.max(14, Math.min(cellW,cellH)/2 * Math.sqrt(p.v/maxV));
+        const color=colorAt(idx);
+        ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fillStyle=color; ctx.fill();
+        // etiqueta
+        ctx.fillStyle='#0b1220';
+        const lab=p.l.length>16? p.l.slice(0,16)+'…' : p.l;
+        ctx.fillText(lab, cx, cy);
+      });
+    }
+
     function updateCharts(items){
-      try{
-        const byCat={}; items.forEach(j=>{ const c=inferCategory(j.puesto); byCat[c]=(byCat[c]||0)+1; });
-        const catLabels=Object.keys(byCat), catVals=Object.values(byCat);
-        drawBarsVertical($('#chartCats'), catLabels, catVals);
-      }catch(e){ console.warn('Chart cats error', e); }
+      // Skills (dona)
+      const skillCount={}; items.forEach(j=>{ const s=countSkills(j.infoFull); Object.entries(s).forEach(([k,v])=>{skillCount[k]=(skillCount[k]||0)+v;}); });
+      const skillLabels=Object.keys(skillCount), skillVals=Object.values(skillCount);
+      drawDonut($('#chartSkills'), skillLabels, skillVals, $('#legendSkills'));
 
-      try{
-        const byCity={}; items.forEach(j=>{ const c=j.ciudad||'—'; byCity[c]=(byCity[c]||0)+1; });
-        const cityLabels=Object.keys(byCity), cityVals=Object.values(byCity);
-        drawBarsHorizontal($('#chartCities'), cityLabels, cityVals);
-      }catch(e){ console.warn('Chart cities error', e); }
+      // Ciudades (barras horizontales)
+      const byCity={}; items.forEach(j=>{ const c=j.ciudad||'—'; byCity[c]=(byCity[c]||0)+1; });
+      const cityLabels=Object.keys(byCity), cityVals=Object.values(byCity);
+      drawBarsHorizontal($('#chartCities'), cityLabels, cityVals);
 
-      try{
-        const skillCount={}; items.forEach(j=>{ const s=countSkills(j.infoFull); Object.entries(s).forEach(([k,v])=>{skillCount[k]=(skillCount[k]||0)+v;}); });
-        const skillLabels=Object.keys(skillCount), skillVals=Object.values(skillCount);
-        drawDonut($('#chartSkills'), skillLabels, skillVals, $('#legendSkills'));
-      }catch(e){ console.warn('Chart skills error', e); }
+      // Categorías (burbujas)
+      const byCat={}; items.forEach(j=>{ const c=inferCategory(j.puesto); byCat[c]=(byCat[c]||0)+1; });
+      const catLabels=Object.keys(byCat), catVals=Object.values(byCat);
+      drawBubbles($('#chartCats'), catLabels, catVals);
     }
 
     function inferCategory(title){ for(const r of CAT_RULES){ if(r.rx.test(title||'')) return r.key; } return 'Otros'; }
     function countSkills(text){
-      // FIX: no usar new RegExp(r.rx,'gi'); usar el source del regex para re-compilar con flags, o mejor r.rx globalmente
       const counts={}; const s=String(text||'');
       SKILL_RULES.forEach(r=>{
-        const rx = new RegExp(r.rx.source, 'gi');  // <- corrección
+        const rx = new RegExp(r.rx.source, 'gi');
         const matches = s.match(rx);
         counts[r.key] = (counts[r.key]||0) + (matches ? matches.length : 0);
       });
       return counts;
     }
 
+    /* ---------- Filtros & carga ---------- */
     function applyFilters(){
       const q=$('#q').value.trim().toLowerCase();
       const city=$('#city').value.trim().toLowerCase();
@@ -648,6 +713,7 @@
     function handleHashRoute(){ const h=location.hash||''; const m=h.match(/^#\/job\/(.+)$/); if(m){ const id=decodeURIComponent(m[1]); const job=state.jobs.find(j=>j.id===id); if(job) openModal(job,'info'); } }
     window.addEventListener('hashchange', handleHashRoute);
 
+    // Eventos UI
     $('#q').addEventListener('keydown',(e)=>{ if(e.key==='Enter') applyFilters(); });
     $('#doSearch').addEventListener('click', applyFilters);
     $('#city').addEventListener('change', applyFilters);
