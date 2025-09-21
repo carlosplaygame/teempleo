@@ -1,6 +1,5 @@
 <!-- Talento 3.0 JobBoard — HTML listo para pegar en una página de WordPress (bloque HTML) -->
-<!-- Ajusta el atributo data-csv al host EXACTO de tu sitio (con o sin www). 
-     Si usas el plugin/bridge, deja: https://talento3.com/?t3_csv=empleos -->
+<!-- Ajusta data-csv al host EXACTO. Si usas el bridge, deja: https://talento3.com/?t3_csv=empleos -->
 <div id="t3jb" data-csv="https://talento3.com/?t3_csv=empleos" data-cache="false">
   <style>
     /* ======= Estilos encapsulados ======= */
@@ -13,17 +12,16 @@
     #t3jb .wrap{max-width:1200px;margin:0 auto;padding:16px}
     #t3jb .nav{display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
     #t3jb .brand{display:flex;align-items:center;gap:12px}
+    #t3jb .brand a.logo{display:inline-flex;align-items:center}
     #t3jb .brand img{height:44px;width:auto;border-radius:8px;background:#fff;padding:6px}
     #t3jb .headtext{display:flex;flex-direction:column;gap:2px}
     #t3jb .headtext h1{margin:0;font-size:18px;letter-spacing:.2px}
     #t3jb .headtext .date{font-size:13px;opacity:.9}
     #t3jb .stats{display:flex;align-items:center;gap:8px;color:#fff;font-size:14px;opacity:.95}
-
-    /* Agrupa contador + botón en el header */
     #t3jb .head-actions{display:flex;align-items:center;gap:12px}
 
     #t3jb .toolbar{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
-    @media(min-width:800px){#t3jb .toolbar{grid-template-columns:2.4fr 1.2fr auto auto}}
+    @media(min-width:900px){#t3jb .toolbar{grid-template-columns:2.2fr 1.1fr 1.1fr auto auto}}
     #t3jb .input, #t3jb select{border:1px solid #e5e7eb;background:#fff;border-radius:12px;padding:12px 14px;outline:none;box-shadow:inset 0 1px 0 rgba(0,0,0,.02);font-size:14px}
     #t3jb .btn{appearance:none;border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;transition:.15s transform ease,.15s box-shadow ease;box-shadow:0 8px 24px rgba(0,0,0,.08);background:#f39c12;color:#1b1f23}
     #t3jb .btn.secondary{background:#fff;color:#0b3c5d;border:1px solid #e5e7eb}
@@ -48,6 +46,10 @@
     #t3jb .promo .msg a{color:#7a4b00}
 
     #t3jb main{padding:24px 0}
+    #t3jb .list-head{display:flex;align-items:center;justify-content:space-between;margin:10px 0 16px 0;gap:8px;flex-wrap:wrap}
+    #t3jb .count{font-weight:700;color:#0e4a77}
+    #t3jb .hint{font-size:12px;color:#6b7280}
+
     #t3jb .grid{display:grid;grid-template-columns:1fr;gap:16px}
     @media(min-width:700px){#t3jb .grid{grid-template-columns:repeat(2,1fr)}}
     @media(min-width:1024px){#t3jb .grid{grid-template-columns:repeat(3,1fr)}}
@@ -64,9 +66,6 @@
     #t3jb .empty{text-align:center;background:#fff;border-radius:18px;padding:28px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
     #t3jb footer{padding:24px 0;color:#6b7280;font-size:13px}
 
-    #t3jb .list-head{display:flex;align-items:center;justify-content:space-between;margin:10px 0 16px 0;gap:8px;flex-wrap:wrap}
-    #t3jb .count{font-weight:700;color:#0e4a77}
-    #t3jb .hint{font-size:12px;color:#6b7280}
     #t3jb .toast{position:fixed;right:16px;bottom:16px;background:#111827;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08);transform:translateY(16px);opacity:0;pointer-events:none;transition:.25s ease;z-index:200}
     #t3jb .toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
     #t3jb .topbtn{position:fixed;right:16px;bottom:16px;background:#0b3c5d;color:#fff;border:0;border-radius:999px;width:46px;height:46px;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.08);cursor:pointer;display:none;z-index:200}
@@ -91,6 +90,9 @@
     #t3jb .modal .meta{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
     #t3jb .modal .badge{background:#eef2ff;color:#3730a3}
     #t3jb .modal .actions{margin-top:12px}
+
+    /* Paginación */
+    #t3jb .pager{display:flex;justify-content:center;margin:18px 0}
   </style>
 
   <a class="sr-only" href="#t3jb-contenido">Saltar al contenido</a>
@@ -99,14 +101,15 @@
     <div class="wrap">
       <div class="nav">
         <div class="brand">
-          <img src="https://talento3.com/wp-content/uploads/2024/04/LogoT3.png" alt="Logo Talento 3.0" />
+          <!-- LOGO CLICABLE -->
+          <a class="logo" href="https://talento3.com/" aria-label="Ir a Talento 3.0">
+            <img src="https://talento3.com/wp-content/uploads/2024/04/LogoT3.png" alt="Logo Talento 3.0" />
+          </a>
           <div class="headtext">
             <h1>Executive JobBoard | Vacantes Disponibles</h1>
             <div class="date" id="t3jb-dateNow">Fecha: —</div>
           </div>
         </div>
-
-        <!-- Vacantes + nuevo botón "Regresar a Talento 3.0" -->
         <div class="head-actions">
           <div class="stats"><span>Vacantes:</span><strong id="t3jb-total">0</strong></div>
           <a href="https://talento3.com/" class="btn ghost small" aria-label="Regresar a Talento 3.0">Regresar a Talento 3.0</a>
@@ -120,6 +123,15 @@
         </div>
         <select id="t3jb-city" aria-label="Filtrar por ciudad">
           <option value="">Todas las ciudades</option>
+        </select>
+        <!-- Ordenar -->
+        <select id="t3jb-sort" aria-label="Ordenar resultados">
+          <option value="dateDesc">Ordenar: Recientes</option>
+          <option value="dateAsc">Ordenar: Antiguas</option>
+          <option value="salaryDesc">Sueldo: mayor a menor</option>
+          <option value="salaryAsc">Sueldo: menor a mayor</option>
+          <option value="az">A–Z (puesto)</option>
+          <option value="za">Z–A (puesto)</option>
         </select>
         <button class="btn" id="t3jb-refresh" title="Recargar datos">Actualizar</button>
         <button class="btn ghost" id="t3jb-toList" title="Ir a listado">Listado</button>
@@ -142,10 +154,16 @@
   <main class="wrap" id="t3jb-contenido">
     <div class="list-head">
       <div class="count" id="t3jb-count">Mostrando 0 de 0 vacantes</div>
-      <div class="hint">Consejo: filtra por ciudad y usa “Más info” para ver la descripción completa.</div>
+      <div class="hint">
+        Consejo: filtra por ciudad y usa “Más info” para ver la descripción completa.
+        · <button class="btn secondary small" id="t3jb-sitemapBtn" title="Descargar sitemap de vacantes (XML)">Descargar sitemap jobs</button>
+      </div>
     </div>
 
     <section id="t3jb-cards" class="grid" aria-live="polite"></section>
+    <div id="t3jb-pager" class="pager" style="display:none">
+      <button class="btn secondary" id="t3jb-loadMore">Cargar más</button>
+    </div>
 
     <div id="t3jb-empty" class="empty" style="display:none">
       <h3>No pude encontrar <code>positions.csv</code></h3>
@@ -199,7 +217,7 @@
   const $ = sel => root.querySelector(sel);
   const $$ = sel => Array.from(root.querySelectorAll(sel));
 
-  // Bloquea rutas file:// por accidente
+  // Bloquea rutas file://
   const srcCsv = root.dataset.csv || '';
   if (/^file:/i.test(srcCsv)) {
     const box = $('#t3jb-empty');
@@ -211,13 +229,7 @@
     throw new Error('CSV file:// not allowed');
   }
 
-  const showToast = (msg, ok=false) => {
-    const t = $('#t3jb-toast');
-    t.textContent = msg;
-    t.style.background = ok ? 'linear-gradient(135deg,#15803d,#16a34a)' : '#111827';
-    t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'), 2400);
-  };
+  const showToast = (msg, ok=false) => { const t = $('#t3jb-toast'); t.textContent = msg; t.style.background = ok ? 'linear-gradient(135deg,#15803d,#16a34a)' : '#111827'; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2400); };
   const sanitize = (s='') => String(s ?? '').trim();
   const escapeHtml = (s='') => s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   const slugify = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
@@ -227,22 +239,18 @@
 
   // Sueldo $8,500 MXN
   const formatWithCommas = (n) => String(n||'').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  const parseWholeAmount = (raw) => {
-    if(raw == null) return null;
-    const s = String(raw).replace(/\s+/g,'');
-    const m = s.match(/(\d{1,3}(?:[.,]\d{3})+|\d+)(?:[.,](\d{1,2}))?/);
-    if(!m) return null;
-    const whole = m[1].replace(/[^\d]/g,'');
-    return whole && /^\d+$/.test(whole) ? whole : null;
-  };
-  const salaryPrettyFromCSV = raw => { const whole = parseWholeAmount(raw); return whole ? ('$'+formatWithCommas(whole)+' MXN') : 'No especificado'; };
+  const parseWholeAmount = (raw) => { if(raw == null) return null; const s = String(raw).replace(/\s+/g,''); const m = s.match(/(\d{1,3}(?:[.,]\d{3})+|\d+)(?:[.,](\d{1,2}))?/); if(!m) return null; const whole = m[1].replace(/[^\d]/g,''); return whole && /^\d+$/.test(whole) ? whole : null; };
+  const salaryPrettyFromCSV = raw => { const w = parseWholeAmount(raw); return w ? ('$'+formatWithCommas(w)+' MXN') : 'No especificado'; };
   const extractNumber = raw => { const w=parseWholeAmount(raw); return w ? parseInt(w,10) : undefined; };
   const coinSVG = () => `<svg class="coin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#ffd166"/><circle cx="12" cy="12" r="8" fill="#fbbf24"/><path d="M9 9.5h5.5M9 14.5h5.5M12 7v10" stroke="#8a5a00" stroke-width="1.5" stroke-linecap="round"/></svg>`;
 
   // Descripción corta 25% (máx 1000)
   const shortByPercent = (s, pct=0.25, max=1000) => { if(!s) return ''; const len=s.length; let n=Math.max(1,Math.floor(len*pct)); n=Math.min(n,max); return n>=len ? s : s.slice(0,n)+'…'; };
 
-  // CSV robusto (autodetecta , ; tab | y BOM)
+  // Fechas
+  const parseDate = (s) => { const d = new Date(s || ''); return isNaN(d) ? null : d; };
+
+  // CSV robusto
   function parseCSV(text){
     text = String(text || '').replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
     if (!text.trim()) return [];
@@ -275,7 +283,7 @@
     return dataRows.map(r=>{ const o={}; headers.forEach((h,i)=>o[h]= r[i]!==undefined? r[i]:'' ); return o; });
   }
 
-  // URLs a probar (data-csv y fallback local)
+  // URLs a probar
   function csvUrls(){
     const fromAttr = root.dataset.csv && String(root.dataset.csv).trim();
     const absolute = (() => { if(!fromAttr) return null; try { return new URL(fromAttr, location.origin).toString(); } catch { return fromAttr; }})();
@@ -291,7 +299,8 @@
     return text;
   }
 
-  const state = { jobs: [], filtered: [], current:null };
+  // Estado
+  const state = { jobs: [], filtered: [], current:null, page:1, pageSize:12, lastFocus: null };
 
   function normalizeRows(rows){
     const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[:]/g,'').replace(/\s+/g,' ').trim();
@@ -303,15 +312,17 @@
       const ciudad=sanitize(r[H('Ciudad')]);
       const lugar=sanitize(r[H('Lugar centro de trabajo')]);
       const sueldo=sanitize(r[H('Sueldo Mensual')]);
-      const creacion=sanitize(r[H('Creacion')]);
+      const creacion=sanitize(r[H('Creacion')]); // se usa para ordenar, no se muestra
       const infoFull=sanitize(r[H('Información de la Vacante:')] || r[H('Información de la Vacante')]);
       const link=sanitize(r[H('Link para aplicar a vacante')]);
-      const titular=sanitize(r[H('Titular')]); // no mostramos nombre, solo avatar
+      const titular=sanitize(r[H('Titular')]); // avatar anónimo por color
       const id=`${slugify(puesto||'vacante')}-${i+1}`;
       const status=statusFromId(id);
       const infoShort=shortByPercent(infoFull,0.25,1000);
       const color=ownerColor(titular);
-      return { id, puesto, ciudad, lugar, sueldo, creacion, infoFull, infoShort, link, titular, status, color };
+      const createdAt=parseDate(creacion);
+      const salaryNum = extractNumber(sueldo) || 0;
+      return { id, puesto, ciudad, lugar, sueldo, creacion, createdAt, salaryNum, infoFull, infoShort, link, titular, status, color };
     });
   }
 
@@ -344,15 +355,47 @@
   function waMessage(j){ return `Creo que este empleo te puede interesar: ${j.puesto} 💼\nAplica aquí: ${j.link} ✨📲`; }
   function waHref(j){ return j?.link ? `https://api.whatsapp.com/send?text=${encodeURIComponent(waMessage(j))}` : null; }
 
+  // -------- Ordenamiento --------
+  function sortItems(arr){
+    const mode = $('#t3jb-sort').value || 'dateDesc';
+    const byTitle = (a,b)=> (a.puesto||'').localeCompare(b.puesto||'', 'es');
+    const byDate = (a,b)=> ((b.createdAt?.getTime()||0) - (a.createdAt?.getTime()||0));
+    const byDateAsc = (a,b)=> ((a.createdAt?.getTime()||0) - (b.createdAt?.getTime()||0));
+    const bySal = (a,b)=> (b.salaryNum - a.salaryNum);
+    const bySalAsc = (a,b)=> (a.salaryNum - b.salaryNum);
+    const copy = [...arr];
+    switch(mode){
+      case 'dateAsc': copy.sort(byDateAsc); break;
+      case 'salaryDesc': copy.sort(bySal); break;
+      case 'salaryAsc': copy.sort(bySalAsc); break;
+      case 'az': copy.sort(byTitle); break;
+      case 'za': copy.sort((a,b)=>byTitle(b,a)); break;
+      default: copy.sort(byDate); // dateDesc
+    }
+    return copy;
+  }
+
+  // -------- Paginación --------
+  function getPaged(items){
+    const end = state.page * state.pageSize;
+    const slice = items.slice(0, end);
+    const hasMore = end < items.length;
+    $('#t3jb-pager').style.display = hasMore ? 'flex' : 'none';
+    return slice;
+  }
+
   function renderList(items){
     const wrap=$('#t3jb-cards'); wrap.innerHTML='';
     if(!items.length){ $('#t3jb-empty').style.display = state.jobs.length ? 'none':'block'; updateStats(0,state.jobs.length); return; }
     $('#t3jb-empty').style.display='none';
 
-    const frag=document.createDocumentFragment();
-    items.forEach(j=>{
-      const statusPct=j.status.progress, statusLbl=j.status.label;
+    // ordena + pagina
+    const sorted = sortItems(items);
+    const paged = getPaged(sorted);
 
+    const frag=document.createDocumentFragment();
+    paged.forEach(j=>{
+      const statusPct=j.status.progress, statusLbl=j.status.label;
       const shareWA = waHref(j);
       const shareBtn = shareWA
         ? `<a class="btn secondary" href="${shareWA}" target="_blank" rel="noopener" title="WhatsApp (compartir con un amigo o conocido)">WhatsApp (compartir con un amigo)</a>`
@@ -365,7 +408,7 @@
       const card=document.createElement('article'); card.className='card';
       card.innerHTML = `
         <div class="badge">${escapeHtml(j.ciudad || 'Ubicación no especificada')}</div>
-        <h3 class="title"><a href="#" data-open-info="${j.id}">${escapeHtml(j.puesto || 'Puesto no especificado')}</a></h3>
+        <h3 class="title"><a href="#/job/${encodeURIComponent(j.id)}" data-open-info="${j.id}">${escapeHtml(j.puesto || 'Puesto no especificado')}</a></h3>
         <div class="muted">${escapeHtml(j.lugar || 'Centro de trabajo no especificado')}</div>
 
         <div class="owner" title="Ejecutivo/a asignado">
@@ -400,28 +443,32 @@
     // Listeners de modal
     wrap.querySelectorAll('[data-open-info]').forEach(el=>el.addEventListener('click', (e)=>{
       e.preventDefault();
+      state.lastFocus = e.currentTarget;
       const id=e.currentTarget.getAttribute('data-open-info');
-      const job=state.jobs.find(x=>x.id===id); if(job) openModal(job, 'info');
+      const job=state.jobs.find(x=>x.id===id); if(job){ openModal(job,'info'); location.hash = '#/job/'+encodeURIComponent(id); }
     }));
     wrap.querySelectorAll('[data-open-apply]').forEach(el=>el.addEventListener('click', (e)=>{
       e.preventDefault();
+      state.lastFocus = e.currentTarget;
       const id=e.currentTarget.getAttribute('data-open-apply');
-      const job=state.jobs.find(x=>x.id===id); if(job) openModal(job, 'apply');
+      const job=state.jobs.find(x=>x.id===id); if(job){ openModal(job,'apply'); location.hash = '#/job/'+encodeURIComponent(id); }
     }));
+
+    updateStats(paged.length, state.jobs.length);
+    injectSchemas(paged);
   }
 
   // Modal
   function openModal(job, mode='info'){
     state.current = job;
     $('#t3jb-modalTitle').textContent = job.puesto || 'Vacante';
+    // No mostramos fecha de publicación en la ficha
     $('#t3jb-modalMeta').innerHTML = `
       <span class="badge">${escapeHtml(job.ciudad || 'Ubicación')}</span>
       <span class="badge">${coinSVG()} <span>${salaryPrettyFromCSV(job.sueldo)}</span></span>
-      ${job.creacion?`<span class="badge">Publicado: ${escapeHtml(job.creacion)}</span>`:''}
     `;
     $('#t3jb-modalStatus').textContent = 'Estado: ' + job.status.label;
     $('#t3jb-modalProg').style.width = job.status.progress + '%';
-
     $('#t3jb-modalShort').textContent = job.infoShort || '';
     $('#t3jb-modalFull').textContent = job.infoFull || '';
     $('#t3jb-modalFull').style.display = 'none';
@@ -440,7 +487,7 @@
     if(mode==='apply'){ setTimeout(()=>applyBtn.focus(), 60); }
   }
   function showModal(){ const m=$('#t3jb-modal'); m.classList.add('show'); m.removeAttribute('aria-hidden'); document.body.style.overflow='hidden'; }
-  function closeModal(){ const m=$('#t3jb-modal'); m.classList.remove('show'); m.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+  function closeModal(){ const m=$('#t3jb-modal'); m.classList.remove('show'); m.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if(state.lastFocus){ state.lastFocus.focus(); } }
 
   $('#t3jb-modalToggle').addEventListener('click', ()=>{
     const full=$('#t3jb-modalFull');
@@ -448,9 +495,21 @@
     if(isOpen){ full.style.display='none'; $('#t3jb-modalToggle').textContent='Ver más'; }
     else { full.style.display='block'; $('#t3jb-modalToggle').textContent='Ver menos'; }
   });
-  $('#t3jb-modalClose').addEventListener('click', closeModal);
-  $('#t3jb-modal').addEventListener('click', (e)=>{ if(e.target.id==='t3jb-modal') closeModal(); });
-  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+  $('#t3jb-modalClose').addEventListener('click', ()=>{ closeModal(); history.replaceState(null,'',location.pathname+location.search); });
+  $('#t3jb-modal').addEventListener('click', (e)=>{ if(e.target.id==='t3jb-modal') { closeModal(); history.replaceState(null,'',location.pathname+location.search); } });
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeModal(); history.replaceState(null,'',location.pathname+location.search); } });
+
+  // Profundidad: abrir modal desde hash #/job/{id}
+  function handleHashRoute(){
+    const h=location.hash||'';
+    const m=h.match(/^#\/job\/(.+)$/);
+    if(m){
+      const id=decodeURIComponent(m[1]);
+      const job=state.jobs.find(j=>j.id===id);
+      if(job) openModal(job,'info');
+    }
+  }
+  window.addEventListener('hashchange', handleHashRoute);
 
   // Schema JobPosting
   const isoDate=s=>{ const d=new Date(s||Date.now()); return isNaN(d.getTime())?new Date().toISOString():d.toISOString(); };
@@ -460,7 +519,9 @@
     items.forEach(j=>{
       const payload={
         "@context":"https://schema.org/","@type":"JobPosting","title": j.puesto || "Vacante",
-        "description": (j.infoFull||'').replace(/\n/g,'<br>'),"datePosted": isoDate(j.creacion),"employmentType":"FULL_TIME",
+        "description": (j.infoFull||'').replace(/\n/g,'<br>'),
+        "datePosted": isoDate(j.creacion),
+        "employmentType":"FULL_TIME",
         "hiringOrganization":{"@type":"Organization","name":"Talento 3.0","sameAs":"https://talento3.com","logo":"https://talento3.com/wp-content/uploads/2024/04/LogoT3.png"},
         "jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressLocality": j.ciudad || "México","streetAddress": j.lugar || ""}},
         "directApply": true,"validThrough": validThrough(j.creacion),
@@ -471,10 +532,11 @@
     });
   }
 
-  // Filtros
+  // Filtros + Orden + Paginación
   function applyFilters(){
     const q=$('#t3jb-q').value.trim().toLowerCase();
     const city=$('#t3jb-city').value.trim().toLowerCase();
+    state.page = 1; // reset paginación al filtrar/ordenar
     state.filtered = state.jobs.filter(j=>{
       const okCity=!city || (j.ciudad||'').toLowerCase()===city;
       const txt=[j.puesto,j.infoFull,j.lugar,j.ciudad,j.sueldo,j.titular].join(' ').toLowerCase();
@@ -482,8 +544,27 @@
       return okCity && okQ;
     });
     renderList(state.filtered);
-    updateStats(state.filtered.length, state.jobs.length);
-    injectSchemas(state.filtered);
+  }
+
+  // Sitemap (XML) — genera enlaces con hash #/job/{id}
+  function generateSitemap(){
+    const base = location.origin + location.pathname.replace(/index\.html?$/,'');
+    const urls = state.jobs.map(j => `${base}#/job/${encodeURIComponent(j.id)}`);
+    const lastmod = new Date().toISOString().slice(0,10);
+    const xmlHeader = `<?xml version="1.0" encoding="UTF-8"?>`;
+    const urlsetOpen = `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
+    const urlsetClose = `</urlset>`;
+    const body = urls.map(u => `<url><loc>${u}</loc><lastmod>${lastmod}</lastmod><changefreq>daily</changefreq><priority>0.6</priority></url>`).join('');
+    const xml = [xmlHeader, urlsetOpen, body, urlsetClose].join('\n');
+    const blob = new Blob([xml], {type:'application/xml'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'sitemap-jobs.xml';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+    showToast('Sitemap generado (XML descargado)', true);
   }
 
   // Carga CSV
@@ -505,18 +586,29 @@
     }
     const rows = parseCSV(text);
     state.jobs = normalizeRows(rows);
-    setHeaderDate(); buildPromo(); populateCities(); applyFilters();
+    setHeaderDate(); buildPromo(); populateCities();
+    applyFilters(); // esto llama renderList
     $('#t3jb-empty').style.display='none';
     showToast('Vacantes cargadas', true);
+    // si hay hash con job, abrir
+    handleHashRoute();
   }
 
-  // Eventos
+  // Eventos UI
   $('#t3jb-q').addEventListener('keydown', (e)=>{ if(e.key==='Enter') applyFilters(); });
   $('#t3jb-doSearch').addEventListener('click', applyFilters);
   $('#t3jb-city').addEventListener('change', applyFilters);
+  $('#t3jb-sort').addEventListener('change', ()=>{ renderList(state.filtered); });
   $('#t3jb-refresh').addEventListener('click', loadCSV);
   $('#t3jb-retry').addEventListener('click', loadCSV);
   $('#t3jb-toList').addEventListener('click', (e)=>{ e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); });
+  $('#t3jb-sitemapBtn').addEventListener('click', generateSitemap);
+
+  // Paginación: Cargar más
+  $('#t3jb-loadMore').addEventListener('click', ()=>{
+    state.page++;
+    renderList(state.filtered);
+  });
 
   const topBtn=$('#t3jb-topBtn');
   window.addEventListener('scroll', ()=>{ topBtn.style.display = window.scrollY>500 ? 'grid':'none'; });
