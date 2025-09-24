@@ -343,25 +343,9 @@
     const CSV_URL='positions.csv';
     const SITE_URL='https://talento3.com/empleos';
     const PROMO_MESSAGES=["Información y Ventas (800) 00 106 89","Escríbenos: info@talento3.com","Visita: www.talento3.com"];
-    const ORG = {
-      "@context":"https://schema.org",
-      "@type":"Organization",
-      "name":"Talento 3.0",
-      "url":"https://talento3.com",
-      "logo":"https://talento3.com/wp-content/uploads/2024/04/LogoT3.png",
-      "sameAs":[ "https://www.linkedin.com/company/talento3", "https://talento3.com" ]
-    };
-    const WEBSITE = {
-      "@context":"https://schema.org",
-      "@type":"WebSite",
-      "name":"Executive JobBoard",
-      "url": SITE_URL,
-      "potentialAction": {
-        "@type":"SearchAction",
-        "target": SITE_URL + "?q={search_term_string}",
-        "query-input":"required name=search_term_string"
-      }
-    };
+
+    const ORG = {"@context":"https://schema.org","@type":"Organization","name":"Talento 3.0","url":"https://talento3.com","logo":"https://talento3.com/wp-content/uploads/2024/04/LogoT3.png"};
+    const WEBSITE = {"@context":"https://schema.org","@type":"WebSite","name":"Executive JobBoard","url": SITE_URL};
 
     const SKILL_RULES=[
       {key:'Inglés', rx:/\bingl[eé]s\b/i},
@@ -406,7 +390,60 @@
     const salaryPrettyFromCSV=r=>{const w=parseWholeAmount(r);return w?('$'+formatWithCommas(w)+' MXN'):'No especificado';};
     const extractNumber=r=>{const w=parseWholeAmount(r);return w?parseInt(w,10):undefined;};
     const shortByPercent=(s,p=0.25,max=1000)=>{if(!s)return'';const L=s.length;let n=Math.max(1,Math.floor(L*p));n=Math.min(n,max);return n>=L?s:s.slice(0,n)+'…';};
-    const parseDate=s=>{const d=new Date(s||'');return isNaN(d)?null:d;};
+
+    /* ====== PARSER ROBUSTO PARA FECHAS “Creación” ====== */
+    function parseDateSmart(input){
+      if(!input) return null;
+      let s=String(input).trim().toLowerCase()
+        .replace(/[,]/g,' ')
+        .replace(/\s+de\s+/g,' ') // "10 de septiembre de 2025" -> "10 septiembre 2025"
+        .replace(/\s+/g,' ')
+        .trim();
+
+      const monthMap={
+        'enero':1,'febrero':2,'marzo':3,'abril':4,'mayo':5,'junio':6,
+        'julio':7,'agosto':8,'septiembre':9,'setiembre':9,'octubre':10,'noviembre':11,'diciembre':12,
+        'jan':1,'ene':1,'feb':2,'mar':3,'abr':4,'may':5,'jun':6,'jul':7,'ago':8,'sep':9,'oct':10,'nov':11,'dic':12
+      };
+
+      // dd mes yyyy (e.g., "10 septiembre 2025")
+      let m = s.match(/^(\d{1,2})\s+([a-záéíóú]+)\s+(\d{4})$/i);
+      if(m){
+        const d=parseInt(m[1],10), mon=monthMap[m[2]]||0, y=parseInt(m[3],10);
+        if(mon>=1 && mon<=12) return new Date(y, mon-1, d);
+      }
+
+      // yyyy-mm-dd o yyyy/mm/dd
+      m = s.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/);
+      if(m){
+        const y=+m[1], mon=+m[2], d=+m[3];
+        if(mon>=1&&mon<=12&&d>=1&&d<=31) return new Date(y, mon-1, d);
+      }
+
+      // dd-mm-yyyy o dd/mm/yyyy
+      m = s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/);
+      if(m){
+        let d=+m[1], mon=+m[2], y=+m[3];
+        // Ambigüedad con MM/DD/YYYY: si la primera parte >12, asumimos DD/MM/YYYY (MX)
+        if(d>=1 && d<=31 && mon>=1 && mon<=12) return new Date(y, mon-1, d);
+      }
+
+      // mm/dd/yyyy (solo si claramente mm<=12 y dd<=31 y parece formato US)
+      m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if(m){
+        const mm=+m[1], dd=+m[2], y=+m[3];
+        if(mm>=1 && mm<=12 && dd>=1 && dd<=31){
+          // Si día <= 12 y es ambigua, preferimos DD/MM/YYYY (MX); por eso solo tomamos este branch si parece US claro (mm>12 falla).
+          // Ya cubierto arriba con dd/mm/yyyy; aquí solo por completitud.
+          return new Date(y, mm-1, dd);
+        }
+      }
+
+      // Fallback: new Date intenta parsear
+      const d=new Date(input);
+      return isNaN(d)?null:d;
+    }
+
     const coinSVG=()=>`<svg class="coin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#ffd166"/><circle cx="12" cy="12" r="8" fill="#fbbf24"/><path d="M9 9.5h5.5M9 14.5h5.5M12 7v10" stroke="#8a5a00" stroke-width="1.5" stroke-linecap="round"/></svg>`;
     const waMessage=j=>`Creo que este empleo te puede interesar: ${j.puesto} 💼\nAplica aquí: ${j.link} ✨📲`;
     const waHref=j=> j?.link ? `https://api.whatsapp.com/send?text=${encodeURIComponent(waMessage(j))}` : null;
@@ -441,7 +478,8 @@
         const ciudad=sanitize(r[H('Ciudad')]);
         const lugar=sanitize(r[H('Lugar centro de trabajo')]);
         const sueldo=sanitize(r[H('Sueldo Mensual')]);
-        const creacion=sanitize(r[H('Creacion')]); // no se muestra en UI
+        const creacionRaw = r[H('Creacion')] ?? r[H('Creación')] ?? r[H('creacion')] ?? r[H('creación')];
+        const creacion=sanitize(creacionRaw);
         const infoFull=sanitize(r[H('Información de la Vacante:')]||r[H('Información de la Vacante')]);
         const link=sanitize(r[H('Link para aplicar a vacante')]);
         const titular=sanitize(r[H('Titular')]);
@@ -449,7 +487,7 @@
         const status=statusFromId(id);
         const infoShort=shortByPercent(infoFull,0.25,1000);
         const color=ownerColor(titular);
-        const createdAt=parseDate(creacion);
+        const createdAt=parseDateSmart(creacion);   // <- usar parser robusto
         const salaryNum=extractNumber(sueldo)||0;
         return {id,puesto,ciudad,lugar,sueldo,creacion,createdAt,salaryNum,infoFull,infoShort,link,titular,status,color};
       });
@@ -467,9 +505,9 @@
     function sortItems(arr){
       const mode=$('#sort').value||'dateDesc';
       const byTitle=(a,b)=>(a.puesto||'').localeCompare(b.puesto||'','es');
-      const timeOrMin=a=> (a.createdAt && !isNaN(a.createdAt.getTime())) ? a.createdAt.getTime() : -Infinity;
-      const byDate=(a,b)=> (timeOrMin(b) - timeOrMin(a));      // descendente (recientes primero)
-      const byDateAsc=(a,b)=> (timeOrMin(a) - timeOrMin(b));   // ascendente
+      const tOrMin=a=> (a.createdAt instanceof Date && !isNaN(a.createdAt)) ? a.createdAt.getTime() : -Infinity;
+      const byDate=(a,b)=> (tOrMin(b) - tOrMin(a));      // descendente (recientes primero)
+      const byDateAsc=(a,b)=> (tOrMin(a) - tOrMin(b));   // ascendente
       const bySal=(a,b)=>(b.salaryNum-a.salaryNum);
       const bySalAsc=(a,b)=>(a.salaryNum-b.salaryNum);
       const copy=[...arr];
@@ -552,7 +590,7 @@
       }));
 
       updateStats(paged.length, state.jobs.length);
-      injectSchemas(sortItems(items)); // JSON-LD también en orden reciente
+      injectSchemas(sortItems(items)); // JSON-LD también en orden elegido
       updateCharts(items);
     }
 
@@ -586,8 +624,8 @@
     window.addEventListener('keydown',(e)=>{if(e.key==='Escape'){closeModal();history.replaceState(null,'',location.pathname+location.search);}})
 
     /* ---------- Schema.org JobPosting / ItemList ---------- */
-    const isoDate=s=>{const d=new Date(s||Date.now());return isNaN(d.getTime())?new Date().toISOString():d.toISOString();}
-    function validThrough(creacion){const d=new Date(creacion||Date.now());return new Date((isNaN(d)?Date.now():d.getTime())+60*24*3600*1000).toISOString();}
+    const isoDate=s=>{ const d=parseDateSmart(s)||new Date(); return d.toISOString(); }
+    function validThrough(creacion){ const d=parseDateSmart(creacion)||new Date(); return new Date(d.getTime()+60*24*3600*1000).toISOString(); }
     function jobToSchema(j, pos){
       const url = SITE_URL + '#/job/' + encodeURIComponent(j.id);
       const payload = {
@@ -636,15 +674,11 @@
 
     function injectSchemas(items){
       const dump=$('#schemaDump'); dump.innerHTML='';
-
-      // Datos base: Organization y WebSite
       const sOrg=document.createElement('script'); sOrg.type='application/ld+json'; sOrg.textContent=JSON.stringify(ORG);
       const sWeb=document.createElement('script'); sWeb.type='application/ld+json'; sWeb.textContent=JSON.stringify(WEBSITE);
       dump.appendChild(sOrg); dump.appendChild(sWeb);
-
       if(!items || !items.length) return;
 
-      // ItemList para la colección (ordenado por recientes)
       const itemList = {
         "@context":"https://schema.org",
         "@type":"ItemList",
@@ -659,7 +693,6 @@
       const sList=document.createElement('script'); sList.type='application/ld+json'; sList.textContent=JSON.stringify(itemList);
       dump.appendChild(sList);
 
-      // JobPosting por cada vacante
       const frag=document.createDocumentFragment();
       items.forEach((j,i)=>{
         const s=document.createElement('script'); s.type='application/ld+json';
@@ -671,7 +704,6 @@
 
     /* ---------- GRÁFICAS ---------- */
     function colorAt(i){ return PALETTE[i % PALETTE.length]; }
-
     function drawDonut(canvas, labels, values, legendEl){
       if(!canvas) return; const ctx=canvas.getContext('2d');
       const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
@@ -701,7 +733,6 @@
         });
       }
     }
-
     function drawBarsHorizontal(canvas, labels, values){
       if(!canvas) return; const ctx=canvas.getContext('2d');
       const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
@@ -725,7 +756,6 @@
         }
       });
     }
-
     function drawBubbles(canvas, labels, values){
       if(!canvas) return; const ctx=canvas.getContext('2d');
       const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
@@ -744,7 +774,6 @@
         ctx.fillStyle='#0b1220'; ctx.fillText(lab, cx, cy);
       });
     }
-
     function updateCharts(items){
       const skillCount={}; items.forEach(j=>{ const s=countSkills(j.infoFull); Object.entries(s).forEach(([k,v])=>{skillCount[k]=(skillCount[k]||0)+v;}); });
       const skillLabels=Object.keys(skillCount), skillVals=Object.values(skillCount);
@@ -758,7 +787,6 @@
       const catLabels=Object.keys(byCat), catVals=Object.values(byCat);
       drawBubbles($('#chartCats'), catLabels, catVals);
     }
-
     function inferCategory(title){ for(const r of CAT_RULES){ if(r.rx.test(title||'')) return r.key; } return 'Otros'; }
     function countSkills(text){
       const counts={}; const s=String(text||'');
@@ -795,10 +823,10 @@
         if(!rows.length) throw new Error('CSV vacío o sin filas útiles.');
         state.jobs = normalizeRows(rows);
 
-        // Orden inicial: SIEMPRE recientes primero
+        // Orden inicial: SIEMPRE recientes primero (con parseDateSmart)
         state.jobs = state.jobs.sort((a,b)=>{
-          const ta = (a.createdAt && !isNaN(a.createdAt.getTime())) ? a.createdAt.getTime() : -Infinity;
-          const tb = (b.createdAt && !isNaN(b.createdAt.getTime())) ? b.createdAt.getTime() : -Infinity;
+          const ta = (a.createdAt instanceof Date && !isNaN(a.createdAt)) ? a.createdAt.getTime() : -Infinity;
+          const tb = (b.createdAt instanceof Date && !isNaN(b.createdAt)) ? b.createdAt.getTime() : -Infinity;
           return tb - ta;
         });
 
@@ -838,8 +866,8 @@
       const rows=parseCSV(text);
       if(!rows.length){ toast('CSV vacío o inválido'); return; }
       state.jobs = normalizeRows(rows).sort((a,b)=>{
-        const ta = (a.createdAt && !isNaN(a.createdAt.getTime())) ? a.createdAt.getTime() : -Infinity;
-        const tb = (b.createdAt && !isNaN(b.createdAt.getTime())) ? b.createdAt.getTime() : -Infinity;
+        const ta = (a.createdAt instanceof Date && !isNaN(a.createdAt)) ? a.createdAt.getTime() : -Infinity;
+        const tb = (b.createdAt instanceof Date && !isNaN(b.createdAt)) ? b.createdAt.getTime() : -Infinity;
         return tb - ta;
       });
       state.filtered=[...state.jobs]; state.page=1;
