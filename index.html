@@ -181,7 +181,7 @@
           <option value="">Todas las ciudades</option>
         </select>
         <select id="sort" aria-label="Ordenar resultados">
-          <option value="dateDesc">Ordenar: Recientes</option>
+          <option value="dateDesc" selected>Ordenar: Recientes</option>
           <option value="dateAsc">Ordenar: Antiguas</option>
           <option value="salaryDesc">Sueldo: mayor a menor</option>
           <option value="salaryAsc">Sueldo: menor a mayor</option>
@@ -463,11 +463,13 @@
     }
     function updateStats(show,total){ $('#total').textContent=total; $('#countLabel').textContent=`Mostrando ${show} de ${total} vacantes`; }
 
+    /* ---------- ORDEN: SIEMPRE MÁS RECIENTES PRIMERO ---------- */
     function sortItems(arr){
       const mode=$('#sort').value||'dateDesc';
       const byTitle=(a,b)=>(a.puesto||'').localeCompare(b.puesto||'','es');
-      const byDate=(a,b)=>((b.createdAt?.getTime()||0)-(a.createdAt?.getTime()||0));
-      const byDateAsc=(a,b)=>((a.createdAt?.getTime()||0)-(b.createdAt?.getTime()||0));
+      const timeOrMin=a=> (a.createdAt && !isNaN(a.createdAt.getTime())) ? a.createdAt.getTime() : -Infinity;
+      const byDate=(a,b)=> (timeOrMin(b) - timeOrMin(a));      // descendente (recientes primero)
+      const byDateAsc=(a,b)=> (timeOrMin(a) - timeOrMin(b));   // ascendente
       const bySal=(a,b)=>(b.salaryNum-a.salaryNum);
       const bySalAsc=(a,b)=>(a.salaryNum-b.salaryNum);
       const copy=[...arr];
@@ -477,10 +479,11 @@
         case 'salaryAsc': copy.sort(bySalAsc); break;
         case 'az': copy.sort(byTitle); break;
         case 'za': copy.sort((a,b)=>byTitle(b,a)); break;
-        default: copy.sort(byDate);
+        default: copy.sort(byDate); // por defecto: recientes primero
       }
       return copy;
     }
+
     function getPaged(items){ const end=state.page*state.pageSize; const slice=items.slice(0,end); $('#pager').style.display = end<items.length?'flex':'none'; return slice; }
 
     function renderList(items){
@@ -549,8 +552,7 @@
       }));
 
       updateStats(paged.length, state.jobs.length);
-      // SEO: inyectamos JSON-LD para TODA la lista filtrada (no solo la página)
-      injectSchemas(items);
+      injectSchemas(sortItems(items)); // JSON-LD también en orden reciente
       updateCharts(items);
     }
 
@@ -642,7 +644,7 @@
 
       if(!items || !items.length) return;
 
-      // ItemList para la colección
+      // ItemList para la colección (ordenado por recientes)
       const itemList = {
         "@context":"https://schema.org",
         "@type":"ItemList",
@@ -792,6 +794,14 @@
         const rows = parseCSV(text);
         if(!rows.length) throw new Error('CSV vacío o sin filas útiles.');
         state.jobs = normalizeRows(rows);
+
+        // Orden inicial: SIEMPRE recientes primero
+        state.jobs = state.jobs.sort((a,b)=>{
+          const ta = (a.createdAt && !isNaN(a.createdAt.getTime())) ? a.createdAt.getTime() : -Infinity;
+          const tb = (b.createdAt && !isNaN(b.createdAt.getTime())) ? b.createdAt.getTime() : -Infinity;
+          return tb - ta;
+        });
+
         state.filtered = [...state.jobs];
         state.page = 1;
         populateCities(); renderList(state.filtered);
@@ -827,7 +837,11 @@
       const text=await f.text();
       const rows=parseCSV(text);
       if(!rows.length){ toast('CSV vacío o inválido'); return; }
-      state.jobs = normalizeRows(rows);
+      state.jobs = normalizeRows(rows).sort((a,b)=>{
+        const ta = (a.createdAt && !isNaN(a.createdAt.getTime())) ? a.createdAt.getTime() : -Infinity;
+        const tb = (b.createdAt && !isNaN(b.createdAt.getTime())) ? b.createdAt.getTime() : -Infinity;
+        return tb - ta;
+      });
       state.filtered=[...state.jobs]; state.page=1;
       populateCities(); renderList(state.filtered);
       $('#empty').style.display='none';
