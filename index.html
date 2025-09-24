@@ -4,12 +4,22 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Executive JobBoard | Vacantes Disponibles</title>
-  <meta name="description" content="Executive JobBoard | Vacantes disponibles. Filtra, busca y aplica a vacantes de Talento 3.0.">
+  <meta name="description" content="Vacantes abiertas de Talento 3.0. Filtra, busca y aplica fácil. Optimizado para Google Jobs.">
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="https://talento3.com/empleos" />
   <link rel="icon" href="https://talento3.com/wp-content/uploads/2025/09/Logo-Talento-3.0-FAVICON.001.png" />
+  <!-- Open Graph -->
   <meta property="og:title" content="Executive JobBoard | Vacantes Disponibles">
   <meta property="og:description" content="Vacantes abiertas. Filtra por ciudad y palabras clave.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://talento3.com/wp-content/uploads/2024/04/LogoT3.png">
+  <meta property="og:url" content="https://talento3.com/empleos">
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Executive JobBoard | Vacantes Disponibles">
+  <meta name="twitter:description" content="Vacantes abiertas de Talento 3.0. Filtra, busca y aplica fácil.">
+  <meta name="twitter:image" content="https://talento3.com/wp-content/uploads/2024/04/LogoT3.png">
+
   <style>
     :root{
       --t3-primary:#0b3c5d; --t3-primary-600:#0e4a77;
@@ -131,6 +141,14 @@
     .modal .meta{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
     .modal .badge{background:#eef2ff;color:#3730a3}
     .modal .actions{margin-top:12px}
+    /* móvil: tarjetas más amplias */
+    @media(max-width:480px){
+      .grid{grid-template-columns:1fr}
+      .card{padding:16px}
+      .title{font-size:17px}
+      .desc{font-size:14px}
+      .actions .btn{padding:10px 12px}
+    }
   </style>
 </head>
 <body>
@@ -211,6 +229,7 @@
           </div>
         </div>
 
+        <!-- Los JSON-LD se inyectan aquí para SEO -->
         <div id="schemaDump" style="display:none"></div>
       </section>
 
@@ -222,7 +241,7 @@
           <div id="legendSkills" class="legend-list" aria-hidden="true"></div>
         </div>
 
-        <!-- 2) REGIONES (barras horizontales mejor lectura) -->
+        <!-- 2) REGIONES (barras horizontales) -->
         <div class="aside-section chart">
           <h5>Vacantes por región (Top 8)</h5>
           <canvas id="chartCities"></canvas>
@@ -279,7 +298,7 @@
 
   <footer>
     <div class="wrap">
-      © <span id="year"></span> Talento 3.0. Portal administrado por <strong>Talento 3.0 | automations</strong>. · Optimizado para SEO.
+      © <span id="year"></span> Talento 3.0. Portal administrado por <strong>administrador</strong>. · Optimizado para SEO y Google Jobs.
     </div>
   </footer>
 
@@ -316,10 +335,33 @@
     </div>
   </div>
 
+  <!-- Agente IA (Jotform: Clara) -->
+  <script src='https://cdn.jotfor.ms/agent/embedjs/0199263e5f5a7199a83430be0e855bd38fa8/embed.js'></script>
+
   <script>
   (()=>{
     const CSV_URL='positions.csv';
+    const SITE_URL='https://talento3.com/empleos';
     const PROMO_MESSAGES=["Información y Ventas (800) 00 106 89","Escríbenos: info@talento3.com","Visita: www.talento3.com"];
+    const ORG = {
+      "@context":"https://schema.org",
+      "@type":"Organization",
+      "name":"Talento 3.0",
+      "url":"https://talento3.com",
+      "logo":"https://talento3.com/wp-content/uploads/2024/04/LogoT3.png",
+      "sameAs":[ "https://www.linkedin.com/company/talento3", "https://talento3.com" ]
+    };
+    const WEBSITE = {
+      "@context":"https://schema.org",
+      "@type":"WebSite",
+      "name":"Executive JobBoard",
+      "url": SITE_URL,
+      "potentialAction": {
+        "@type":"SearchAction",
+        "target": SITE_URL + "?q={search_term_string}",
+        "query-input":"required name=search_term_string"
+      }
+    };
 
     const SKILL_RULES=[
       {key:'Inglés', rx:/\bingl[eé]s\b/i},
@@ -332,7 +374,7 @@
       {key:'Calidad/Seguridad', rx:/\b(calidad|seguridad|hse|sso|iso)\b/i},
       {key:'Atención al cliente', rx:/\bcliente|atenci[oó]n\b/i},
       {key:'Compras/Procura', rx:/\bcompras?|procura|suministro\b/i},
-      {key:'Planeación', rx:/\bplaneaci[oó]n|planeaci[oó]n\b/i},
+      {key:'Planeación', rx:/\bplaneaci[oó]n\b/i},
       {key:'Comunicación', rx:/\bcomunicaci[oó]n\b/i},
     ];
     const CAT_RULES=[
@@ -399,7 +441,7 @@
         const ciudad=sanitize(r[H('Ciudad')]);
         const lugar=sanitize(r[H('Lugar centro de trabajo')]);
         const sueldo=sanitize(r[H('Sueldo Mensual')]);
-        const creacion=sanitize(r[H('Creacion')]); // no se muestra
+        const creacion=sanitize(r[H('Creacion')]); // no se muestra en UI
         const infoFull=sanitize(r[H('Información de la Vacante:')]||r[H('Información de la Vacante')]);
         const link=sanitize(r[H('Link para aplicar a vacante')]);
         const titular=sanitize(r[H('Titular')]);
@@ -458,7 +500,11 @@
                WhatsApp (compartir con un amigo)
              </a>`
           : `<button class="btn secondary small" disabled>WhatsApp (compartir)</button>`;
-        const applyBtn = j.link ? `<button class="btn" data-open-apply="${j.id}">Aplicar</button>` : `<button class="btn" disabled>Aplicar</button>`;
+
+        const applyBtn = j.link
+          ? `<a class="btn" href="${escapeHtml(j.link)}" target="_blank" rel="noopener">Aplicar</a>`
+          : `<button class="btn" disabled>Aplicar</button>`;
+
         const statusPct=j.status.progress, statusLbl=j.status.label;
 
         const card=document.createElement('article'); card.className='card';
@@ -501,18 +547,14 @@
         const id=e.currentTarget.getAttribute('data-open-info'); const job=state.jobs.find(x=>x.id===id);
         if(job){ openModal(job,'info'); location.hash='#/job/'+encodeURIComponent(id); }
       }));
-      wrap.querySelectorAll('[data-open-apply]').forEach(el=>el.addEventListener('click', (e)=>{
-        e.preventDefault(); state.lastFocus=e.currentTarget;
-        const id=e.currentTarget.getAttribute('data-open-apply'); const job=state.jobs.find(x=>x.id===id);
-        if(job){ openModal(job,'apply'); location.hash='#/job/'+encodeURIComponent(id); }
-      }));
 
       updateStats(paged.length, state.jobs.length);
-      injectSchemas(paged);
+      // SEO: inyectamos JSON-LD para TODA la lista filtrada (no solo la página)
+      injectSchemas(items);
       updateCharts(items);
     }
 
-    /* ---------- Modal / Aplicar (abre nueva pestaña) ---------- */
+    /* ---------- Modal / Aplicar ---------- */
     function showModal(){ const m=$('#modal'); m.classList.add('show'); m.removeAttribute('aria-hidden'); document.body.style.overflow='hidden'; }
     function closeModal(){ const m=$('#modal'); m.classList.remove('show'); m.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if(state.lastFocus){state.lastFocus.focus();} }
 
@@ -541,27 +583,93 @@
     $('#modal').addEventListener('click',(e)=>{if(e.target.id==='modal'){closeModal();history.replaceState(null,'',location.pathname+location.search);}})
     window.addEventListener('keydown',(e)=>{if(e.key==='Escape'){closeModal();history.replaceState(null,'',location.pathname+location.search);}})
 
-    /* ---------- Schema.org JobPosting ---------- */
+    /* ---------- Schema.org JobPosting / ItemList ---------- */
     const isoDate=s=>{const d=new Date(s||Date.now());return isNaN(d.getTime())?new Date().toISOString():d.toISOString();}
     function validThrough(creacion){const d=new Date(creacion||Date.now());return new Date((isNaN(d)?Date.now():d.getTime())+60*24*3600*1000).toISOString();}
+    function jobToSchema(j, pos){
+      const url = SITE_URL + '#/job/' + encodeURIComponent(j.id);
+      const payload = {
+        "@context":"https://schema.org",
+        "@type":"JobPosting",
+        "title": j.puesto || "Vacante",
+        "description": (j.infoFull||'').replace(/\n/g,'<br>'),
+        "datePosted": isoDate(j.creacion),
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": {
+          "@type":"Organization",
+          "name":"Talento 3.0",
+          "sameAs":"https://talento3.com",
+          "logo":"https://talento3.com/wp-content/uploads/2024/04/LogoT3.png"
+        },
+        "jobLocation": {
+          "@type":"Place",
+          "address": {
+            "@type":"PostalAddress",
+            "addressLocality": j.ciudad || "México",
+            "streetAddress": j.lugar || ""
+          }
+        },
+        "directApply": !!j.link,
+        "applicantLocationRequirements":{"@type":"Country","name":"MX"},
+        "validThrough": validThrough(j.creacion),
+        "identifier": {
+          "@type":"PropertyValue",
+          "name":"Talento 3.0",
+          "value": j.id
+        },
+        "url": url
+      };
+      if (j.sueldo) {
+        const val = extractNumber(j.sueldo);
+        if (typeof val === 'number') {
+          payload.baseSalary = {
+            "@type":"MonetaryAmount",
+            "currency":"MXN",
+            "value":{"@type":"QuantitativeValue","value": val, "unitText":"MONTH"}
+          };
+        }
+      }
+      return payload;
+    }
+
     function injectSchemas(items){
       const dump=$('#schemaDump'); dump.innerHTML='';
-      items.forEach(j=>{
-        const payload={"@context":"https://schema.org/","@type":"JobPosting","title": j.puesto || "Vacante",
-          "description": (j.infoFull||'').replace(/\n/g,'<br>'),"datePosted": isoDate(j.creacion),"employmentType":"FULL_TIME",
-          "hiringOrganization":{"@type":"Organization","name":"Talento 3.0","sameAs":"https://talento3.com","logo":"https://talento3.com/wp-content/uploads/2024/04/LogoT3.png"},
-          "jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressLocality": j.ciudad || "México","streetAddress": j.lugar || ""}},
-          "directApply": true,"validThrough": validThrough(j.creacion),
-          "baseSalary": j.sueldo ? {"@type":"MonetaryAmount","currency":"MXN","value":{"@type":"QuantitativeValue","value": extractNumber(j.sueldo),"unitText":"MONTH"}} : undefined,
-          "applicantLocationRequirements":{"@type":"Country","name":"MX"}};
-        const s=document.createElement('script'); s.type='application/ld+json'; s.textContent=JSON.stringify(payload); dump.appendChild(s);
+
+      // Datos base: Organization y WebSite
+      const sOrg=document.createElement('script'); sOrg.type='application/ld+json'; sOrg.textContent=JSON.stringify(ORG);
+      const sWeb=document.createElement('script'); sWeb.type='application/ld+json'; sWeb.textContent=JSON.stringify(WEBSITE);
+      dump.appendChild(sOrg); dump.appendChild(sWeb);
+
+      if(!items || !items.length) return;
+
+      // ItemList para la colección
+      const itemList = {
+        "@context":"https://schema.org",
+        "@type":"ItemList",
+        "name":"Vacantes Talento 3.0",
+        "itemListElement": items.map((j, i)=>({
+          "@type":"ListItem",
+          "position": i+1,
+          "url": SITE_URL + '#/job/' + encodeURIComponent(j.id),
+          "name": j.puesto
+        }))
+      };
+      const sList=document.createElement('script'); sList.type='application/ld+json'; sList.textContent=JSON.stringify(itemList);
+      dump.appendChild(sList);
+
+      // JobPosting por cada vacante
+      const frag=document.createDocumentFragment();
+      items.forEach((j,i)=>{
+        const s=document.createElement('script'); s.type='application/ld+json';
+        s.textContent=JSON.stringify(jobToSchema(j, i+1));
+        frag.appendChild(s);
       });
+      dump.appendChild(frag);
     }
 
     /* ---------- GRÁFICAS ---------- */
     function colorAt(i){ return PALETTE[i % PALETTE.length]; }
 
-    // DONA (Skills) — sin números; leyenda aparte
     function drawDonut(canvas, labels, values, legendEl){
       if(!canvas) return; const ctx=canvas.getContext('2d');
       const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
@@ -592,7 +700,6 @@
       }
     }
 
-    // Barras HORIZONTALES (Ciudades) con etiqueta pequeña, y dentro si hay espacio
     function drawBarsHorizontal(canvas, labels, values){
       if(!canvas) return; const ctx=canvas.getContext('2d');
       const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
@@ -604,9 +711,7 @@
       ctx.textBaseline='middle';
       pairs.forEach((p,i)=>{
         const y=top+i*(band+gap)+band/2; const full=(W-left-right); const len=full*(p.v/maxV);
-        // barra
         ctx.fillStyle=p.c; ctx.fillRect(left, y-band/2, Math.max(3,len), band);
-        // texto
         const label=(p.l.length>24? p.l.slice(0,24)+'…' : p.l);
         ctx.font='11px system-ui, -apple-system, Segoe UI, Roboto, Arial';
         if(len>80){
@@ -619,14 +724,12 @@
       });
     }
 
-    // Burbujas (Especialidades)
     function drawBubbles(canvas, labels, values){
       if(!canvas) return; const ctx=canvas.getContext('2d');
       const W=canvas.clientWidth, H=canvas.clientHeight; canvas.width=W; canvas.height=H;
       ctx.clearRect(0,0,W,H); if(!values.length) return;
       const pairs=labels.map((l,i)=>({l:String(l), v:values[i]})).filter(p=>p.v>0).sort((a,b)=>b.v-a.v).slice(0,12);
       const maxV=Math.max(...pairs.map(p=>p.v))||1;
-      // layout simple en filas
       const cols=3, cellW=W/cols, rows=Math.ceil(pairs.length/cols), cellH=H/Math.max(1,rows);
       ctx.font='12px system-ui, -apple-system, Segoe UI, Roboto, Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
       pairs.forEach((p,idx)=>{
@@ -635,25 +738,20 @@
         const r=Math.max(14, Math.min(cellW,cellH)/2 * Math.sqrt(p.v/maxV));
         const color=colorAt(idx);
         ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fillStyle=color; ctx.fill();
-        // etiqueta
-        ctx.fillStyle='#0b1220';
         const lab=p.l.length>16? p.l.slice(0,16)+'…' : p.l;
-        ctx.fillText(lab, cx, cy);
+        ctx.fillStyle='#0b1220'; ctx.fillText(lab, cx, cy);
       });
     }
 
     function updateCharts(items){
-      // Skills (dona)
       const skillCount={}; items.forEach(j=>{ const s=countSkills(j.infoFull); Object.entries(s).forEach(([k,v])=>{skillCount[k]=(skillCount[k]||0)+v;}); });
       const skillLabels=Object.keys(skillCount), skillVals=Object.values(skillCount);
       drawDonut($('#chartSkills'), skillLabels, skillVals, $('#legendSkills'));
 
-      // Ciudades (barras horizontales)
       const byCity={}; items.forEach(j=>{ const c=j.ciudad||'—'; byCity[c]=(byCity[c]||0)+1; });
       const cityLabels=Object.keys(byCity), cityVals=Object.values(byCity);
       drawBarsHorizontal($('#chartCities'), cityLabels, cityVals);
 
-      // Categorías (burbujas)
       const byCat={}; items.forEach(j=>{ const c=inferCategory(j.puesto); byCat[c]=(byCat[c]||0)+1; });
       const catLabels=Object.keys(byCat), catVals=Object.values(byCat);
       drawBubbles($('#chartCats'), catLabels, catVals);
@@ -707,7 +805,7 @@
 
     function showEmpty(){
       $('#cards').innerHTML=''; $('#empty').style.display='block';
-      updateStats(0,0); injectSchemas([]);
+      updateStats(0,0); injectSchemas([]); // limpia JSON-LD
     }
 
     function handleHashRoute(){ const h=location.hash||''; const m=h.match(/^#\/job\/(.+)$/); if(m){ const id=decodeURIComponent(m[1]); const job=state.jobs.find(j=>j.id===id); if(job) openModal(job,'info'); } }
@@ -750,20 +848,5 @@
     loadCSV();
   })();
   </script>
-  <iframe id="JotFormIFrame-0199263e5f5a7199a83430be0e855bd38fa8"
-  title="Clara: Asistente de Postulación" onload="window.parent.scrollTo(0,0)"
-  allowtransparency="true" allow="geolocation; microphone; camera; fullscreen"
-  src="https://agent.jotform.com/0199263e5f5a7199a83430be0e855bd38fa8?embedMode=iframe&background=1&shadow=1"
-  frameborder="0" style="
-    max-width:100%;
-    height:688px;
-    border:none;
-    
-    width:100%;
-  " scrolling="no">
-</iframe>
-<script src='https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js'></script>
-<script src='https://cdn.jotfor.ms/agent/embedjs/0199263e5f5a7199a83430be0e855bd38fa8/embed.js'>
-</script>
 </body>
 </html>
