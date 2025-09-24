@@ -396,7 +396,7 @@
       if(!input) return null;
       let s=String(input).trim().toLowerCase()
         .replace(/[,]/g,' ')
-        .replace(/\s+de\s+/g,' ') // "10 de septiembre de 2025" -> "10 septiembre 2025"
+        .replace(/\s+de\s+/g,' ')
         .replace(/\s+/g,' ')
         .trim();
 
@@ -406,40 +406,32 @@
         'jan':1,'ene':1,'feb':2,'mar':3,'abr':4,'may':5,'jun':6,'jul':7,'ago':8,'sep':9,'oct':10,'nov':11,'dic':12
       };
 
-      // dd mes yyyy (e.g., "10 septiembre 2025")
       let m = s.match(/^(\d{1,2})\s+([a-záéíóú]+)\s+(\d{4})$/i);
       if(m){
         const d=parseInt(m[1],10), mon=monthMap[m[2]]||0, y=parseInt(m[3],10);
         if(mon>=1 && mon<=12) return new Date(y, mon-1, d);
       }
 
-      // yyyy-mm-dd o yyyy/mm/dd
       m = s.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/);
       if(m){
         const y=+m[1], mon=+m[2], d=+m[3];
         if(mon>=1&&mon<=12&&d>=1&&d<=31) return new Date(y, mon-1, d);
       }
 
-      // dd-mm-yyyy o dd/mm/yyyy
       m = s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/);
       if(m){
         let d=+m[1], mon=+m[2], y=+m[3];
-        // Ambigüedad con MM/DD/YYYY: si la primera parte >12, asumimos DD/MM/YYYY (MX)
         if(d>=1 && d<=31 && mon>=1 && mon<=12) return new Date(y, mon-1, d);
       }
 
-      // mm/dd/yyyy (solo si claramente mm<=12 y dd<=31 y parece formato US)
       m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
       if(m){
         const mm=+m[1], dd=+m[2], y=+m[3];
         if(mm>=1 && mm<=12 && dd>=1 && dd<=31){
-          // Si día <= 12 y es ambigua, preferimos DD/MM/YYYY (MX); por eso solo tomamos este branch si parece US claro (mm>12 falla).
-          // Ya cubierto arriba con dd/mm/yyyy; aquí solo por completitud.
           return new Date(y, mm-1, dd);
         }
       }
 
-      // Fallback: new Date intenta parsear
       const d=new Date(input);
       return isNaN(d)?null:d;
     }
@@ -487,7 +479,7 @@
         const status=statusFromId(id);
         const infoShort=shortByPercent(infoFull,0.25,1000);
         const color=ownerColor(titular);
-        const createdAt=parseDateSmart(creacion);   // <- usar parser robusto
+        const createdAt=parseDateSmart(creacion);
         const salaryNum=extractNumber(sueldo)||0;
         return {id,puesto,ciudad,lugar,sueldo,creacion,createdAt,salaryNum,infoFull,infoShort,link,titular,status,color};
       });
@@ -501,23 +493,29 @@
     }
     function updateStats(show,total){ $('#total').textContent=total; $('#countLabel').textContent=`Mostrando ${show} de ${total} vacantes`; }
 
-    /* ---------- ORDEN: SIEMPRE MÁS RECIENTES PRIMERO ---------- */
+    /* ---------- ORDEN CORREGIDO: MÁS RECIENTES / ANTIGUAS ---------- */
     function sortItems(arr){
-      const mode=$('#sort').value||'dateDesc';
-      const byTitle=(a,b)=>(a.puesto||'').localeCompare(b.puesto||'','es');
-      const tOrMin=a=> (a.createdAt instanceof Date && !isNaN(a.createdAt)) ? a.createdAt.getTime() : -Infinity;
-      const byDate=(a,b)=> (tOrMin(b) - tOrMin(a));      // descendente (recientes primero)
-      const byDateAsc=(a,b)=> (tOrMin(a) - tOrMin(b));   // ascendente
-      const bySal=(a,b)=>(b.salaryNum-a.salaryNum);
-      const bySalAsc=(a,b)=>(a.salaryNum-b.salaryNum);
+      const mode = document.querySelector('#sort').value || 'dateDesc';
+      const byTitle   = (a,b) => (a.puesto||'').localeCompare(b.puesto||'','es');
+
+      const tOrNegInf = a => (a.createdAt instanceof Date && !isNaN(a.createdAt.getTime()))
+                              ? a.createdAt.getTime() : -Infinity;
+      const tOrPosInf = a => (a.createdAt instanceof Date && !isNaN(a.createdAt.getTime()))
+                              ? a.createdAt.getTime() :  Infinity;
+
+      const byDateDesc = (a,b) => tOrNegInf(b) - tOrNegInf(a); // recientes primero
+      const byDateAsc  = (a,b) => tOrPosInf(a) - tOrPosInf(b); // antiguas primero
+      const bySalDesc  = (a,b) => (b.salaryNum - a.salaryNum);
+      const bySalAsc   = (a,b) => (a.salaryNum - b.salaryNum);
+
       const copy=[...arr];
       switch(mode){
-        case 'dateAsc': copy.sort(byDateAsc); break;
-        case 'salaryDesc': copy.sort(bySal); break;
-        case 'salaryAsc': copy.sort(bySalAsc); break;
-        case 'az': copy.sort(byTitle); break;
-        case 'za': copy.sort((a,b)=>byTitle(b,a)); break;
-        default: copy.sort(byDate); // por defecto: recientes primero
+        case 'dateAsc':    copy.sort(byDateAsc); break;
+        case 'salaryDesc': copy.sort(bySalDesc); break;
+        case 'salaryAsc':  copy.sort(bySalAsc); break;
+        case 'az':         copy.sort(byTitle); break;
+        case 'za':         copy.sort((a,b)=>byTitle(b,a)); break;
+        default:           copy.sort(byDateDesc); // dateDesc por defecto
       }
       return copy;
     }
@@ -590,7 +588,7 @@
       }));
 
       updateStats(paged.length, state.jobs.length);
-      injectSchemas(sortItems(items)); // JSON-LD también en orden elegido
+      injectSchemas(sortItems(items)); // JSON-LD también respeta el orden elegido
       updateCharts(items);
     }
 
@@ -652,11 +650,7 @@
         "directApply": !!j.link,
         "applicantLocationRequirements":{"@type":"Country","name":"MX"},
         "validThrough": validThrough(j.creacion),
-        "identifier": {
-          "@type":"PropertyValue",
-          "name":"Talento 3.0",
-          "value": j.id
-        },
+        "identifier": {"@type":"PropertyValue","name":"Talento 3.0","value": j.id},
         "url": url
       };
       if (j.sueldo) {
@@ -823,10 +817,10 @@
         if(!rows.length) throw new Error('CSV vacío o sin filas útiles.');
         state.jobs = normalizeRows(rows);
 
-        // Orden inicial: SIEMPRE recientes primero (con parseDateSmart)
+        // Orden inicial: SIEMPRE recientes primero (usando createdAt.getTime)
         state.jobs = state.jobs.sort((a,b)=>{
-          const ta = (a.createdAt instanceof Date && !isNaN(a.createdAt)) ? a.createdAt.getTime() : -Infinity;
-          const tb = (b.createdAt instanceof Date && !isNaN(b.createdAt)) ? b.createdAt.getTime() : -Infinity;
+          const ta = (a.createdAt instanceof Date && !isNaN(a.createdAt.getTime())) ? a.createdAt.getTime() : -Infinity;
+          const tb = (b.createdAt instanceof Date && !isNaN(b.createdAt.getTime())) ? b.createdAt.getTime() : -Infinity;
           return tb - ta;
         });
 
@@ -866,8 +860,8 @@
       const rows=parseCSV(text);
       if(!rows.length){ toast('CSV vacío o inválido'); return; }
       state.jobs = normalizeRows(rows).sort((a,b)=>{
-        const ta = (a.createdAt instanceof Date && !isNaN(a.createdAt)) ? a.createdAt.getTime() : -Infinity;
-        const tb = (b.createdAt instanceof Date && !isNaN(b.createdAt)) ? b.createdAt.getTime() : -Infinity;
+        const ta = (a.createdAt instanceof Date && !isNaN(a.createdAt.getTime())) ? a.createdAt.getTime() : -Infinity;
+        const tb = (b.createdAt instanceof Date && !isNaN(b.createdAt.getTime())) ? b.createdAt.getTime() : -Infinity;
         return tb - ta;
       });
       state.filtered=[...state.jobs]; state.page=1;
